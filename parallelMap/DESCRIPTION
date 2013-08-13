@@ -1,15 +1,24 @@
 Package: parallelMap
 Title: Unified interface to some popular parallelization back-ends.
 Description: Unified interface to some popular parallelization
-        back-ends.
+    back-ends.
 Author: Bernd Bischl <bernd_bischl@gmx.net>
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
 License: BSD
-Suggests: testthat, snowfall, parallel, Rmpi, BatchJobs
+Suggests:
+    testthat,
+    snowfall,
+    parallel,
+    Rmpi,
+    BatchJobs
 LazyData: yes
 ByteCompile: yes
-Version: 1.0-1-1-1
-Collate: 'parallelExport.R' 'parallelLibrary.R' 'parallelMap.R'
-        'parallelStart.R' 'parallelStop.R'
+Version: 1.0
+Collate:
+    'parallelExport.R'
+    'parallelLibrary.R'
+    'parallelMap.R'
+    'parallelStart.R'
+    'parallelStop.R'
