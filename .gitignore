@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 parallelMap.Rproj
-parallelMap/man
 parallelMap.Rcheck
 test_src.R
+parallelMap/man
+parallelMap/inst/tests/parallelmap_bj_files

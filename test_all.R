@@ -2,6 +2,7 @@ library(methods)
 library(devtools)
 library(testthat)
 library(BBmisc)
+options(BBmisc.ProgressBar.style = "off")
 
 if (interactive()) {
   load_all("parallelMap", reset=TRUE)

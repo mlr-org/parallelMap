@@ -60,7 +60,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       }, iters, ...)
     }
     if (mode == "multicore") {
-      options(parallelMap.export.env = ".parallelMap.export.env")
+      options(parallelMap.export.env=".parallelMap.export.env")
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
       inds.err = sapply(res, is.error)
       if (any(inds.err))
@@ -71,13 +71,22 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
     } else if (mode == "BatchJobs") {
       fd = getOption("parallelMap.bj.reg.file.path")
-      reg = loadRegistry(fd)
+      if (file.exists(fd)) {
+        stopf("Registry file dir internally used by parallelMap already exists:\n%s", fd)
+      }
+      reg = makeRegistry(id="parallelMap", file.dir=fd)
       batchMap(reg, fun, ..., more.args = more.args)
       submitJobs(reg)
       waitForJobs(reg)
+      if (!is.null(log)) {
+        fns = getLogFiles(reg)
+        file.copy(from=fns, to=log)
+      }
       if (length(findErrors(reg)) > 0)
         stop(collapse(getErrors(reg, print=FALSE), sep="\n"))
       res = loadResults(reg)
+      # clean up registry file dir now
+      unlink(fd, recursive=TRUE)
     }
   }
 
