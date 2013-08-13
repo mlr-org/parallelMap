@@ -74,14 +74,14 @@ parallelStart = function(mode="local", cpus, ..., level=as.character(NA), log=NU
     sfInit(parallel=TRUE, cpus=cpus, ...)
     sfClusterSetupRNG()
   } else if (mode == "BatchJobs") {
-    fd = "bbmisc_parallel_bj_files"
+    fd = "parallelmap_bj_files"
     unlink(fd, recursive = TRUE)
-    reg = makeRegistry("BBmisc_parallel", file.dir=fd)
-    options(BBmisc.parallel.bj.reg.file.path = reg$file.dir)
+    reg = makeRegistry("parallelMap", file.dir=fd)
+    options(parallelMap.bj.reg.file.path = reg$file.dir)
   }
-  options(BBmisc.parallel.mode = mode)
-  options(BBmisc.parallel.cpus = cpus)
-  options(BBmisc.parallel.level = level)
-  options(BBmisc.parallel.log = log)
+  options(parallelMap.mode = mode)
+  options(parallelMap.cpus = cpus)
+  options(parallelMap.level = level)
+  options(parallelMap.log = log)
   invisible(NULL)
 }

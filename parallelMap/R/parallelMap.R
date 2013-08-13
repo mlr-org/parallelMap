@@ -44,13 +44,13 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   
-  mode = getOption("BBmisc.parallel.mode")
-  cpus = getOption("BBmisc.parallel.cpus")
-  lev = getOption("BBmisc.parallel.level")
-  log = getOption("BBmisc.parallel.log")
+  mode = getOption("parallelMap.mode")
+  cpus = getOption("parallelMap.cpus")
+  lev = getOption("parallelMap.level")
+  log = getOption("parallelMap.log")
 
   if (mode == "local" || (!is.na(lev) && !is.na(level) && level != lev)) {
-    options(BBmisc.parallel.export.env = ".BBmisc.parallel.export.env")
+    options(parallelMapl.export.env = ".parallelMap.export.env")
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
     iters = seq_along(..1)
@@ -60,7 +60,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       }, iters, ...)
     }
     if (mode == "multicore") {
-      options(BBmisc.parallel.export.env = ".BBmisc.parallel.export.env")
+      options(parallelMap.export.env = ".parallelMap.export.env")
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
       inds.err = sapply(res, is.error)
       if (any(inds.err))
@@ -70,7 +70,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       #sfClusterCall(assign, "parallelGetExported", envir=globalenv())
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
     } else if (mode == "BatchJobs") {
-      fd = getOption("BBmisc.parallel.bj.reg.file.path")
+      fd = getOption("parallelMap.bj.reg.file.path")
       reg = loadRegistry(fd)
       batchMap(reg, fun, ..., more.args = more.args)
       submitJobs(reg)
@@ -83,6 +83,9 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
 
   if (use.names && (is.character(..1) || is.integer(..1))) {
     names(res) = ..1
+  }
+  if (!use.names) {
+    names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0)
     res = simplify2array(res, higher = (simplify == "array"))

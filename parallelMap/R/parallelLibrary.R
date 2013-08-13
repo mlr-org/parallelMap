@@ -27,12 +27,12 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
   if (master) {
     requirePackages(packages, why="parallelLibrary")
   }
-  if (getOption("BBmisc.parallel.mode") == "snowfall" && 
-        (is.na(getOption("BBmisc.parallel.level")) || 
-           getOption("BBmisc.parallel.level") == level)) {
+  if (getOption("parallelMap.mode") == "snowfall" && 
+        (is.na(getOption("parallelMap.level")) || 
+           getOption("parallelMap.level") == level)) {
     # sfLibrary chatters to much...
-    .BBmisc.snowfall.pkgs = packages; sfExport(".BBmisc.snowfall.pkgs")
-    sfClusterEval(for (p in .BBmisc.snowfall.pkgs) {require(p, character.only=TRUE)})    
+    .parallelMap.snowfall.pkgs = packages; sfExport(".parallelMap.snowfall.pkgs")
+    sfClusterEval(for (p in .parallelMap.snowfall.pkgs) {require(p, character.only=TRUE)})    
   }
   invisible(NULL)
 }

@@ -5,13 +5,13 @@
 #' @return Nothing.
 #' @export
 parallelStop = function() {
-  mode = getOption("BBmisc.parallel.mode")
+  mode = getOption("parallelMap.mode")
   if (mode == "snowfall") {
     sfStop()
   } else if (mode == "BatchJobs") {
     # clean up temp file dir of BJ
-    fd = getOption("BBmisc.parallel.bj.reg.file.path")
+    fd = getOption("parallelMap.bj.reg.file.path")
     unlink(fd, recursive = TRUE)
   }
-  options(BBmisc.parallel.mode = "local")
+  options(parallelMap.mode = "local")
 }

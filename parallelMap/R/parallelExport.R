@@ -22,7 +22,7 @@ parallelExport = function(..., obj.names=character(0)) {
   checkListElementClass(args, "character")
   checkArg(obj.names, "character", na.ok=FALSE)
   ns = union(unlist(args), obj.names)
-  mode = getOption("BBmisc.parallel.mode")
+  mode = getOption("parallelMap.mode")
   
   if (mode %in% c("local", "multicore")) {
     # multicore does not require to export because mem is duplicated after fork (still copy-on-write)
@@ -34,7 +34,7 @@ parallelExport = function(..., obj.names=character(0)) {
     sfExport(list=ns)
     #sfClusterEval(options(BBmisc.parallel.export.env = ".GlobalEnv"))
   } else if (mode == "BatchJobs") {
-    fd = getOption("BBmisc.parallel.bj.reg.file.path")
+    fd = getOption("parallelMap.bj.reg.file.path")
     for (n in ns) {
       save2(file = file.path(fd, n), get(n, envir=sys.parent()))
     }
