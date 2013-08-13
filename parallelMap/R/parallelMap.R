@@ -5,7 +5,7 @@
 #' is used, for snowfall \code{\link[snowfall]{sfClusterApplyLB}}.
 #'
 #' Large objects should be separately exported via \code{\link{parallelExport}},
-#' they can be retrieved in slave code via \code{\link{parallelGetExported}}.
+#' they can be simply used under their exported name in slave body code.
 #'
 #' Note that there is a bug in \code{\link[parallel]{mclapply}} of parallel because exceptions raised
 #' during slave calls are not corretly converted to try-errror objects (as claimed in the documentation) but
@@ -67,7 +67,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
     }  else if (mode == "snowfall") {
       #sfClusterEval(options(BBmisc.parallel.export.env = ".GlobalEnv"))
-      #sfClusterCall(assign, "parallelGetExported", parallelGetExported, envir=globalenv())
+      #sfClusterCall(assign, "parallelGetExported", envir=globalenv())
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
     } else if (mode == "BatchJobs") {
       fd = getOption("BBmisc.parallel.bj.reg.file.path")

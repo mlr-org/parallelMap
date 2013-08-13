@@ -1,6 +1,7 @@
 context("snowfall mode")
 
-if (isExpensiveExampleOk()) {
+#FIXME: for some reason this blocks R CMD check, at least on my laptop?
+if (interactive()) {
   test_that("snowfall mode", {
     parallelStart(mode="snowfall", cpus=2)
     partest1()

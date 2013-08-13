@@ -1,7 +1,5 @@
 #' Export a larger object which is needed in slave code of \code{\link{parallelMap}}.
 #'
-#' Objects can later be retrieved with \code{\link{parallelGetExported}} in slave code.
-#'
 #' For local and multicore mode the objects are stored in a package environment,
 #' for snowfall \code{\link[snowfall]{sfExport}} is used internally.
 #'
@@ -43,37 +41,4 @@ parallelExport = function(..., obj.names=character(0)) {
   }
   invisible(NULL)
 }
-
-# #' Retrieve a with \code{\link{parallelExport}} exported in slave code.
-# #'
-# #' @param name [\code{character(1)}]\cr
-# #'   Name of exported object.
-# #' @return [any]. Object value.
-# #' @export
-# parallelGetExported = function(name) {
-#   penv = getOption("BBmisc.parallel.export.env")
-#   if (penv == ".BBmisc.parallel.export.env")
-#     get(name, envir=.BBmisc.parallel.export.env)
-#   else
-#     get(name, envir=.GlobalEnv)
-# }
-# 
-
-# parallelExport = function(...) {
-#  mode = getOption("BBmisc.parallel.mode")
-#   # multicore does not require to export because mem is duplicated after fork (still copy-on-write)
-# 	if (mode == "snowfall") {
-#    args = list(...)
-#    ns = names(args)
-#    for (i in seq_along(args)) {
-#       name = ns[i]
-#       obj = args[[i]]
-#       hash = digest(c(digest(name), digest(obj)))
-#       if (!exists(hash, envir=.BBmisc.parallel.hashes)) {
-#         assign(hash, TRUE, envir=.BBmisc.parallel.hashes)
-#        sfClusterCall(assign, name, obj, envir=globalenv())
-#       }
-#     }
-# 	}
-# }
 
