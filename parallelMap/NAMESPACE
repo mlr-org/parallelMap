@@ -1,0 +1,5 @@
+export(parallelExport)
+export(parallelLibrary)
+export(parallelMap)
+export(parallelStart)
+export(parallelStop)

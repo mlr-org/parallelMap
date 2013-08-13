@@ -1,0 +1,50 @@
+BBmisc_1.2-200:
+- checkArg can now test whether arg is one of multiple classes (OR disjunctive)
+- bug fix: cpus setting was not properly respected in multicore mode
+- bug fix: warnings where not turned into errors with warningf and option(warn=2)
+- some minor bug fixes
+- parallelMap: switched multicore mode to package parallel
+- new functions
+-- lib
+-- argsAsNamedList
+-- names2
+-- convertDfCols
+
+BBmisc_1.1-166:
+- some small fixes and added arguments
+- new functions:
+-- setRowNames, setColNames
+-- setClasses, addClasses
+-- isFALSE
+-- lsort
+-- computeMode
+
+BBmisc_1.1-132:
+- removed regmatches dependency
+
+BBmisc_1.1-125:
+- removed stringr dependency
+- new interface for ProgressBar and more therefore more functionality 
+- some global options for progressbar behaviour
+- options immediate and warning.length for warningf
+- checkListElementClass now first checks that argument is a list
+- nin (notin) operator
+- parallelMap function, can delegate to multicore or snowfall
+- stringsAsFactors 
+- system3
+- load2
+
+BBmisc_1.0-77:
+- removed calls to .Internal
+
+BBmisc_1.0-74:
+- more examples
+- fixed a bug in checkArg
+- makeProgressbar: new option 'inc' to increment
+- stopf: new option warning.length
+- more options for requirePackages
+- new functions: chunk, isExpensiveExampleOk
+
+BBmisc_1.0-58: 
+- First submit to CRAN.
+
