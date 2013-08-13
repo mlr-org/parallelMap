@@ -10,7 +10,7 @@ usage:
 	echo "Available targets:"
 	echo ""
 	echo " clean         - clean everything up"
-	echo " roxygenize    - roxygenize skel/ into pkg/"
+	echo " roxygenize    - roxygenize package into itself"
 	echo " package       - build source package"
 	echo " install       - install the package"
 	echo " test          - run tests"

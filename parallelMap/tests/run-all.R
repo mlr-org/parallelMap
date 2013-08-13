@@ -1,4 +1,4 @@
 library(testthat)
 library(BBmisc)
 
-test_package("BBmisc")
+test_package("parallelMap")

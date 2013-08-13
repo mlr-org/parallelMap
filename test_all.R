@@ -1,11 +1,12 @@
 library(methods)
 library(devtools)
 library(testthat)
+library(BBmisc)
 
 if (interactive()) {
-  load_all("skel")
+  load_all("parallelMap", reset=TRUE)
 } else {
-  library(BBmisc)  
+  library(parallelMap)  
 }
-test_dir("skel/inst/tests")
+test_dir("parallelMap/inst/tests")
 
