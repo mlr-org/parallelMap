@@ -7,6 +7,8 @@ Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
 License: BSD
+Imports:
+    BBmisc
 Suggests:
     testthat,
     snowfall,
@@ -22,3 +24,4 @@ Collate:
     'parallelMap.R'
     'parallelStart.R'
     'parallelStop.R'
+    'zzz.R'

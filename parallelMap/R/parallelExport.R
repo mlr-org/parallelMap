@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' foo <- 100
-#' f <- function(x) x + parallelGetExported("foo")
+#' f <- function(x) x + foo
 #' parallelStart(mode="local")
 #' parallelExport("foo")
 #' y <- parallelMap(f, 1:3)
