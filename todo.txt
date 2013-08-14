@@ -16,3 +16,14 @@ logs bei bj
   options(BBmisc.parallel.log = NULL) 
 }
 
+- parallelMap mit BatchJobs fertig machen. Was will der User von außen ändern? Export korrigieren / testen. Was soll cpus setting bedeuten?
+-- TESTEN
+- da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
+externer test mit mlr?
+Error in parallelMap(doResampleIteration, 1:iters, level = "resample",  : 
+  Error in getOption("mlr.show.learner.output") || inherits(learner, "OptWrapper") :    invalid "x" type in "x || y" 
+...
+
+chunking in parallelMap
+
+
