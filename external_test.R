@@ -1,4 +1,5 @@
 library(BBmisc)
+library(parallelMap)
 library(testthat)
 
 doJobs = function(type, mode) {
@@ -38,21 +39,30 @@ doTest = function(type, mode, cpus) {
   parallelStart(mode = mode, cpus = cpus)
   doJobs(type, mode)
   parallelStop()
+  catf("")
 }
 
-doTest("short", "local")
-doTest("short", "multicore", 2)
-doTest("short", "snowfall", 2)
+#doTest("short", "local")
+#doTest("short", "multicore", 2)
+#doTest("short", "socket", 2)
+#doTest("short", "snowfall", 2)
+doTest("short", "BatchJobs", 2)
 
-doTest("long", "local")
-doTest("long", "multicore", 2)
-doTest("long", "snowfall", 2)
+#doTest("long", "local")
+#doTest("long", "multicore", 2)
+#doTest("long", "socket", 2)
+#doTest("long", "snowfall", 2)
+doTest("long", "BatchJobs", 2)
 
-doTest("export", "local")
-doTest("export", "multicore", 2)
-doTest("export", "snowfall", 2)
+#doTest("export", "local")
+#doTest("export", "multicore", 2)
+#doTest("export", "socket", 2)
+#doTest("export", "snowfall", 2)
+doTest("export", "BatchJobs", 2)
 
-doTest("lib", "local")
-doTest("lib", "multicore", 2)
-doTest("lib", "snowfall", 2)
+#doTest("lib", "local")
+#doTest("lib", "multicore", 2)
+#doTest("lib", "socket", 2)
+#doTest("lib", "snowfall", 2)
+doTest("lib", "BatchJobs", 2)
 

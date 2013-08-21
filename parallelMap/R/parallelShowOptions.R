@@ -13,5 +13,6 @@ parallelShowOptions = function() {
   mycat("cpus")
   mycat("level")
   mycat("log")
- 
+  mycat("autostart")
+  mycat("show.info")
 }

@@ -1,13 +1,10 @@
-fix NEWS
 
-check options stuff
 resources
 cpus bei bj
 logs bei bj
 
-.BBmisc.parallel.export.env = new.env()
-
 - parallelMap mit BatchJobs fertig machen. Was will der User von außen ändern? Export korrigieren / testen. Was soll cpus setting bedeuten?
+
 -- TESTEN
 - da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 externer test mit mlr?
@@ -15,6 +12,15 @@ Error in parallelMap(doResampleIteration, 1:iters, level = "resample",  :
   Error in getOption("mlr.show.learner.output") || inherits(learner, "OptWrapper") :    invalid "x" type in "x || y" 
 ...
 
+what should we display on comnsole for BJ?
+
+was GENAU ist die def. des level? was heißt NA in den option und dem argument?
+
+fix NEWS
+
+##### LATER #####
+
 chunking in parallelMap
 
-
+why do i get this all the time with socket mode?
+1: closing unused connection 4 (<-localhost:11835) 

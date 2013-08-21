@@ -25,3 +25,5 @@ Collate:
     'parallelStart.R'
     'parallelStop.R'
     'zzz.R'
+    'parallelShowOptions.R'
+    'isParallelizationLevel.R'

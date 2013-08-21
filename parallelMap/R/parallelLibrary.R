@@ -23,16 +23,31 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
   checkArg(packages, "character", na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=TRUE)
+  
+  mode = getOption("parallelMap.mode")
+  
+  # remove duplicates
+  packages = unique(packages)
+  
   # load packages on master
   if (master) {
     requirePackages(packages, why="parallelLibrary")
   }
-  if (getOption("parallelMap.mode") == "snowfall" && 
-        (is.na(getOption("parallelMap.level")) || 
-           getOption("parallelMap.level") == level)) {
-    # sfLibrary chatters to much...
-    .parallelMap.snowfall.pkgs = packages; sfExport(".parallelMap.snowfall.pkgs")
-    sfClusterEval(for (p in .parallelMap.snowfall.pkgs) {require(p, character.only=TRUE)})    
+  if (isParallelizationLevel(level)) {
+    if (mode == "socket") {
+      clusterCall(cl=NULL, assign, x=".parallelMap.pkgs", value=packages, pos=1)
+      #clusterExport(cl=NULL, ".parallelMap.pkgs")
+      clusterEvalQ(cl=NULL, for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
+    } else if (mode == "snowfall") {
+      # sfLibrary chatters to much...
+      .parallelMap.pkgs = packages
+      sfExport(".parallelMap.pkgs")
+      sfClusterEval(for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
+    } else if (mode == "BatchJobs") {
+      # collect in R option
+      oldpkgs = getOption("parallelMap.bj.packages", character(0))
+      options(parallMap.bj.packages = union(oldpkgs, packages))
+    }
   }
   invisible(NULL)
 }

@@ -44,15 +44,33 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   
+  status = getOption("parallelMap.status")
+  autostart = getOption("parallelMap.default.autostart", TRUE)
+  if(!is.null(autostart)) {
+    checkArg(autostart, "logical", len=1L, na.ok=FALSE)
+  }
   mode = getOption("parallelMap.mode")
   cpus = getOption("parallelMap.cpus")
   lev = getOption("parallelMap.level")
   log = getOption("parallelMap.log")
+  show.info = getOption("parallelMap.show.info")
+  
+  # potentially autostart by calling parallelStart with defaults from R profile
+  # then clean up by calling parallelStop on exit
+  if (status != "started" && autostart && mode != "local") {
+    messagef("Auto-starting parallelization.")
+    parallelStart()
+    on.exit({
+      if (mode != "local")
+        messagef("Auto-stopping parallelization.")
+      parallelStop()
+    })
+  }
 
   if (mode == "local" || (!is.na(lev) && !is.na(level) && level != lev)) {
-    options(parallelMapl.export.env = ".parallelMap.export.env")
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
+    messagef("Doing a parallel mapping operation.")
     iters = seq_along(..1)
     toList = function(...) {
       Map(function(iter, ...) {
@@ -60,32 +78,50 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       }, iters, ...)
     }
     if (mode == "multicore") {
+      #FIXME check
       options(parallelMap.export.env=".parallelMap.export.env")
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
       inds.err = sapply(res, is.error)
       if (any(inds.err))
         stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
-    }  else if (mode == "snowfall") {
-      #sfClusterEval(options(BBmisc.parallel.export.env = ".GlobalEnv"))
-      #sfClusterCall(assign, "parallelGetExported", envir=globalenv())
+    } else if (mode == "socket") {
+      res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
+      inds.err = sapply(res, is.error)
+      if (any(inds.err))
+        stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
+    } else if (mode == "snowfall") {
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
     } else if (mode == "BatchJobs") {
-      fd = getOption("parallelMap.bj.reg.file.path")
+      #FIXME option
+      bj.dir = getwd()    
+      # create registry in selected directory with random, unique name
+      fd = tempfile(pattern="parallelMap_BatchJobs_reg_", tmpdir=bj.dir)
+      id = basename(fd)
       if (file.exists(fd)) {
-        stopf("Registry file dir internally used by parallelMap already exists:\n%s", fd)
+        stopf("BatchJobs registry file dir internally used by parallelMap already exists:\n%s", fd)
       }
-      reg = makeRegistry(id="parallelMap", file.dir=fd)
-      batchMap(reg, fun, ..., more.args = more.args)
-      submitJobs(reg)
+      # get package name to load on slaves which where collected in R option
+      bj.packs = getOption("parallelMap.bj.packages", character(0))
+      reg = makeRegistry(id=id, file.dir=fd, packages=bj.packs)
+      batchMap(reg, fun, ..., more.args=more.args)
+      submitJobs(reg, max.retries=15)
+      # FIXME stop on err?
       waitForJobs(reg)
+      # copy log files to designated dir
+      #FIXME rename them?
       if (!is.na(log)) {
         fns = getLogFiles(reg)
         file.copy(from=fns, to=log)
       }
-      if (length(findErrors(reg)) > 0)
-        stop(collapse(getErrors(reg, print=FALSE), sep="\n"))
-      res = loadResults(reg)
-      # clean up registry file dir now
+      # FIXME: really show all errors? also check other places of same code
+      if (length(findErrors(reg)) > 0) {
+        # FIXME write
+        messagef("Regitrsy is here:\n%s", fd)
+        stop(collapse(getErrorMessages(reg), sep="\n"))
+      }
+      res = loadResults(reg, simplify=FALSE, use.names=FALSE)
+      # delete registry file dir, if an error happened this will still exist
+      # because we threw an exception above, logs also still exist
       unlink(fd, recursive=TRUE)
     }
   }
@@ -97,7 +133,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0)
-    res = simplify2array(res, higher = (simplify == "array"))
+    res = simplify2array(res, higher=(simplify == "array"))
 
   return(res)
 }
@@ -112,7 +148,7 @@ slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
   }
 
   res = do.call(.fun, .x[-1])
-  if (!is.null(.log)) {
+  if (!is.na(.log)) {
     print(gc())
     sink(NULL)
   }

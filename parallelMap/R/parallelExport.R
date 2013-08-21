@@ -24,15 +24,10 @@ parallelExport = function(..., obj.names=character(0)) {
   ns = union(unlist(args), obj.names)
   mode = getOption("parallelMap.mode")
   
-  if (mode %in% c("local", "multicore")) {
-    # multicore does not require to export because mem is duplicated after fork (still copy-on-write)
-    #options(BBmisc.parallel.export.env = ".BBmisc.parallel.export.env")
-    #for (n in ns) {
-    #  assign(n, get(n, envir=sys.parent()), envir=.BBmisc.parallel.export.env)
-    #}
-  }  else if (mode == "snowfall") {
+  #FIXME do socket
+  if (mode == "snowfall") {
+    # FIXME really test this with multiople function levels
     sfExport(list=ns)
-    #sfClusterEval(options(BBmisc.parallel.export.env = ".GlobalEnv"))
   } else if (mode == "BatchJobs") {
     fd = getOption("parallelMap.bj.reg.file.path")
     for (n in ns) {
