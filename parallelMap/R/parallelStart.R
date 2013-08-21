@@ -8,6 +8,8 @@
 #' \code{\link[snowfall]{sfInit}}, \code{\link[snowfall]{sfClusterSetupRNG}}
 #' are called in this order.
 #'
+#' The defaults of all settings are taken from your options
+#'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
 #'   \dQuote{local}, \dQuote{multicore}, \dQuote{snowfall}.
@@ -28,34 +30,53 @@
 #'   \code{NULL} means no logging and this is the default.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode="local", cpus, ..., level=as.character(NA), log=NULL) {
-  checkArg(mode, choices=c("local", "multicore", "snowfall", "BatchJobs"))
+parallelStart = function(mode, cpus, ..., level, log) {
   
-  if (missing(cpus)) {
-    if (mode == "multicore")
-      cpus = parallel::detectCores()
-    else if(mode=="snowfall" && type=="MPI")
-      cpus = Rmpi::mpi.universe.size()
-    else
-      cpus = 1L
-  } else {
-    cpus = convertInteger(cpus)
-    checkArg(cpus, "integer", len=1, na.ok=FALSE)
-    if (cpus != 1L && mode == "local")
-      stopf("Setting %i cpus makes no sense for local mode!", cpus)
+  if (missing(mode)) {
+    mode = getOption("parallelMap.mode", "local")
+  }
+  checkArg(mode, choices=c("local", "multicore", "snowfall", "BatchJobs"))
+
+  if (missing(mode)) {
+    cpus = getOption("parallelMap.mode")
+    if (is.null(cpus)) {
+      if (mode == "multicore")
+        cpus = parallel::detectCores()
+      else if(mode=="snowfall" && type=="MPI")
+        cpus = Rmpi::mpi.universe.size()
+      else
+        cpus = 1L
+    }
+  }
+  cpus = convertInteger(cpus)
+  checkArg(cpus, "integer", len=1, na.ok=FALSE)
+
+  
+#    if (cpus != 1L && mode == "local")
+#      stopf("Setting %i cpus makes no sense for local mode!", cpus)
+
+  if (missing(mode)) {
+    level = getOption("parallelMap.level", as.character(NA))
   }
   checkArg(level, "character", len=1, na.ok=TRUE)
-  if (!is.null(log)) {
-    checkArg(log, "character", len=1, na.ok=FALSE)
+
+  if (missing(log)) {
+    log = getOption("parallelMap.log", as.character(NA))
+  }
+  checkArg(log, "character", len=1, na.ok=TRUE)
+
+  if (!is.na(log)) {
     if (!file.exists(log))
       stopf("Logging dir 'log' does not exists: %s", log)
     if (!isDirectory(log))
       stopf("Logging dir 'log' is not a directory: %s", log)
-    if (mode=="local")
-      stop("Logging not supported for local mode!")
+    #if (mode=="local")
+    #  stop("Logging not supported for local mode!")
   }
   
   type = coalesce(..., "SOCK")
+
+  # now load extra packs we need
   packs = if (mode == "multicore")
     "parallel"
   else if (mode == "snowfall")
@@ -67,7 +88,9 @@ parallelStart = function(mode="local", cpus, ..., level=as.character(NA), log=NU
     "BatchJobs"
   else
     character(0)
-  requirePackages(packs, "setupParallel")
+  requirePackages(packs, "parallelStart")
+
+  # init parallel packs / modes, if necessary 
   if (mode == "snowfall") {
     sfStop()
     sfSetMaxCPUs(cpus)
@@ -79,6 +102,7 @@ parallelStart = function(mode="local", cpus, ..., level=as.character(NA), log=NU
     #reg = makeRegistry("parallelMap", file.dir=fd)
     options(parallelMap.bj.reg.file.path = fd)
   }
+  # store options for session
   options(parallelMap.mode = mode)
   options(parallelMap.cpus = cpus)
   options(parallelMap.level = level)

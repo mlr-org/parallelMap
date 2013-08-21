@@ -78,7 +78,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       batchMap(reg, fun, ..., more.args = more.args)
       submitJobs(reg)
       waitForJobs(reg)
-      if (!is.null(log)) {
+      if (!is.na(log)) {
         fns = getLogFiles(reg)
         file.copy(from=fns, to=log)
       }
@@ -102,8 +102,8 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   return(res)
 }
 
-slaveWrapper = function(.x, .fun, .log=NULL) {
-  if (!is.null(.log)) {
+slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
+  if (!is.na(.log)) {
     options(warning.length=8170, warn=1)
     fn = file.path(.log, sprintf("%03i.log", .x[[1]]))
     fn = file(fn, open="wt")
