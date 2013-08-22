@@ -19,6 +19,10 @@ if (interactive()) {
     partest3()
     parallelStop()
 
+    parallelStart(mode="snowfall", cpus=2)
+    partest4()
+    parallelStop()
+    
     # check error
     parallelStart(mode="snowfall", cpus=2)
     f = function(i) stop("fooo")

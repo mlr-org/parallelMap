@@ -1,4 +1,11 @@
 
+unterverz bei logging, "parallelMap_%03i_logs"
+clean up dieser logs bei parallaleStart uind stop bei stop mit optoion = FASE
+deleteLogs function
+
+registerLevel
+showLevels
+
 resources
 cpus bei bj
 logs bei bj
@@ -20,10 +27,14 @@ fix NEWS
 
 compeltely silent mode?
 
+document handling of errors
+
 ##### LATER #####
 
 chunking in parallelMap
 
 why do i get this all the time with socket mode?
 1: closing unused connection 4 (<-localhost:11835) 
+
+parallelSapply, Vapply, Lapply
 

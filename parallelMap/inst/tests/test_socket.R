@@ -14,6 +14,10 @@ test_that("socket mode", {
   partest3()
   parallelStop()
 
+  parallelStart(mode="socket", cpus=2)
+  partest4()
+  parallelStop()
+  
   # check error
   parallelStart(mode="socket", cpus=2)
   f = function(i) stop("fooo")

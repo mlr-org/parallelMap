@@ -10,8 +10,12 @@ if (isExpensiveExampleOk()) {
     partest2(tempdir())
     parallelStop()
     
-    parallelStart(mode="BatchJobs", cpus=2)
+    parallelStart(mode="BatchJobs")
     partest3()
+    parallelStop()
+    
+    parallelStart(mode="BatchJobs")
+    partest4()
     parallelStop()
     
     # check error

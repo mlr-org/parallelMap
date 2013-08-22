@@ -11,6 +11,10 @@ test_that("multicore mode", {
   partest2(tempdir())
   parallelStop()
   
+  parallelStart(mode="multicore", log=tempdir())
+  partest4()
+  parallelStop()
+  
   # check error
   # FIXME this does not work as parallel/multicore only generates a 
   # warning not an error....
