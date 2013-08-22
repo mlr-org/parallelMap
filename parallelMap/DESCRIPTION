@@ -27,3 +27,4 @@ Collate:
     'zzz.R'
     'parallelShowOptions.R'
     'isParallelizationLevel.R'
+    'displayErrorMessages.R'

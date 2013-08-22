@@ -18,9 +18,12 @@ was GENAU ist die def. des level? was heißt NA in den option und dem argument?
 
 fix NEWS
 
+compeltely silent mode?
+
 ##### LATER #####
 
 chunking in parallelMap
 
 why do i get this all the time with socket mode?
 1: closing unused connection 4 (<-localhost:11835) 
+

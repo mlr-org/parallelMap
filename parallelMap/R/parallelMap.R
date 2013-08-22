@@ -80,14 +80,16 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     }
     if (mode == "multicore") {
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
+      # produces list of try-error objects in case of error
       checkForAndDisplayErrors(res)
     } else if (mode == "socket") {
       res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .log=log)
+      # throws one single error on master in case of error
       #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
-      checkForAndDisplayErrors(res)
+      #checkForAndDisplayErrors(res)
     } else if (mode == "snowfall") {
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
-      #FIXME what happens with errors here?
+      # throws one single error on master in case of error
     } else if (mode == "BatchJobs") {
       #FIXME option
       bj.dir = getwd()    
@@ -111,11 +113,12 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         file.copy(from=fns, to=dests)
       }
       # FIXME: really show all errors? also check other places of same code
-      if (length(findErrors(reg)) > 0) {
+      err.ids = findErrors(reg)
+      if (length(err.ids) > 0) {
         # FIXME write
-        messagef("Regitrsy is here:\n%s", fd)
+        msg = sprintf("If you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
         # FIXME in whih version of BJ is getterrmessages? is this on cran?
-        displayErrorMessages(getErrorMessages(reg))
+        displayErrorMessages(err.ids, getErrorMessages(reg, err.ids), msg)
       }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
       # delete registry file dir, if an error happened this will still exist
@@ -146,6 +149,7 @@ slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
   }
 
   res = do.call(.fun, .x[-1])
+  #FIXME show timin info in log
   if (!is.na(.log)) {
     print(gc())
     sink(NULL)
