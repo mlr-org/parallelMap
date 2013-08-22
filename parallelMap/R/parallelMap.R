@@ -45,30 +45,30 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   
-  status = getOption("parallelMap.status")
-  autostart = getOption("parallelMap.default.autostart", TRUE)
+  status = getPMOptStatus()
+  autostart = getPMDefOptAutostart()
   if(!is.null(autostart)) {
     checkArg(autostart, "logical", len=1L, na.ok=FALSE)
   }
-  mode = getOption("parallelMap.mode")
-  cpus = getOption("parallelMap.cpus")
-  lev = getOption("parallelMap.level")
-  log = getOption("parallelMap.log")
-  show.info = getOption("parallelMap.show.info")
+  mode = getPMOptMode()
+  cpus = getPMOptCpus()
+  lev = getPMOptLevel()
+  log = getPMOptLog()
+  show.info = getPMOptShowInfo()
   
   # potentially autostart by calling parallelStart with defaults from R profile
   # then clean up by calling parallelStop on exit
-  if (status != "started" && autostart && mode != "local") {
+  if (status != STATUS_STARTED && autostart && mode != MODE_LOCAL) {
     messagef("Auto-starting parallelization.")
     parallelStart()
     on.exit({
-      if (mode != "local")
+      if (mode != MODE_LOCAL)
         messagef("Auto-stopping parallelization.")
       parallelStop()
     })
   }
 
-  if (mode == "local" || (!is.na(lev) && !is.na(level) && level != lev)) {
+  if (mode == MODE_LOCAL || (!is.na(lev) && !is.na(level) && level != lev)) {
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
     messagef("Doing a parallel mapping operation.")
@@ -78,19 +78,19 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         c(list(iter), list(...), more.args)
       }, iters, ...)
     }
-    if (mode == "multicore") {
+    if (mode == MODE_MULTICORE) {
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
       # produces list of try-error objects in case of error
       checkForAndDisplayErrors(res)
-    } else if (mode == "socket") {
+    } else if (mode == MODE_SOCKET) {
       res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .log=log)
       # throws one single error on master in case of error
       #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
       #checkForAndDisplayErrors(res)
-    } else if (mode == "snowfall") {
+    } else if (mode == MODE_MPI) {
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
       # throws one single error on master in case of error
-    } else if (mode == "BatchJobs") {
+    } else if (mode == MODE_BATCHJOBS) {
       #FIXME option
       bj.dir = getwd()    
       # create registry in selected directory with random, unique name
@@ -103,6 +103,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       bj.packs = getOption("parallelMap.bj.packages", character(0))
       reg = makeRegistry(id=id, file.dir=fd, packages=bj.packs)
       batchMap(reg, fun, ..., more.args=more.args)
+      #FIXME resources
       submitJobs(reg, max.retries=15)
       # FIXME stop on err?
       waitForJobs(reg)

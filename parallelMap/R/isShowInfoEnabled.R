@@ -1,0 +1,1 @@
+isShowInfoEnabled = function() {  getPMOptShowInfo()}

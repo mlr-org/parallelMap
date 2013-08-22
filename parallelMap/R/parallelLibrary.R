@@ -24,7 +24,7 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
   checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=TRUE)
   
-  mode = getOption("parallelMap.mode")
+  mode = getPMDefOptMode()
   
   # remove duplicates
   packages = unique(packages)
@@ -34,16 +34,16 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
     requirePackages(packages, why="parallelLibrary")
   }
   if (isParallelizationLevel(level)) {
-    if (mode == "socket") {
+    if (mode == MODE_SOCKET) {
       clusterCall(cl=NULL, assign, x=".parallelMap.pkgs", value=packages, pos=1)
       #clusterExport(cl=NULL, ".parallelMap.pkgs")
       clusterEvalQ(cl=NULL, for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
-    } else if (mode == "snowfall") {
+    } else if (mode == MODE_MPI) {
       # sfLibrary chatters to much...
       .parallelMap.pkgs = packages
       sfExport(".parallelMap.pkgs")
       sfClusterEval(for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
-    } else if (mode == "BatchJobs") {
+    } else if (mode == MODE_BATCHJOBS) {
       # collect in R option
       oldpkgs = getOption("parallelMap.bj.packages", character(0))
       options(parallMap.bj.packages = union(oldpkgs, packages))

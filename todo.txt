@@ -1,4 +1,6 @@
 
+test on lido
+
 unterverz bei logging, "parallelMap_%03i_logs"
 clean up dieser logs bei parallaleStart uind stop bei stop mit optoion = FASE
 deleteLogs function
@@ -26,6 +28,7 @@ was GENAU ist die def. des level? was heißt NA in den option und dem argument?
 fix NEWS
 
 compeltely silent mode?
+
 
 document handling of errors
 

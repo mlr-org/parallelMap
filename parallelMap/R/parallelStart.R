@@ -25,7 +25,7 @@
 #'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
-#'   \dQuote{local}, \dQuote{multicore}, \dQuote{socket}, \dQuote{snowfall}, \dQuote{BatchJobs}.
+#'   \dQuote{local}, \dQuote{multicore}, \dQuote{socket}, \dQuote{mpi}, \dQuote{BatchJobs}.
 #'   Default is the option \code{parallelMap.default.mode} or, if not set, 
 #'   \dQuote{local} without parallel execution.
 #' @param cpus [\code{integer(1)}]\cr
@@ -57,28 +57,19 @@
 #' @export
 parallelStart = function(mode, cpus, ..., level, log, show.info) {
    # if stop was not called, warn and do it now
-   status = getOption("parallelMap.status")
-   if (status == "started" && mode != "local")   {
+   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
   
   if (missing(mode)) {
-    mode = getOption("parallelMap.mode", "local")
+    mode = getPMDefOptMode()
   }
-  checkArg(mode, choices=c("local", "multicore", "socket", "snowfall", "BatchJobs"))
+  checkArg(mode, choices=MODES)
   
   # try to autodetect cpus if not set 
   if (missing(cpus)) {
-    cpus = getOption("parallelMap.cpus")
-    if (is.null(cpus)) {
-      if (mode == "multicore")
-        cpus = parallel::detectCores()
-      else if(mode=="snowfall" && type=="MPI")
-        cpus = Rmpi::mpi.universe.size()
-      else
-        cpus = 1L
-    }
+    cpus = autodetectCpus(mode)
   }
   cpus = convertInteger(cpus)
   checkArg(cpus, "integer", len=1, na.ok=FALSE)
@@ -88,20 +79,21 @@ parallelStart = function(mode, cpus, ..., level, log, show.info) {
 #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
 
   if (missing(level)) {
-    level = getOption("parallelMap.level", as.character(NA))
+    level = getPMDefOptLevel()
   }
   checkArg(level, "character", len=1, na.ok=TRUE)
 
   if (missing(log)) {
-    log = getOption("parallelMap.log", as.character(NA))
+    log = getPMDefOptLog()
   }
   checkArg(log, "character", len=1, na.ok=TRUE)
   
-  autostart = getOption("parallelMap.default.autostart", TRUE)
+  #FIXME default?
+  autostart = getPMDefOptAutostart()
   checkArg(autostart, "logical", len=1L, na.ok=FALSE)
 
   if (missing(show.info)) {
-    show.info = getOption("parallelMap.default.show.info", TRUE)
+    show.info = getPMDefOptShowInfo()
   }
   checkArg(show.info, "logical", len=1L, na.ok=FALSE) 
   
@@ -122,37 +114,30 @@ parallelStart = function(mode, cpus, ..., level, log, show.info) {
   
   ##### arg checks done #####
 
-  type = coalesce(..., "SOCK")
-
   # now load extra packs we need
-  packs = if (mode == "multicore")
-    "parallel"
-  else if (mode == "snowfall")
-    if (type == "MPI")
-      c("snowfall", "Rmpi")
-  else
-    "snowfall"
-  else if (mode == "BatchJobs")
-    "BatchJobs"
-  else
-    character(0)
-  requirePackages(packs, "parallelStart")
+   ss = getExtraPackages(mode)
+   print(ss)
+  requirePackages(ss, "parallelStart")
 
   # init parallel packs / modes, if necessary 
-  if (mode == "socket") {
-    args = argsAsNamedList(...)
-    if ("names" %nin% names(args))
-      cl = makePSOCKcluster(names = cpus, ...)
-    else
-      cl = makePSOCKcluster(...)
-    setDefaultCluster(cl)
-  } else if (mode == "snowfall") {
-    sfSetMaxCPUs(cpus)
-    sfInit(parallel=TRUE, cpus=cpus, ...)
-    sfClusterSetupRNG()
-  } else if (mode == "BatchJobs") {
-    # FIXME do nothing?
-  }
+  switch(mode,
+    MODE_SOCKET = {
+      args = argsAsNamedList(...)
+      if ("names" %nin% names(args))
+        cl = makePSOCKcluster(names = cpus, ...)
+      else
+        cl = makePSOCKcluster(...)
+      setDefaultCluster(cl)
+    }, 
+    MODE_MPI = {
+      sfSetMaxCPUs(cpus)
+      sfInit(parallel=TRUE, cpus=cpus, ...)
+      sfClusterSetupRNG()
+    },
+    MODE_BATCHJOBS = {
+      cleanUpBatchJobsExports()
+    }
+  )
   # store options for session
   options(parallelMap.mode = mode)
   options(parallelMap.cpus = cpus)
@@ -160,6 +145,6 @@ parallelStart = function(mode, cpus, ..., level, log, show.info) {
   options(parallelMap.log = log)
   options(parallelMap.show.info = show.info)
   options(parallelMap.autostart = autostart)
-  options(parallelMap.status = "started")
+  options(parallelMap.status = STATUS_STARTED)
   invisible(NULL)
 }

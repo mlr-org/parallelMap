@@ -17,23 +17,29 @@
 #' parallelExport("foo")
 #' y <- parallelMap(f, 1:3)
 #' parallelStop()
-parallelExport = function(..., obj.names=character(0)) {
-  args = list(...)
-  checkListElementClass(args, "character")
-  checkArg(obj.names, "character", na.ok=FALSE)
-  ns = union(unlist(args), obj.names)
-  mode = getOption("parallelMap.mode")
-  
+parallelExport = function(ns, values=NULL) {
+  checkArg(ns, "character", na.ok=FALSE)
+  #FIXMEe cehck length of values
+  envir = sys.parent()
+  #args = argsAsNamedList(...)
+  #checkListElementClass(args, "character")
+  #checkArg(obj.names, "character", na.ok=FALSE)
+  #ns = union(unlist(args), obj.names)
   #FIXME do socket
-  if (mode == "snowfall") {
-    # FIXME really test this with multiople function levels
-    sfExport(list=ns)
-  } else if (mode == "BatchJobs") {
-    fd = getOption("parallelMap.bj.reg.file.path")
-    for (n in ns) {
-      save2(file = file.path(fd, n), get(n, envir=sys.parent()))
+  switch( getPMOptMode(), 
+    MODE_SNOWFALL = {
+      # FIXME really test this with multiople function levels
+      sfExport(list=ns)
+    },
+    MODE_BATCHJOBS = {
+      bj.exports.dir = getBatchJobsExportsDir()
+      for (n in ns) {
+        fn = file.path(bj.exports.dir, sprintf("%s.RData", n))
+        #FIXME repair get
+        save2(file = fn, get(n, envir=sys.parent()))
+      }
     }
-  }
+  )
   invisible(NULL)
 }
 

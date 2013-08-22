@@ -11,34 +11,32 @@
 #' @return Nothing.
 #' @export
 parallelStop = function() {
-  status = getOption("parallelMap.status")
-  
   # warn if we are not in started status
-  if (status != "started") {
+  if (isStatusStopped()) {
     warningf("parallelStop called, but parallelization was not started. Doing nothing.")
   } else {
-    mode = getOption("parallelMap.mode")
-    show.info = getOption("parallelMap.show.info")
-    if (mode == "socket") {
-      stopCluster(NULL)
-      setDefaultCluster(NULL)      
-    } else if (mode == "snowfall") {
-      sfStop()
-    } else if (mode == "BatchJobs") {
-      # remove all exported libraries
-      options(parallelMap.bj.packages=NULL)
-      #FIXME remove?
-      # clean up temp file dir of BJ
-      #fd = getOption("parallelMap.bj.reg.file.path")
-      #unlink(fd, recursive = TRUE)
-    }
-    if (show.info && mode != "local") {
-      messagef("Stopped parallelization. All cleaned up.")
+    switch(getPMOptMode(), 
+      MODE_SOCKET = {
+        stopCluster(NULL)
+        setDefaultCluster(NULL)      
+      },
+      MODE_MPI = {
+        sfStop()
+      },
+      MODE_BATCHJOBS = {
+        # remove all exported libraries
+        options(parallelMap.bj.packages=NULL)
+        # remove exported objects
+        cleanUpBatchJobsExports()
+      }
+    )
+    if (!isModeLocal()) {
+      showInfoMessage("Stopped parallelization. All cleaned up.")
     }
   }
   
   # in any case be in local / stopped mode now 
-  options(parallelMap.mode = "local")
-  options(parallelMap.status = "stopped")
+  options(parallelMap.mode = MODE_LOCAL)
+  options(parallelMap.status = STATUS_STOPPED)
   invisible(NULL)
 }
