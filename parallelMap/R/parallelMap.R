@@ -80,16 +80,11 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     }
     if (mode == "multicore") {
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
-      # FIXME helper fornext lines
-      inds.err = sapply(res, is.error)
-      if (any(inds.err))
-        stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
+      checkForAndDisplayErrors(res)
     } else if (mode == "socket") {
       res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .log=log)
       #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
-      inds.err = sapply(res, is.error)
-      if (any(inds.err))
-        stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
+      checkForAndDisplayErrors(res)
     } else if (mode == "snowfall") {
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
       #FIXME what happens with errors here?
@@ -120,7 +115,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         # FIXME write
         messagef("Regitrsy is here:\n%s", fd)
         # FIXME in whih version of BJ is getterrmessages? is this on cran?
-        stop(collapse(getErrorMessages(reg), sep="\n"))
+        displayErrorMessages(getErrorMessages(reg))
       }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
       # delete registry file dir, if an error happened this will still exist
