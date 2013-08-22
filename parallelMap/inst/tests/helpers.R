@@ -16,13 +16,12 @@ partest2 = function(log.dir) {
     sapply(list.files(log.dir, full.names=TRUE), unlink)
   check.exists = function(n) 
     sapply(seq_len(n), function(i) 
-      expect_true(file.exists(file.path(log.dir, sprintf("%03i.log", i)))))
+      expect_true(file.exists(file.path(log.dir, sprintf("%05i.log", i)))))
   check.contains = function(xs)  {
     Map(function(i, x) {
-      s = readLines(file.path(log.dir, sprintf("%03i.log", i)))
+      s = readLines(file.path(log.dir, sprintf("%05i.log", i)))
       s = collapse(s, sep="\n")
       expect_true(grep(x, s) == 1)
-      print(grep(x,s))
     }, seq_along(xs), xs)
   }
   

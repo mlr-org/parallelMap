@@ -37,6 +37,7 @@
 #' parallelStart()
 #' parallelMap(identity, 1:2)
 #' parallelStop()
+#FIXME what happens with log files after multiple calls of parallelMap? 
 parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FALSE, level=as.character(NA)) {
   checkArg(fun, "function")
   checkArg(more.args, "list")
@@ -78,19 +79,20 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       }, iters, ...)
     }
     if (mode == "multicore") {
-      #FIXME check
-      options(parallelMap.export.env=".parallelMap.export.env")
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
+      # FIXME helper fornext lines
       inds.err = sapply(res, is.error)
       if (any(inds.err))
         stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
     } else if (mode == "socket") {
-      res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
+      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .log=log)
+      #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
       inds.err = sapply(res, is.error)
       if (any(inds.err))
         stop(collapse(c("\n", sapply(res[inds.err], as.character), sep="\n")))
     } else if (mode == "snowfall") {
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
+      #FIXME what happens with errors here?
     } else if (mode == "BatchJobs") {
       #FIXME option
       bj.dir = getwd()    
@@ -108,15 +110,16 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       # FIXME stop on err?
       waitForJobs(reg)
       # copy log files to designated dir
-      #FIXME rename them?
       if (!is.na(log)) {
         fns = getLogFiles(reg)
-        file.copy(from=fns, to=log)
+        dests = file.path(log, sprintf("%05i.log", getJobIds(reg)))
+        file.copy(from=fns, to=dests)
       }
       # FIXME: really show all errors? also check other places of same code
       if (length(findErrors(reg)) > 0) {
         # FIXME write
         messagef("Regitrsy is here:\n%s", fd)
+        # FIXME in whih version of BJ is getterrmessages? is this on cran?
         stop(collapse(getErrorMessages(reg), sep="\n"))
       }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
@@ -141,7 +144,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
 slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
   if (!is.na(.log)) {
     options(warning.length=8170, warn=1)
-    fn = file.path(.log, sprintf("%03i.log", .x[[1]]))
+    fn = file.path(.log, sprintf("%05i.log", .x[[1]]))
     fn = file(fn, open="wt")
     sink(fn)
     sink(fn, type="message")

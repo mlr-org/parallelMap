@@ -7,11 +7,11 @@
 #' Currently the following modes are supported:
 #' 
 #' \describe{
-#' \item{local}{No paralleliaztion by dispatching to \code{\link{mapply}}}.
-#' \item{multicore}{Multicore execution by dispatching to \code{\link[parallel]{mclapply}}}.
-#' \item{socket}{Multicore execution by dispatching to \code{\link[parallel]{mclapply}}}.
-#' \item{snowfall}{Multicore execution by dispatching to \code{\link[snowfall]{sfClusterApplyLB}}}.
-#' \item{BatchJobs}{Multicore execution by dispatching to \code{\link[BatchJobs]{batchMap}}}.
+#' \item{local}{No paralleliaztion by dispatching to \code{\link{mapply}}.}
+#' \item{multicore}{Multicore execution on a single machine by dispatching to \code{\link[parallel]{mclapply}}.}
+#' \item{socket}{Socket cluster on one or multiple machines by dispatching to \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
+#' \item{snowfall}{Snow cluster, e.g. for MPI, by dispatching to \code{\link[snowfall]{sfClusterApplyLB}}.}
+#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g. Torque, SLURM, etc., by dispatching to \code{\link[BatchJobs]{batchMap}}.}
 #' }
 #' 
 #' For snowfall \code{\link[snowfall]{sfSetMaxCPUs}}, 
@@ -19,27 +19,25 @@
 #' are called in this order.
 #'
 #' The defaults of all settings are taken from your options
-#' You can define defaullt for all options in your R profile like this:
-#' 
-#' \code{options(parallelMap.default.mode = "multicore")}
-#' \code{options(parallelMap.default.cpus = 4L)}
-#' \code{options(parallelMap.default.level = NA)}
-#' \code{options(parallelMap.default.log = "~/mylogs")}
-#' \code{options(parallelMap.default.autostart = TRUE)}
+#' You can define default for all options in your R profile like this
+#FIXME explean in wiki page
+#' \url{http://www.github.com}
 #'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
-#'   \dQuote{local}, \dQuote{multicore}, \dQuote{snowfall}.
+#'   \dQuote{local}, \dQuote{multicore}, \dQuote{socket}, \dQuote{snowfall}, \dQuote{BatchJobs}.
 #'   Default is the option \code{parallelMap.default.mode} or, if not set, 
 #'   \dQuote{local} without parallel execution.
 #' @param cpus [\code{integer(1)}]\cr
 #'   Number of used cpus.
+#'   For local and BatchJobs mode this argument is ignored.
 #'   Default is the option \code{parallelMap.default.cpus} or, if not set,
 #'   \code{\link[parallel]{detectCores}} for multicore, 
 #'   \code{\link[Rmpi]{mpi.universe.size}} for snowfall/MPI
 #'   and 1 otherwise.
 #' @param ... [any]\cr
-#'    Optional parameters, only passed to \code{\link[snowfall]{sfInit}} currently.
+#'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
+#'   for snowfall mode passed to \code{\link[snowfall]{sfInit}}.
 #' @param level [\code{character(1)}]\cr
 #'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
 #'   that have the same level specified.
@@ -60,7 +58,7 @@
 parallelStart = function(mode, cpus, ..., level, log, show.info) {
    # if stop was not called, warn and do it now
    status = getOption("parallelMap.status")
-   if (status != "stopped")   {
+   if (status == "started" && mode != "local")   {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
