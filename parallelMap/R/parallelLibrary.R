@@ -34,16 +34,15 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
     requirePackages(packages, why="parallelLibrary")
   }
   if (isParallelizationLevel(level)) {
-    if (mode == MODE_SOCKET) {
-      clusterCall(cl=NULL, assign, x=".parallelMap.pkgs", value=packages, pos=1)
-      #clusterExport(cl=NULL, ".parallelMap.pkgs")
+    if (isModeSocket()) {
+      exportToSlavePkgParallel(".parallelMap.pkgs", packages)
       clusterEvalQ(cl=NULL, for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
-    } else if (mode == MODE_MPI) {
+    } else if (isModeMPI()) {
       # sfLibrary chatters to much...
       .parallelMap.pkgs = packages
       sfExport(".parallelMap.pkgs")
       sfClusterEval(for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
-    } else if (mode == MODE_BATCHJOBS) {
+    } else if (isModeBatchJobs()) {
       # collect in R option
       oldpkgs = getOption("parallelMap.bj.packages", character(0))
       options(parallMap.bj.packages = union(oldpkgs, packages))

@@ -19,5 +19,6 @@ STATUS_STOPPED = "stopped"
   options(parallelMap.logdir = getPMDefOptLogDir())
   options(parallelMap.autostart = getPMDefOptAutostart())
   options(parallelMap.show.info = getPMDefOptShowInfo())
+  options(parallelMap.BatchJobs.storagedir = getPMDefOptBatchJobsStorageDir())
   options(parallelMap.status = STATUS_STOPPED)
 }

@@ -55,7 +55,7 @@
 #'   \code{TRUE}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, ..., level, logdir, show.info) {
+parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedir, bj.resources) {
    # if stop was not called, warn and do it now
    if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -68,35 +68,31 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info) {
   logdir = getPMDefOptLogDir(logdir)
   show.info = getPMDefOptShowInfo(show.info)
   autostart = getPMDefOptAutostart()
+   
   #FIXME do we really need this check?
 #    if (cpus != 1L && mode == "local")
 #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
 
   # check that log is indeed a valid dir 
-  if (!is.na(logdir)) {
-    if (!file.exists(logdir))
-      stopf("Logging directory does not exists: %s", logdir)
-    if (!isDirectory(logdir))
-      stopf("Logging directory is not a directory: %s", logdir)
+  if (!is.na(logdir)) 
+    checkDir("Logging", logdir)
     # FIXME document or still do?
     #if (mode=="local")
     #  stop("Logging not supported for local mode!")
-  }
   
-  ##### arg checks done #####
-
   # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)
-  options(parallelMap.cpus = cpus)
   options(parallelMap.level = level)
   options(parallelMap.logdir = logdir)
   options(parallelMap.show.info = show.info)
   options(parallelMap.autostart = autostart)
   options(parallelMap.status = STATUS_STARTED)   
-   
+
+
   # try to autodetect cpus if not set 
   if (is.na(cpus))
     cpus = autodetectCpus(mode)
+  options(parallelMap.cpus = cpus)
    
   # FIXME make message nicer for modes
   if (!isModeLocal()) 
@@ -118,7 +114,11 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info) {
       sfInit(parallel=TRUE, cpus=cpus, ...)
       sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
-    cleanUpBatchJobsExports()
+  #FIXME handle resourcses
+    bj.storagedir = getPMDefOptBatchJobsStorageDir(bj.storagedir)
+    checkDir("BatchJobs storage", bj.storagedir)
+    options(parallelMap.BatchJobs.storagedir=bj.storagedir)   
+    dir.create(getBatchJobsExportsDir())
   }
    
 

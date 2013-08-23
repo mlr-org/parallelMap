@@ -19,7 +19,7 @@ partest1 = function() {
 # test that log files are correctly generated
 partest2 = function(log.dir) {
   del = function() 
-    sapply(list.files(log.dir, full.names=TRUE), unlink)
+    unlink(list.files(log.dir, pattern="?????.log", full.names=TRUE))
   
   # do log files exist under correct path / name?
   check.exists = function(n) 
@@ -59,6 +59,8 @@ partest2 = function(log.dir) {
 
 # test that exported variables exist on slave
 partest3 = function() {
+  # export nothing, no change
+  parallelExport()
   foo = 100  
   parallelExport("foo")  
   f = function(i) 

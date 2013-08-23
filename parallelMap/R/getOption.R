@@ -32,6 +32,10 @@ getPMOptShowInfo = function() {
   getPMOption("show.info")
 }
 
+getPMOptBatchJobsStorageDir = function() {
+  getPMOption("BatchJobs.storagedir")
+}
+
 ##### PM default options #####
 
 getPMDefOptMode = function(mode) {
@@ -71,6 +75,13 @@ getPMDefOptShowInfo = function(show.info) {
     show.info = getPMDefOption("show.info", TRUE)
   checkArg(show.info, "logical", len=1L, na.ok=FALSE) 
   return(show.info)
+}
+
+getPMDefOptBatchJobsStorageDir = function(batchjobs.storagedir) {
+  if (missing(batchjobs.storagedir)) 
+    batchjobs.storagedir = getPMDefOption("batchjobs.storagedir", getwd())
+  checkArg(batchjobs.storagedir, "character", len=1L, na.ok=FALSE) 
+  return(batchjobs.storagedir)
 }
 
 getPMDefOptAutostart = function() {
