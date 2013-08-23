@@ -6,7 +6,7 @@ if (isExpensiveExampleOk()) {
     partest1()
     parallelStop()
     
-    parallelStart(mode="BatchJobs", log=tempdir())
+    parallelStart(mode="BatchJobs", logdir=tempdir())
     partest2(tempdir())
     parallelStop()
     

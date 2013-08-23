@@ -6,7 +6,7 @@ test_that("socket mode", {
   partest1()
   parallelStop()
 
-  parallelStart(mode="socket", cpus=2, log=tempdir())
+  parallelStart(mode="socket", cpus=2, logdir=tempdir())
   partest2(tempdir())
   parallelStop()
   

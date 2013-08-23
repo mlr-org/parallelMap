@@ -7,7 +7,7 @@ test_that("local mode", {
   #expect_error(parallelStart(mode="local", cpus=2))
   parallelStart(mode="local", level="foo")
   #FIXME reenable?
-  #expect_error(parallelStart(mode="local", log=tempdir()))
+  #expect_error(parallelStart(mode="local", logdir=tempdir()))
   partest1()
   partest3()
   partest4()
