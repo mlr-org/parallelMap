@@ -1,6 +1,7 @@
 export(parallelExport)
 export(parallelLibrary)
 export(parallelMap)
+export(parallelShowOptions)
 export(parallelStart)
 export(parallelStop)
 import(BBmisc)

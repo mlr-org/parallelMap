@@ -20,8 +20,8 @@ getPMOptCpus = function() {
   getPMOption("cpus")
 }
 
-getPMOptLog = function() {
-  getPMOption("log")
+getPMOptLogDir = function() {
+  log = getPMOption("logdir")
 }
 
 getPMOptLevel = function() {
@@ -33,31 +33,50 @@ getPMOptShowInfo = function() {
 }
 
 ##### PM default options #####
-#FIXME do the argument chekcks here
 
-getPMDefOptMode = function() {
-  getPMDefOption("mode", MODE_LOCAL)
+getPMDefOptMode = function(mode) {
+  if (missing(mode))
+    mode = getPMDefOption("mode", MODE_LOCAL)
+  checkArg(mode, choices=MODES)
+  return(mode)
+  
 }
 
-getPMDefOptCpus = function() {
-  #FIXME autodetect?
-  getPMDefOption("cpus", 1L)
+getPMDefOptCpus = function(cpus) {
+  #NA means "do autodetect"
+  if (missing(cpus)) 
+    cpus = getPMDefOption("cpus", NA_integer_)
+  cpus = convertInteger(cpus)
+  checkArg(cpus, "integer", len=1, na.ok=TRUE)
+  return(cpus)
+  
 }
 
-getPMDefOptLog = function() {
-  getPMDefOption("log", as.character(NA))
+getPMDefOptLogDir = function(logdir) {
+  if (missing(logdir))
+    logdir = getPMDefOption("logdir", NA_character_)
+  checkArg(logdir, "character", len=1, na.ok=TRUE)
+  return(logdir)
 }
 
-getPMDefOptLevel = function() {
-  getPMDefOption("level", as.character(NA))
+getPMDefOptLevel = function(level) {
+  if (missing(level))
+    level = getPMDefOption("level", NA_character_)
+  checkArg(level, "character", len=1, na.ok=TRUE)
+  return(level)
 }
 
-getPMDefOptShowInfo = function() {
-  getPMDefOption("show.info", TRUE)
+getPMDefOptShowInfo = function(show.info) {
+  if (missing(show.info)) 
+    show.info = getPMDefOption("show.info", TRUE)
+  checkArg(show.info, "logical", len=1L, na.ok=FALSE) 
+  return(show.info)
 }
 
 getPMDefOptAutostart = function() {
-  getPMDefOption("autostart", TRUE)
+  autostart = getPMDefOption("autostart", TRUE)
+  checkArg(autostart, "logical", len=1L, na.ok=FALSE) 
+  return(autostart)
 }
 
 ##### modes #####

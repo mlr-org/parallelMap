@@ -55,58 +55,29 @@
 #'   \code{TRUE}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, ..., level, log, show.info) {
+parallelStart = function(mode, cpus, ..., level, logdir, show.info) {
    # if stop was not called, warn and do it now
    if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
   
-  if (missing(mode)) {
-    mode = getPMDefOptMode()
-  }
-  checkArg(mode, choices=MODES)
-  
-  # try to autodetect cpus if not set 
-  if (missing(cpus)) {
-    cpus = autodetectCpus(mode)
-  }
-  cpus = convertInteger(cpus)
-  checkArg(cpus, "integer", len=1, na.ok=FALSE)
-
+  mode = getPMDefOptMode(mode)
+  cpus = getPMDefOptCpus(cpus)
+  level = getPMDefOptLevel(level)
+  logdir = getPMDefOptLogDir(logdir)
+  show.info = getPMDefOptShowInfo(show.info)
+  autostart = getPMDefOptAutostart()
   #FIXME do we really need this check?
 #    if (cpus != 1L && mode == "local")
 #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
 
-  if (missing(level)) {
-    level = getPMDefOptLevel()
-  }
-  checkArg(level, "character", len=1, na.ok=TRUE)
-
-  if (missing(log)) {
-    log = getPMDefOptLog()
-  }
-  checkArg(log, "character", len=1, na.ok=TRUE)
-  
-  #FIXME default?
-  autostart = getPMDefOptAutostart()
-  checkArg(autostart, "logical", len=1L, na.ok=FALSE)
-
-  if (missing(show.info)) {
-    show.info = getPMDefOptShowInfo()
-  }
-  checkArg(show.info, "logical", len=1L, na.ok=FALSE) 
-  
-  if (show.info && mode != "local") {
-    messagef("Starting parallelization in mode=%s with cpus=%i.", mode, cpus)
-  }
-  
   # check that log is indeed a valid dir 
-  if (!is.na(log)) {
-    if (!file.exists(log))
-      stopf("Logging dir 'log' does not exists: %s", log)
-    if (!isDirectory(log))
-      stopf("Logging dir 'log' is not a directory: %s", log)
+  if (!is.na(logdir)) {
+    if (!file.exists(logdir))
+      stopf("Logging directory does not exists: %s", logdir)
+    if (!isDirectory(logdir))
+      stopf("Logging directory is not a directory: %s", logdir)
     # FIXME document or still do?
     #if (mode=="local")
     #  stop("Logging not supported for local mode!")
@@ -114,37 +85,42 @@ parallelStart = function(mode, cpus, ..., level, log, show.info) {
   
   ##### arg checks done #####
 
-  # now load extra packs we need
-   ss = getExtraPackages(mode)
-   print(ss)
-  requirePackages(ss, "parallelStart")
-
-  # init parallel packs / modes, if necessary 
-  switch(mode,
-    MODE_SOCKET = {
-      args = argsAsNamedList(...)
-      if ("names" %nin% names(args))
-        cl = makePSOCKcluster(names = cpus, ...)
-      else
-        cl = makePSOCKcluster(...)
-      setDefaultCluster(cl)
-    }, 
-    MODE_MPI = {
-      sfSetMaxCPUs(cpus)
-      sfInit(parallel=TRUE, cpus=cpus, ...)
-      sfClusterSetupRNG()
-    },
-    MODE_BATCHJOBS = {
-      cleanUpBatchJobsExports()
-    }
-  )
-  # store options for session
+  # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)
   options(parallelMap.cpus = cpus)
   options(parallelMap.level = level)
   options(parallelMap.log = log)
   options(parallelMap.show.info = show.info)
   options(parallelMap.autostart = autostart)
-  options(parallelMap.status = STATUS_STARTED)
+  options(parallelMap.status = STATUS_STARTED)   
+   
+  # try to autodetect cpus if not set 
+  if (is.na(cpus))
+    cpus = autodetectCpus(mode)
+   
+  # FIXME make message nicer for modes
+  if (!isModeLocal()) 
+    showInfoMessage("Starting parallelization in mode=%s with cpus=%i.", mode, cpus)
+   
+  # now load extra packs we need
+  requirePackages(getExtraPackages(mode), "parallelStart")
+
+  # init parallel packs / modes, if necessary 
+  if (isModeSocket()) {
+    args = argsAsNamedList(...)
+    if ("names" %nin% names(args))
+      cl = makePSOCKcluster(names = cpus, ...)
+    else
+      cl = makePSOCKcluster(...)
+    setDefaultCluster(cl)
+  } else if (isModeMPI()) {
+      sfSetMaxCPUs(cpus)
+      sfInit(parallel=TRUE, cpus=cpus, ...)
+      sfClusterSetupRNG()
+  } else if (isModeBatchJobs()) {
+    cleanUpBatchJobsExports()
+  }
+   
+
   invisible(NULL)
 }

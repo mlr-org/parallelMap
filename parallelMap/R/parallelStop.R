@@ -15,21 +15,17 @@ parallelStop = function() {
   if (isStatusStopped()) {
     warningf("parallelStop called, but parallelization was not started. Doing nothing.")
   } else {
-    switch(getPMOptMode(), 
-      MODE_SOCKET = {
-        stopCluster(NULL)
-        setDefaultCluster(NULL)      
-      },
-      MODE_MPI = {
-        sfStop()
-      },
-      MODE_BATCHJOBS = {
-        # remove all exported libraries
-        options(parallelMap.bj.packages=NULL)
-        # remove exported objects
-        cleanUpBatchJobsExports()
-      }
-    )
+    if (isModeSocket()) {
+      stopCluster(NULL)
+      setDefaultCluster(NULL)  
+    } else if (isModeMPI()) {
+      sfStop()
+    } else if (isModeBatchJobs()) {
+      # remove all exported libraries
+      options(parallelMap.bj.packages=NULL)
+      # remove exported objects
+      cleanUpBatchJobsExports()
+    } 
     if (!isModeLocal()) {
       showInfoMessage("Stopped parallelization. All cleaned up.")
     }

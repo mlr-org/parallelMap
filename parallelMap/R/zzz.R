@@ -14,10 +14,9 @@ STATUS_STOPPED = "stopped"
 .onLoad = function(libname, pkgname) {
   # init all settings from defaults
   options(parallelMap.mode = getPMDefOptMode())
-  # FIXME this fuzcks up autodetect
   options(parallelMap.cpus = getPMDefOptCpus())
   options(parallelMap.level = getPMDefOptLevel())
-  options(parallelMap.log = getPMDefOptLog())
+  options(parallelMap.logdir = getPMDefOptLogDir())
   options(parallelMap.autostart = getPMDefOptAutostart())
   options(parallelMap.show.info = getPMDefOptShowInfo())
   options(parallelMap.status = STATUS_STOPPED)

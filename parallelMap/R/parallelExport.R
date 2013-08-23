@@ -26,20 +26,17 @@ parallelExport = function(ns, values=NULL) {
   #checkArg(obj.names, "character", na.ok=FALSE)
   #ns = union(unlist(args), obj.names)
   #FIXME do socket
-  switch( getPMOptMode(), 
-    MODE_SNOWFALL = {
-      # FIXME really test this with multiople function levels
-      sfExport(list=ns)
-    },
-    MODE_BATCHJOBS = {
-      bj.exports.dir = getBatchJobsExportsDir()
-      for (n in ns) {
-        fn = file.path(bj.exports.dir, sprintf("%s.RData", n))
-        #FIXME repair get
-        save2(file = fn, get(n, envir=sys.parent()))
-      }
+  if (isModeMPI()) {
+    # FIXME really test this with multiople function levels
+    sfExport(list=ns)
+  } else if (isModeBatchJobs()) {
+    bj.exports.dir = getBatchJobsExportsDir()
+    for (n in ns) {
+      fn = file.path(bj.exports.dir, sprintf("%s.RData", n))
+      #FIXME repair get
+      save2(file = fn, get(n, envir=sys.parent()))
     }
-  )
+  }
   invisible(NULL)
 }
 

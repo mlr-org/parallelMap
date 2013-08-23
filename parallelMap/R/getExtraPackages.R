@@ -1,11 +1,9 @@
 getExtraPackages = function(mode) {
-  print(mode)
-  x = switch(mode, 
-    MODE_MULTICORE = "parallel",
-    MODE_MPI = c("snowfall", "Rmpi"),
-    MODE_BATCHJOBS = "BatchJobs",
-    character(0)
-  )  
-  print(x)
-  x
+  packs = 
+    if (isModeMulticore())
+      "parallel"
+    else if (isModeMPI())
+      c("snowfall", "Rmpi")
+    else if (isModeBatchJobs())
+      "BatchJobs"
 }

@@ -45,30 +45,25 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   
-  status = getPMOptStatus()
-  autostart = getPMDefOptAutostart()
-  if(!is.null(autostart)) {
-    checkArg(autostart, "logical", len=1L, na.ok=FALSE)
-  }
   mode = getPMOptMode()
   cpus = getPMOptCpus()
   lev = getPMOptLevel()
-  log = getPMOptLog()
+  logdir = getPMOptLogDir()
   show.info = getPMOptShowInfo()
   
   # potentially autostart by calling parallelStart with defaults from R profile
   # then clean up by calling parallelStop on exit
-  if (status != STATUS_STARTED && autostart && mode != MODE_LOCAL) {
-    messagef("Auto-starting parallelization.")
+  if (getPMDefOptAutostart() && isStatusStopped() && !isModeLocal()) {
+    showInfoMessage("Auto-starting parallelization.")
     parallelStart()
     on.exit({
-      if (mode != MODE_LOCAL)
-        messagef("Auto-stopping parallelization.")
+      if (!isModeLocal())
+        showInfoMessage("Auto-stopping parallelization.")
       parallelStop()
     })
   }
 
-  if (mode == MODE_LOCAL || (!is.na(lev) && !is.na(level) && level != lev)) {
+  if (isModeLocal() || !isParallelizationLevel(level)) {
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
     messagef("Doing a parallel mapping operation.")
@@ -78,19 +73,19 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         c(list(iter), list(...), more.args)
       }, iters, ...)
     }
-    if (mode == MODE_MULTICORE) {
-      res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .log=log)
+    if (isModeMulticore()) {
+      res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .logdir=logdir)
       # produces list of try-error objects in case of error
       checkForAndDisplayErrors(res)
-    } else if (mode == MODE_SOCKET) {
-      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .log=log)
+    } else if (isModeSocket()) {
+      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
       #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
       #checkForAndDisplayErrors(res)
-    } else if (mode == MODE_MPI) {
-      res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .log=log)
+    } else if (isModeMPI()) {
+      res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
-    } else if (mode == MODE_BATCHJOBS) {
+    } else if (isModeBatchJobs()) {
       #FIXME option
       bj.dir = getwd()    
       # create registry in selected directory with random, unique name
@@ -108,9 +103,9 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       # FIXME stop on err?
       waitForJobs(reg)
       # copy log files to designated dir
-      if (!is.na(log)) {
+      if (!is.na(logdir)) {
         fns = getLogFiles(reg)
-        dests = file.path(log, sprintf("%05i.log", getJobIds(reg)))
+        dests = file.path(logdir, sprintf("%05i.log", getJobIds(reg)))
         file.copy(from=fns, to=dests)
       }
       # FIXME: really show all errors? also check other places of same code
@@ -140,10 +135,10 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   return(res)
 }
 
-slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
-  if (!is.na(.log)) {
+slaveWrapper = function(.x, .fun, .logdir=as.character(NA)) {
+  if (!is.na(.logdir)) {
     options(warning.length=8170, warn=1)
-    fn = file.path(.log, sprintf("%05i.log", .x[[1]]))
+    fn = file.path(.logdir, sprintf("%05i.log", .x[[1]]))
     fn = file(fn, open="wt")
     sink(fn)
     sink(fn, type="message")
@@ -151,7 +146,7 @@ slaveWrapper = function(.x, .fun, .log=as.character(NA)) {
 
   res = do.call(.fun, .x[-1])
   #FIXME show timin info in log
-  if (!is.na(.log)) {
+  if (!is.na(.logdir)) {
     print(gc())
     sink(NULL)
   }
