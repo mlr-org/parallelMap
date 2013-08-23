@@ -86,19 +86,14 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
     } else if (isModeBatchJobs()) {
-      #FIXME option
-      bj.dir = getwd()    
       # create registry in selected directory with random, unique name
-      fd = tempfile(pattern="parallelMap_BatchJobs_reg_", tmpdir=bj.dir)
-      id = basename(fd)
-      if (file.exists(fd)) {
-        stopf("BatchJobs registry file dir internally used by parallelMap already exists:\n%s", fd)
-      }
-      # get package name to load on slaves which where collected in R option
-      bj.packs = getOption("parallelMap.bj.packages", character(0))
-      reg = makeRegistry(id=id, file.dir=fd, packages=bj.packs)
+      fd = getBatchJobsRegFileDir()
+      # get packages to load on slaves which where collected in R option
+      reg = makeRegistry(id=basename(fd), file.dir=fd, 
+        packages=optionBatchsJobsPackages())
       batchMap(reg, fun, ..., more.args=more.args)
       #FIXME resources
+      # increase max.retries a bit, we dont want to abort here prematurely
       submitJobs(reg, max.retries=15)
       # FIXME stop on err?
       waitForJobs(reg)
@@ -108,10 +103,8 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         dests = file.path(logdir, sprintf("%05i.log", getJobIds(reg)))
         file.copy(from=fns, to=dests)
       }
-      # FIXME: really show all errors? also check other places of same code
       err.ids = findErrors(reg)
       if (length(err.ids) > 0) {
-        # FIXME write
         msg = sprintf("If you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
         # FIXME in whih version of BJ is getterrmessages? is this on cran?
         displayErrorMessages(err.ids, getErrorMessages(reg, err.ids), msg)

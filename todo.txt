@@ -1,6 +1,8 @@
 
 test on lido
 
+clean up log and bj files after tests, actually define right place first
+
 unterverz bei logging, "parallelMap_%03i_logs"
 clean up dieser logs bei parallaleStart uind stop bei stop mit optoion = FASE
 deleteLogs function

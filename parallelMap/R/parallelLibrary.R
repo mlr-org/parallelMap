@@ -43,9 +43,8 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
       sfExport(".parallelMap.pkgs")
       sfClusterEval(for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
     } else if (isModeBatchJobs()) {
-      # collect in R option
-      oldpkgs = getOption("parallelMap.bj.packages", character(0))
-      options(parallMap.bj.packages = union(oldpkgs, packages))
+      # collect in R option, add new packages to old ones
+      optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))      
     }
   }
   invisible(NULL)

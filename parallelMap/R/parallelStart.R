@@ -56,8 +56,8 @@
 #' @return Nothing.
 #' @export
 parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedir, bj.resources) {
-   # if stop was not called, warn and do it now
-   if (isStatusStarted() && !isModeLocal()) {
+  # if stop was not called, warn and do it now
+  if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
@@ -68,17 +68,17 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
   logdir = getPMDefOptLogDir(logdir)
   show.info = getPMDefOptShowInfo(show.info)
   autostart = getPMDefOptAutostart()
-   
+  
   #FIXME do we really need this check?
-#    if (cpus != 1L && mode == "local")
-#      stopf("Setting %i cpus makes no sense for local mode!", cpus)
-
+  #    if (cpus != 1L && mode == "local")
+  #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
+  
   # check that log is indeed a valid dir 
   if (!is.na(logdir)) 
     checkDir("Logging", logdir)
-    # FIXME document or still do?
-    #if (mode=="local")
-    #  stop("Logging not supported for local mode!")
+  # FIXME document 
+  #if (mode=="local")
+  #  stop("Logging not supported for local mode!")
   
   # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)
@@ -87,20 +87,20 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
   options(parallelMap.show.info = show.info)
   options(parallelMap.autostart = autostart)
   options(parallelMap.status = STATUS_STARTED)   
-
-
+  
+  
   # try to autodetect cpus if not set 
   if (is.na(cpus))
     cpus = autodetectCpus(mode)
   options(parallelMap.cpus = cpus)
-   
+  
   # FIXME make message nicer for modes
   if (!isModeLocal()) 
     showInfoMessage("Starting parallelization in mode=%s with cpus=%i.", mode, cpus)
-   
+  
   # now load extra packs we need
   requirePackages(getExtraPackages(mode), "parallelStart")
-
+  
   # init parallel packs / modes, if necessary 
   if (isModeSocket()) {
     args = argsAsNamedList(...)
@@ -110,17 +110,16 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
       cl = makePSOCKcluster(...)
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
-      sfSetMaxCPUs(cpus)
-      sfInit(parallel=TRUE, cpus=cpus, ...)
-      sfClusterSetupRNG()
+    sfSetMaxCPUs(cpus)
+    sfInit(parallel=TRUE, cpus=cpus, ...)
+    sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
-  #FIXME handle resourcses
+    #FIXME handle resourcses
     bj.storagedir = getPMDefOptBatchJobsStorageDir(bj.storagedir)
     checkDir("BatchJobs storage", bj.storagedir)
     options(parallelMap.BatchJobs.storagedir=bj.storagedir)   
     dir.create(getBatchJobsExportsDir())
   }
-   
-
+  
   invisible(NULL)
 }
