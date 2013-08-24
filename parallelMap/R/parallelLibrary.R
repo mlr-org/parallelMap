@@ -50,8 +50,9 @@ parallelLibrary = function(..., packages, level=as.character(NA), master=TRUE) {
     if (isParallelizationLevel(level)) {
       messagef("Loading packages on slaves: %s", collapse(packages))
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
-        exportToSlavePkgParallel(".parallelMap.pkgs", packages)
-        # oks is a list (slaves) of logical vectors (pkgs)
+        .parallelMap.pkgs = packages
+        exportToSlavePkgParallel(".parallelMap.pkgs", .parallelMap.pkgs)
+        # oks is a list (slaves) of logical vectors (pkgs)        
         oks = clusterEvalQ(cl=NULL, {
           sapply(.parallelMap.pkgs, require, character.only=TRUE, USE.NAMES=TRUE)
         })  

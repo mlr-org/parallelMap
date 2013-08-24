@@ -22,7 +22,6 @@ parallelStop = function() {
   } else {
     if (isModeSocket() || isModeMPI()) {
       stopCluster(NULL)
-      setDefaultCluster(NULL)  
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)
