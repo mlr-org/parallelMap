@@ -1,6 +1,6 @@
 getExtraPackages = function(mode) {
   packs = 
-    if (isModeMulticore())
+    if (isModeMulticore() || isModeSocket())
       "parallel"
     else if (isModeMPI())
       c("snowfall", "Rmpi")

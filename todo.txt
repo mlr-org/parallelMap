@@ -1,8 +1,3 @@
-
-depend 3.0 and bbmisc 1.3 and new bj
-
-test on lido
-
 clean up log and bj files after tests, actually define right place first
 
 unterverz bei logging, "parallelMap_%03i_logs"
@@ -21,11 +16,13 @@ externer test mit mlr?
 
 what should we display on comnsole for BJ?
 
-fix NEWS
-
 document handling of errors
 
 parallelSapply, Vapply, Lapply
+
+test on lido
+
+fix NEWS
 
 ##### LATER #####
 
@@ -34,3 +31,6 @@ chunking in parallelMap
 why do i get this all the time with socket mode?
 1: closing unused connection 4 (<-localhost:11835) 
 set cpus to high number to get more warnings i think
+
+depend on new bj
+

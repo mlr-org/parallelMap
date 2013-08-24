@@ -11,7 +11,7 @@ if (interactive()) {
     partest1()
     parallelStop()
     
-    parallelStart(mode="snowfall", cpus=2, logdir=tempdir())
+    parallelStart(mode="snowfall", cpus=2, logging=TRUE, storage=tempdir())
     partest2(tempdir())
     parallelStop()
     

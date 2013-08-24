@@ -8,7 +8,7 @@
 #' i.e., you have clean R sessions on the slaves. 
 #' 
 #' For socket mode \code{\link[parallel]{stopCluster}} and  
-#' \code{\link[parallel]{setDefaulCluster}} with argument \code{NULL} are called.
+#' \code{\link[parallel]{setDefaultCluster}} with argument \code{NULL} are called.
 #' 
 #' For mpi mode \code{\link[snowfall]{sfStop}} is called.
 #'

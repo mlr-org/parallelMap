@@ -2,10 +2,10 @@
 #'
 #' For local and multicore nothing is done, forking does not need extra exports.
 #' 
-#' For socket mode the objects are exported in a way loosely similar to \code{\link[parallel]{clusterExport}, but without
+#' For socket mode the objects are exported in a way loosely similar to \code{\link[parallel]{clusterExport}}, but without
 #' the ugly and tedious environment setting. 
 #' 
-#' For BatchJobs the objects are stored on disk under the conifured \storagedir
+#' For BatchJobs the objects are stored on disk under the configured \code{storagedir}.
 #' The subdirectory is called \dQuote{parallelMap_BatchJobs_exports} and 
 #' automatically created during \code{\link{parallelStart}} and
 #' removed during \code{\link{parallelStop}}.

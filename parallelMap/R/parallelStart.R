@@ -78,7 +78,7 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
   cpus = getPMDefOptCpus(cpus)
   level = getPMDefOptLevel(level)
   logging = getPMDefOptLogging(logging)
-  storagedir = getPMDefOptStorage(storagedir)
+  storagedir = getPMDefOptStorageDir(storagedir)
   show.info = getPMDefOptShowInfo(show.info)
   autostart = getPMDefOptAutostart()
   
@@ -86,19 +86,19 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
   #    if (cpus != 1L && mode == "local")
   #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
   
-  # check that log is indeed a valid dir 
-  if (!is.na(logdir)) 
-    checkDir("Logging", logdir)
+  # check that storagedir is indeed a valid dir 
+  checkDir("Storage", storagedir)
   # FIXME document 
   #if (mode=="local")
   #  stop("Logging not supported for local mode!")
   
   # store options for session, we already need them for helper funs below
+  options(parallelMap.autostart = autostart)
   options(parallelMap.mode = mode)
   options(parallelMap.level = level)
   options(parallelMap.logging = logging)
+  options(parallelMap.storagedir = storagedir)
   options(parallelMap.show.info = show.info)
-  options(parallelMap.autostart = autostart)
   options(parallelMap.status = STATUS_STARTED)   
   
   
@@ -128,9 +128,6 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
     sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
     #FIXME handle resourcses
-    storagedir = getPMDefOptStorageDir(storagedir)
-    checkDir("BatchJobs storage", bj.storagedir)
-    options(parallelMap.BatchJobs.storagedir=bj.storagedir)   
     dir.create(getBatchJobsExportsDir())
   }
   

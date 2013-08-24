@@ -18,7 +18,7 @@ cleanUpBatchJobsExports = function() {
 
 optionBatchsJobsPackages = function(pkgs) {
   if (missing(pkgs))
-    getOption("parallelMap.BatchJobs.packages", character(0))
+    getOption("parallelMap.bj.packages", character(0))
   else
-    options(parallelMap.BatchJobs.packages=pkgs)
+    options(parallelMap.bj.packages=pkgs)
 }

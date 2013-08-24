@@ -42,7 +42,9 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   mode = getPMOptMode()
   cpus = getPMOptCpus()
   lev = getPMOptLevel()
-  logdir = getPMOptStorageDir()
+  logging = getPMOptLogging()
+  # use NA to encode "no logging" in logdir
+  logdir = ifelse (logging, getPMOptStorageDir(), NA_character_)
   show.info = getPMOptShowInfo()
   
   # potentially autostart by calling parallelStart with defaults from R profile
@@ -122,7 +124,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   return(res)
 }
 
-slaveWrapper = function(.x, .fun, .logdir=as.character(NA)) {
+slaveWrapper = function(.x, .fun, .logdir=NA_character_) {
   if (!is.na(.logdir)) {
     options(warning.length=8170, warn=1)
     fn = file.path(.logdir, sprintf("%05i.log", .x[[1]]))
@@ -140,10 +142,10 @@ slaveWrapper = function(.x, .fun, .logdir=as.character(NA)) {
   return(res)
 }
 
-parallelLapply = funxtion(xs, fun, more.args, level=NA_character_) {
-  parallelMap(fun, xs, more.args=more.args, level=level, simplify=FALSE, use.names=FALSE)
-}
+#parallelLapply = funxtion(xs, fun, more.args, level=NA_character_) {
+#  parallelMap(fun, xs, more.args=more.args, level=level, simplify=FALSE, use.names=FALSE)
+#}
 
-parallelSapply = funxtion(xs, fun, more.args, use.names=TRUE, level=NA_character_) {
-  parallelMap(fun, xs, more.args=more.args, simplify=TRUE, use.names=use.names, level=level)
-}
+#parallelSapply = funxtion(xs, fun, more.args, use.names=TRUE, level=NA_character_) {
+#  parallelMap(fun, xs, more.args=more.args, simplify=TRUE, use.names=use.names, level=level)
+#}

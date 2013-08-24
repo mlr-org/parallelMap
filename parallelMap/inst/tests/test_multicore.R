@@ -5,13 +5,13 @@ test_that("multicore mode", {
   partest1()
   parallelStop()
   
-  expect_error(parallelStart(mode="multicore", logdir="xxx"))    
+  expect_error(parallelStart(mode="multicore", storagedir="xxx"))    
   
-  parallelStart(mode="multicore", logdir=tempdir())
+  parallelStart(mode="multicore", logging=TRUE, storagedir=tempdir())
   partest2(tempdir())
   parallelStop()
   
-  parallelStart(mode="multicore", logdir=tempdir())
+  parallelStart(mode="multicore")
   partest4()
   parallelStop()
   

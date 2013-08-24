@@ -1,3 +1,11 @@
+#' Displays the configured package options.
+#' 
+#' Displayed are current and default settings. 
+#' 
+#' For details on the configuration procedure please read 
+#FIXME url. 
+#' \code{\link{parallelStart}} and \url{github}.
+#' 
 #' @export
 parallelShowOptions = function() {
   mycat = function(opt) {
