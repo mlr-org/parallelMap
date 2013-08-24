@@ -19,7 +19,7 @@
 #'   Default is \code{FALSE}.
 #' @param use.names [\code{logical(1)}]\cr
 #'   Should result be named by first vector if that is
-#'   of class character or integer?
+#'   of class character?
 #'   Default is \code{FALSE}.
 #' @param level [\code{character(1)}]\cr
 #'   The call is only parallelized if the same level is specified in
@@ -112,7 +112,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     }
   }
 
-  if (use.names && (is.character(..1) || is.integer(..1))) {
+  if (use.names && is.character(..1)) {
     names(res) = ..1
   }
   if (!use.names) {

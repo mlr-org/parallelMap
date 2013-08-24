@@ -12,11 +12,17 @@ test_that("parallelLapply", {
 
 test_that("parallelSapply", {
   parallelStart(mode="local")
-
-  ys = parallelSapply(1:2, identity, use.names=FALSE)
-  expect_equal(ys, 1:2)
-  ys = parallelSapply(1:2, identity, use.names=TRUE)
-  expect_equal(ys, setNames(1:2, 1:2))
+  
+  xs = c("a", "b")
+  ys = parallelSapply(xs, identity, use.names=FALSE)
+  expect_equal(ys, xs)
+  ys = parallelSapply(xs, identity, use.names=TRUE)
+  expect_equal(ys, setNames(xs, xs))
+  
+  expect_equal(
+    parallelSapply(1:2, identity),
+    sapply(1:2, identity)
+  )
   
   parallelStop()
 })
