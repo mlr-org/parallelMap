@@ -1,5 +1,4 @@
-
-logging show time
+2: closing unused connection 3 (<-localhost:11307) 
 
 resources
 cpus bei bj

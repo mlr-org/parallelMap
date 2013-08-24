@@ -130,16 +130,19 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
 slaveWrapper = function(.x, .fun, .logdir=NA_character_) {
   if (!is.na(.logdir)) {
     options(warning.length=8170, warn=1)
-    fn = file.path(.logdir, sprintf("%05i.log", .x[[1]]))
-    fn = file(fn, open="wt")
-    sink(fn)
-    sink(fn, type="message")
+    .fn = file.path(.logdir, sprintf("%05i.log", .x[[1]]))
+    .fn = file(.fn, open="wt")
+    .start.time = as.integer(Sys.time())
+    sink(.fn)
+    sink(.fn, type="message")
   }
 
   res = do.call(.fun, .x[-1])
-  #FIXME show timin info in log
+
   if (!is.na(.logdir)) {
+    .end.time = as.integer(Sys.time())    
     print(gc())
+    message(sprintf("Job time in seconds: %i", .end.time - .start.time))
     sink(NULL)
   }
   return(res)
