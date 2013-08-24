@@ -28,5 +28,3 @@ parallelShowOptions = function() {
   mycat("show.info")
   mycat("storagedir")
 }
-
-#FIXME define NULL as autodected for cpus

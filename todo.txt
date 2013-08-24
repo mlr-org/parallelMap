@@ -1,3 +1,10 @@
+test export 
+
+müssen wir bei socket, mpi und multicore rngs init.?
+documentieren
+uwe fragen
+was ist bei bj mit den seeds?
+
 2: closing unused connection 3 (<-localhost:11307) 
 
 -- TESTEN

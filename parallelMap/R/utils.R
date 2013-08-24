@@ -17,6 +17,22 @@ showInfoMessage = function(msg, ...) {
   }
 }
 
+showStartupMsg = function(mode, cpus, socket.hosts) {
+  if (mode != MODE_LOCAL) {
+    if (mode %in% c(MODE_MULTICORE, MODE_MPI) || 
+      (mode == MODE_SOCKET && !is.na(cpus))) {
+      showInfoMessage("Starting parallelization in mode=%s with cpus=%i.",
+        mode, cpus)
+    } else if (mode == MODE_SOCKET) {
+      showInfoMessage("Starting parallelization in mode=%s on %i hosts.", 
+        mode, length(socket.hosts))
+    } else if (mode == MODE_BATCHJOBS) {
+      # FIXME show cluster funs
+      showInfoMessage("Starting parallelization in mode=%s.", mode)
+    }
+  }
+}
+
 # either the option level is not set or it is and the level of parmap matches
 isParallelizationLevel = function(level) {
   optlevel = getPMOptLevel()

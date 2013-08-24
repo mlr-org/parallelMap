@@ -22,3 +22,14 @@ optionBatchsJobsPackages = function(pkgs) {
   else
     options(parallelMap.bj.packages=pkgs)
 }
+
+# FIXME remove this after new version of bj on cran
+getBJErrorMessages = function (reg, ids) {
+  BatchJobs:::checkRegistry(reg)
+  BatchJobs:::syncRegistry(reg)
+  if (missing(ids)) 
+    ids = BatchJobs:::dbFindErrors(reg)
+  else ids = BatchJobs:::checkIds(reg, ids)
+  tab = BatchJobs:::dbGetErrorMsgs(reg, ids, filter = FALSE)
+  setNames(tab$error, tab$job_id)
+}

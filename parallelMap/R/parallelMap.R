@@ -101,8 +101,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       err.ids = findErrors(reg)
       if (length(err.ids) > 0) {
         msg = sprintf("If you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
-        # FIXME in whih version of BJ is getterrmessages? is this on cran?
-        displayErrorMessages(err.ids, getErrorMessages(reg, err.ids), msg)
+        displayErrorMessages(err.ids, getBJErrorMessages(reg, err.ids), msg)
       }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
       # delete registry file dir, if an error happened this will still exist

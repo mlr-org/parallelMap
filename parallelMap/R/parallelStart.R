@@ -134,10 +134,8 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   }
   
   options(parallelMap.cpus = cpus)
-  
-  # FIXME make message nicer for modes and where to place this?
-  if (!isModeLocal()) 
-    showInfoMessage("Starting parallelization in mode=%s with cpus=%i.", mode, cpus)
+ 
+  showStartupMsg(mode, cpus, socket.hosts)
   
   # now load extra packs we need
   requirePackages(getExtraPackages(mode), "parallelStart")
@@ -157,10 +155,6 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   } else if (isModeMPI()) {
     cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
     setDefaultCluster(cl)
-    #FIXME rng and max cpus? doc ...
-    #sfSetMaxCPUs(cpus)
-    #sfInit(parallel=TRUE, cpus=cpus, ...)
-    #sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
     dir.create(getBatchJobsExportsDir())
   }

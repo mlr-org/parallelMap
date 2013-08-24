@@ -1,5 +1,4 @@
 autodetectCpus = function(mode) {
-  print(mode)
   cpus = 
     if (isModeMulticore()) {
       parallel::detectCores()
