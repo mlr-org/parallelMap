@@ -18,7 +18,8 @@
 parallelStop = function() {
   # warn if we are not in started status
   if (isStatusStopped()) {
-    warningf("parallelStop called, but parallelization was not started. Doing nothing.")
+    #FIXME do we want this warning?
+    #warningf("parallelStop called, but parallelization was not started. Doing nothing.")
   } else {
     if (isModeSocket() || isModeMPI()) {
       stopCluster(NULL)

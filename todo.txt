@@ -1,8 +1,5 @@
 2: closing unused connection 3 (<-localhost:11307) 
 
-resources
-cpus bei bj
-
 -- TESTEN
 - da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 externer test mit mlr?

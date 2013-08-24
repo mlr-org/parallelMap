@@ -16,6 +16,7 @@ STATUS_STOPPED = "stopped"
   options(
     parallelMap.mode = getPMDefOptMode(),
     parallelMap.cpus = getPMDefOptCpus(),
+    parallelMap.socket.hosts = getPMDefOptSocketHosts(),
     parallelMap.level = getPMDefOptLevel(),
     parallelMap.logging = getPMDefOptLogging(),
     parallelMap.autostart = getPMDefOptAutostart(),

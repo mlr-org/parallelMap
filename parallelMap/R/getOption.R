@@ -20,6 +20,10 @@ getPMOptCpus = function() {
   getPMOption("cpus")
 }
 
+getPMOptSocketHosts = function() {
+  getPMOption("socket.hosts")
+}
+
 getPMOptLogging = function() {
   getPMOption("logging")
 }
@@ -51,7 +55,6 @@ getPMDefOptMode = function(mode) {
     mode = getPMDefOption("mode", MODE_LOCAL)
   checkArg(mode, choices=MODES)
   return(mode)
-  
 }
 
 getPMDefOptCpus = function(cpus) {
@@ -59,9 +62,17 @@ getPMDefOptCpus = function(cpus) {
   if (missing(cpus)) 
     cpus = getPMDefOption("cpus", NA_integer_)
   cpus = convertInteger(cpus)
-  checkArg(cpus, "integer", len=1, na.ok=TRUE)
+  checkArg(cpus, "integer", len=1, na.ok=TRUE, lower=1L)
   return(cpus)
-  
+}
+
+getPMDefOptSocketHosts = function(socket.hosts) {
+  #FIXME should this be set by default? consider cpus
+  if (missing(socket.hosts)) 
+    socket.hosts = getPMDefOption("socket.hosts", NULL)
+  if (!is.null(socket.hosts))
+    checkArg(socket.hosts, "character", min.len=1L, na.ok=FALSE)
+  return(socket.hosts)
 }
 
 getPMDefOptLogging = function(logging) {
