@@ -3,9 +3,9 @@ partest1 = function() {
   # normal lapply
   expect_equal(parallelMap(identity, 1), list(1))
   expect_equal(parallelMap(identity, 1:2), list(1, 2))
-  y = 1:2; names(y) = y
+  y = c("a", "b"); names(y) = y
   # simplify and names
-  expect_equal(parallelMap(identity, 1:2, simplify=TRUE, use.names=TRUE), y)
+  expect_equal(parallelMap(identity, y, simplify=TRUE, use.names=TRUE), y)
   
   # more.args and mapping over 2 vectors
   f = function(x,y) x+y

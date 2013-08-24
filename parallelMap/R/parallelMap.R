@@ -88,9 +88,9 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       reg = makeRegistry(id=basename(fd), file.dir=fd, 
         packages=optionBatchsJobsPackages())
       batchMap(reg, fun, ..., more.args=more.args)
-      #FIXME resources
       # increase max.retries a bit, we dont want to abort here prematurely
-      submitJobs(reg, max.retries=15)
+      # if no resources set we submit with the default ones from the bj conf 
+      submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
       # FIXME stop on err?
       waitForJobs(reg)
       # copy log files to designated dir

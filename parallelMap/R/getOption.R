@@ -40,6 +40,10 @@ getPMOptNextMap = function() {
   getPMOption("nextmap")
 }
 
+getPMOptBatchJobsResources = function() {
+  getPMOption("bj.resources", list())
+}
+
 ##### PM default options #####
 
 getPMDefOptMode = function(mode) {

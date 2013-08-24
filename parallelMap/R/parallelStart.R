@@ -64,27 +64,33 @@
 #'   Existing directory where log files and intermediate objects for BatchsJobs
 #'   mode are stored.
 #'   Note that all nodes must have write access to exactly this path.
-#'   Default is the current working directory.
+#'   Default is the current working directory.#'   
+#' @param bj.resources [\code{list}]\cr
+#'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
+#'   See \code{\link[BatchJobs]{submitJobs}}.
+#'   Defaults are taken from your BatchJobs config file.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set, 
 #'   \code{TRUE}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resources, show.info) {
+parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resources=list(), show.info) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
   
+  autostart = getPMDefOptAutostart()
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
   level = getPMDefOptLevel(level)
   logging = getPMDefOptLogging(logging)
   storagedir = getPMDefOptStorageDir(storagedir)
+  # defaults are in batchjobs conf
+  checkArg(bj.resources, "list")
   show.info = getPMDefOptShowInfo(show.info)
-  autostart = getPMDefOptAutostart()
   
   #FIXME do we really need this check?
   #    if (cpus != 1L && mode == "local")
@@ -102,6 +108,7 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
   options(parallelMap.level = level)
   options(parallelMap.logging = logging)
   options(parallelMap.storagedir = storagedir)
+  options(parallelMap.bj.resources = bj.resources)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)   
   options(parallelMap.nextmap = 1L)   
