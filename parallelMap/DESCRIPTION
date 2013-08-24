@@ -33,3 +33,4 @@ Collate:
     'getExtraPackages.R'
     'utils.R'
     'batchjobs.R'
+    'registerLevels.R'
