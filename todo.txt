@@ -1,3 +1,5 @@
+what to do if error in parMap? how to clean up?
+
 test export 
 
 müssen wir bei socket, mpi und multicore rngs init.?
@@ -14,8 +16,6 @@ externer test mit mlr?
 what should we display on comnsole for BJ?
 
 document handling of errors
-
-test on lido
 
 fix NEWS
 

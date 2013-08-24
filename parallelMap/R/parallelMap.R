@@ -71,12 +71,10 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     if (isModeMulticore()) {
       res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .logdir=logdir)
       # produces list of try-error objects in case of error
-      checkForAndDisplayErrors(res)
+      checkResultsAndStopWithErrorsMessages(res)
     } else if (isModeSocket()) {
       res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
-      #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
-      #checkForAndDisplayErrors(res)
     } else if (isModeMPI()) {
       res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
@@ -91,19 +89,27 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf 
         submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
+        ok = waitForJobs(reg, stop.on.error=TRUE)
       })
-      # FIXME stop on err?
-      waitForJobs(reg)
-      # copy log files to designated dir
+      # copy log files of terminated jobs to designated dir
       if (!is.na(logdir)) {
-        fns = getLogFiles(reg)
-        dests = file.path(logdir, sprintf("%05i.log", getJobIds(reg)))
+        term = findTerminated(reg)
+        fns = getLogFiles(reg, term)
+        dests = file.path(logdir, sprintf("%05i.log", term))
         file.copy(from=fns, to=dests)
       }
       err.ids = findErrors(reg)
       if (length(err.ids) > 0) {
-        msg = sprintf("If you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
-        displayErrorMessages(err.ids, getBJErrorMessages(reg, err.ids), msg)
+        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occured to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
+        msgs = getBJErrorMessages(reg, err.ids)
+        onsys = findOnSystem(reg)
+        suppressMessages(
+          killJobs(reg, onsys)
+        )
+        onsys = findOnSystem(reg)
+        if (length(onsys) > 0L)
+          warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
+        stopWithJobErrorMessages(err.ids, msgs, extra.msg)
       }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
       # delete registry file dir, if an error happened this will still exist

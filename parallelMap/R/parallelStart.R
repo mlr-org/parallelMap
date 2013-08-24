@@ -156,7 +156,10 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
     cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
     setDefaultCluster(cl)
   } else if (isModeBatchJobs()) {
-    dir.create(getBatchJobsExportsDir())
+    bjed = getBatchJobsExportsDir()
+    if (file.exists(bjed))
+      cleanUpBatchJobsExports()
+    dir.create(bjed)
   }
   invisible(NULL)
 }

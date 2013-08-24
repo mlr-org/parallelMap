@@ -1,13 +1,13 @@
-checkForAndDisplayErrors = function(result.list) {
+checkResultsAndStopWithErrorsMessages = function(result.list) {
   if (length(result.list) > 0) {
     inds = which(sapply(result.list, is.error))
     if (length(inds) > 0) {
-      displayErrorMessages(inds, sapply(result.list[inds], as.character))
+      stopWithJobErrorMessages(inds, sapply(result.list[inds], as.character))
     }
   }
 }
 
-displayErrorMessages = function(inds, msgs, extra.msg=NULL) {
+stopWithJobErrorMessages = function(inds, msgs, extra.msg=NULL) {
   msgs = head(msgs, 10)
   msgs = sprintf("%05i: %s", inds, msgs)
   extra.msg = ifelse(is.null(extra.msg), "", sprintf("\n%s\n", extra.msg))
