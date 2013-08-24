@@ -61,7 +61,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   if (isModeLocal() || !isParallelizationLevel(level)) {
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
-    messagef("Doing a parallel mapping operation.")
+    showInfoMessage("Doing a parallel mapping operation.")
     iters = seq_along(..1)
     toList = function(...) {
       Map(function(iter, ...) {
@@ -84,12 +84,14 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       # create registry in selected directory with random, unique name
       fd = getBatchJobsRegFileDir()
       # get packages to load on slaves which where collected in R option
-      reg = makeRegistry(id=basename(fd), file.dir=fd, 
-        packages=optionBatchsJobsPackages())
-      batchMap(reg, fun, ..., more.args=more.args)
-      # increase max.retries a bit, we dont want to abort here prematurely
-      # if no resources set we submit with the default ones from the bj conf 
-      submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
+      suppressMessages({
+        reg = makeRegistry(id=basename(fd), file.dir=fd, 
+          packages=optionBatchsJobsPackages())
+        batchMap(reg, fun, ..., more.args=more.args)
+        # increase max.retries a bit, we dont want to abort here prematurely
+        # if no resources set we submit with the default ones from the bj conf 
+        submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
+      })
       # FIXME stop on err?
       waitForJobs(reg)
       # copy log files to designated dir
