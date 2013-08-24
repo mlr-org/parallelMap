@@ -141,11 +141,3 @@ slaveWrapper = function(.x, .fun, .logdir=NA_character_) {
   }
   return(res)
 }
-
-#parallelLapply = funxtion(xs, fun, more.args, level=NA_character_) {
-#  parallelMap(fun, xs, more.args=more.args, level=level, simplify=FALSE, use.names=FALSE)
-#}
-
-#parallelSapply = funxtion(xs, fun, more.args, use.names=TRUE, level=NA_character_) {
-#  parallelMap(fun, xs, more.args=more.args, simplify=TRUE, use.names=use.names, level=level)
-#}

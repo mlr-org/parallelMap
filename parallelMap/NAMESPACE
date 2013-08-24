@@ -1,6 +1,8 @@
 export(parallelExport)
+export(parallelLapply)
 export(parallelLibrary)
 export(parallelMap)
+export(parallelSapply)
 export(parallelShowOptions)
 export(parallelStart)
 export(parallelStop)

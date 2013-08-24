@@ -2,9 +2,6 @@ unterverz bei logging, "parallelMap_%03i_logs"
 clean up dieser logs bei parallaleStart uind stop bei stop mit optoion = FASE
 deleteLogs function
 
-registerLevel
-showLevels
-
 resources
 cpus bei bj
 
@@ -15,8 +12,6 @@ externer test mit mlr?
 what should we display on comnsole for BJ?
 
 document handling of errors
-
-parallelSapply, Vapply, Lapply
 
 test on lido
 
@@ -31,4 +26,6 @@ why do i get this all the time with socket mode?
 set cpus to high number to get more warnings i think
 
 depend on new bj
+
+parallelApply, parallelVapply
 
