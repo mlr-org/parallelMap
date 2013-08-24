@@ -39,9 +39,13 @@
 #' @param cpus [\code{integer(1)}]\cr
 #'   Number of used cpus.
 #'   For local and BatchJobs mode this argument is ignored.
+#'   For socket this is the numbers of processes spawned on localhost, if
+#'   you want processes on multiples machines for socket mode,
+#'   simple use the \code{names} argument like documented in \code{\link[parallel]{{makePSOCKcluster}} 
+#'   and pass it in \code{...}.
 #'   Default is the option \code{parallelMap.default.cpus} or, if not set,
 #'   \code{\link[parallel]{detectCores}} for multicore, 
-#'   \code{\link[Rmpi]{mpi.universe.size}} for snowfall/MPI
+#'   \code{\link[Rmpi]{mpi.universe.size}} for mpi
 #'   and 1 otherwise.
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
