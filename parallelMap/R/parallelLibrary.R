@@ -23,7 +23,6 @@
 #'   Default is \code{TRUE}.
 #' @return Nothing.
 #' @export
-# FIXME ... for packages 
 parallelLibrary = function(..., packages, level=as.character(NA), master=TRUE) {
   args = list(...)
   checkListElementClass(args, "character")

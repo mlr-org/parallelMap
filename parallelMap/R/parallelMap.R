@@ -31,7 +31,6 @@
 #' parallelStart()
 #' parallelMap(identity, 1:2)
 #' parallelStop()
-#FIXME what happens with log files after multiple calls of parallelMap? 
 parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FALSE, level=as.character(NA)) {
   checkArg(fun, "function")
   checkArg(more.args, "list")

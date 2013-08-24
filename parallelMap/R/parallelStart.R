@@ -64,6 +64,9 @@
 #'   \code{\link{parallelMap}} operation. 
 #'   Previous logging directories are removed on \code{parallelStart} 
 #'   if \code{logging} is enabled.
+#'   Logging is not supported for local mode, because you will see all
+#'   output on the master and can also run stuff like 
+#'   \code{\link{traceback}} in case of errors.
 #'   Default is the option \code{parallelMap.default.logging} or, if not set,
 #'   \code{FALSE}.
 #' @param storagedir [\code{character(1)}]\cr
@@ -101,15 +104,9 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   checkArg(bj.resources, "list")
   show.info = getPMDefOptShowInfo(show.info)
 
-  #FIXME do we really need this check?
-  #    if (cpus != 1L && mode == "local")
-  #      stopf("Setting %i cpus makes no sense for local mode!", cpus)
-  
   # check that storagedir is indeed a valid dir 
   checkDir("Storage", storagedir)
-  # FIXME document 
-  #if (mode=="local")
-  #  stop("Logging not supported for local mode!")
+  
   
   # store options for session, we already need them for helper funs below
   options(parallelMap.autostart = autostart)
@@ -131,6 +128,11 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
     if(is.na(cpus) && is.null(socket.hosts))
       cpus = 1L
   }
+  if (isModeLocal()) {
+    if (!is.na(cpus))
+      stopf("Setting %i cpus makes no sense for local mode!", cpus)
+  }
+  
   options(parallelMap.cpus = cpus)
   
   # FIXME make message nicer for modes and where to place this?
@@ -141,8 +143,11 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   requirePackages(getExtraPackages(mode), "parallelStart")
   
   # delete log dirs from previous runs
-  if (logging) 
+  if (logging) {
+    if (isModeLocal())
+      stop("Logging not supported for local mode!")  
     deleteAllLogDirs()
+  }
   
   # init parallel packs / modes, if necessary 
   if (isModeSocket()) {
@@ -157,7 +162,6 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
     #sfInit(parallel=TRUE, cpus=cpus, ...)
     #sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
-    #FIXME handle resourcses
     dir.create(getBatchJobsExportsDir())
   }
   invisible(NULL)
@@ -166,7 +170,8 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
 #' @export
 #' @rdname parallelStart
 parallelStartLocal = function(show.info) {
-  parallelStart(mode=MODE_LOCAL, logging=FALSE, show.info=show.info)
+  parallelStart(mode=MODE_LOCAL, cpus=NA_integer_, level=NA_character_, 
+    logging=FALSE, show.info=show.info)
 }
 
 #' @export

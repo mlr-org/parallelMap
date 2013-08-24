@@ -67,7 +67,6 @@ getPMDefOptCpus = function(cpus) {
 }
 
 getPMDefOptSocketHosts = function(socket.hosts) {
-  #FIXME should this be set by default? consider cpus
   if (missing(socket.hosts)) 
     socket.hosts = getPMDefOption("socket.hosts", NULL)
   if (!is.null(socket.hosts))
