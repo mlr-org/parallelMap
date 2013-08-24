@@ -20,8 +20,8 @@ getPMOptCpus = function() {
   getPMOption("cpus")
 }
 
-getPMOptLogDir = function() {
-  log = getPMOption("logdir")
+getPMOptLogging = function() {
+  getPMOption("logging")
 }
 
 getPMOptLevel = function() {
@@ -32,8 +32,8 @@ getPMOptShowInfo = function() {
   getPMOption("show.info")
 }
 
-getPMOptBatchJobsStorageDir = function() {
-  getPMOption("BatchJobs.storagedir")
+getPMOptStorageDir = function() {
+  getPMOption("storagedir")
 }
 
 ##### PM default options #####
@@ -56,11 +56,11 @@ getPMDefOptCpus = function(cpus) {
   
 }
 
-getPMDefOptLogDir = function(logdir) {
-  if (missing(logdir))
-    logdir = getPMDefOption("logdir", NA_character_)
-  checkArg(logdir, "character", len=1, na.ok=TRUE)
-  return(logdir)
+getPMDefOptLogging = function(logging) {
+  if (missing(logging))
+    logging = getPMDefOption("logging", FALSE)
+  checkArg(logging, "logical", len=1, na.ok=FALSE)
+  return(logging)
 }
 
 getPMDefOptLevel = function(level) {
@@ -77,11 +77,11 @@ getPMDefOptShowInfo = function(show.info) {
   return(show.info)
 }
 
-getPMDefOptBatchJobsStorageDir = function(batchjobs.storagedir) {
-  if (missing(batchjobs.storagedir)) 
-    batchjobs.storagedir = getPMDefOption("batchjobs.storagedir", getwd())
-  checkArg(batchjobs.storagedir, "character", len=1L, na.ok=FALSE) 
-  return(batchjobs.storagedir)
+getPMDefOptStorageDir = function(storagedir) {
+  if (missing(storagedir)) 
+    storagedir = getPMDefOption("storagedir", getwd())
+  checkArg(storagedir, "character", len=1L, na.ok=FALSE) 
+  return(storagedir)
 }
 
 getPMDefOptAutostart = function() {

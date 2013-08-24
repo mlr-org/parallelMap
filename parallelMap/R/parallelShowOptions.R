@@ -5,19 +5,20 @@ parallelShowOptions = function() {
     opt2val = getPMDefOption(opt)
     if (is.null(opt2val))
       opt2val = "not set"
-    if (opt != "logdir")
+    if (opt != "storagedir")
       catf("%-20s: %-10s (%s)", opt, opt1val, opt2val)
     else
       catf("%-20s: %-10s\n                     (%s)", opt, opt1val, opt2val)
   }
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
   catf("")
+  mycat("autostart")
   mycat("mode")
   mycat("cpus")
   mycat("level")
-  mycat("autostart")
+  mycat("logging")
   mycat("show.info")
-  mycat("logdir")
+  mycat("storagedir")
 }
 
 #FIXME define NULL as autodected for cpus

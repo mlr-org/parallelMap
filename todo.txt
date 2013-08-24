@@ -1,4 +1,6 @@
 
+depend 3.0 and bbmisc 1.3 and new bj
+
 test on lido
 
 clean up log and bj files after tests, actually define right place first
@@ -12,27 +14,18 @@ showLevels
 
 resources
 cpus bei bj
-logs bei bj
-
-- parallelMap mit BatchJobs fertig machen. Was will der User von außen ändern? Export korrigieren / testen. Was soll cpus setting bedeuten?
 
 -- TESTEN
 - da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 externer test mit mlr?
-Error in parallelMap(doResampleIteration, 1:iters, level = "resample",  : 
-  Error in getOption("mlr.show.learner.output") || inherits(learner, "OptWrapper") :    invalid "x" type in "x || y" 
-...
 
 what should we display on comnsole for BJ?
 
-was GENAU ist die def. des level? was heißt NA in den option und dem argument?
-
 fix NEWS
 
-compeltely silent mode?
-
-
 document handling of errors
+
+parallelSapply, Vapply, Lapply
 
 ##### LATER #####
 
@@ -41,6 +34,3 @@ chunking in parallelMap
 why do i get this all the time with socket mode?
 1: closing unused connection 4 (<-localhost:11835) 
 set cpus to high number to get more warnings i think
-
-parallelSapply, Vapply, Lapply
-

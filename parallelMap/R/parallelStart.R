@@ -4,24 +4,32 @@
 #' and allows to set a \dQuote{level} of parallelization.
 #' Only calls to \code{\link{parallelMap}} with a matching level are parallelized.
 #' 
-#' Currently the following modes are supported:
+#' The defaults of all settings are taken from your options, which you can
+#' also define in your R profile.
+#' 
+#' For an introductory tutorial and information on the options configuration, please
+#' go to the project's github page at:
+#FIXME explean in wiki page
+#' \url{http://www.github.com}
+#'
+#' Currently the following modes are supported, which internally dispatch the mapping operation
+#' to functions from different parallelization packages:
 #' 
 #' \describe{
-#' \item{local}{No paralleliaztion by dispatching to \code{\link{mapply}}.}
-#' \item{multicore}{Multicore execution on a single machine by dispatching to \code{\link[parallel]{mclapply}}.}
-#' \item{socket}{Socket cluster on one or multiple machines by dispatching to \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
-#' \item{snowfall}{Snow cluster, e.g. for MPI, by dispatching to \code{\link[snowfall]{sfClusterApplyLB}}.}
-#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g. Torque, SLURM, etc., by dispatching to \code{\link[BatchJobs]{batchMap}}.}
+#' \item{local}{No parallelization with \code{\link{mapply}}.}
+#' \item{multicore}{Multicore execution on a single machine with\code{\link[parallel]{mclapply}}.}
+#' \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
+#' \item{snowfall}{Snow MPI cluster with \code{\link[snowfall]{sfClusterApplyLB}}.}
+#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., by with \code{\link[BatchJobs]{batchMap}}.}
 #' }
+#' 
+#' For BatchJobs you need to define a storage directory through the argument storagedir or
+#' the option \code{parallelMap.storagedir}
 #' 
 #' For snowfall \code{\link[snowfall]{sfSetMaxCPUs}}, 
 #' \code{\link[snowfall]{sfInit}}, \code{\link[snowfall]{sfClusterSetupRNG}}
 #' are called in this order.
 #'
-#' The defaults of all settings are taken from your options
-#' You can define default for all options in your R profile like this
-#FIXME explean in wiki page
-#' \url{http://www.github.com}
 #'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
@@ -43,19 +51,23 @@
 #'   that have the same level specified.
 #'   Default is the option \code{parallelMap.default.level} or, if not set, 
 #'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
-#' @param log [\code{character(1)}]\cr
-#'   Path to an existing directory where a log files for each job is stored via
-#'   \code{\link{sink}}. Note that all nodes must have write access to exactly this path.
+#' @param logging [\code{logical(1)}]\cr
+#'   Should slave output be logged to files via \code{\link{sink}} in the \code{storagedir}?
 #'   Files are named "<iteration_number>.log".
-#'   Default is the option \code{parallelMap.default.log} or, if not set, 
-#'   \code{NA} which means no logging.
+#'   Default is the option \code{parallelMap.default.logging} or, if not set,
+#'   \code{FALSE}.
+#' @param storagedir [\code{character(1)}]\cr
+#'   Existing directory where log files and intermediate objects for BatchsJobs
+#'   mode are stored.
+#'   Note that all nodes must have write access to exactly this path.
+#'   Default is the current working directory.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set, 
 #'   \code{TRUE}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedir, bj.resources) {
+parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resources, show.info) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -65,7 +77,8 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
   level = getPMDefOptLevel(level)
-  logdir = getPMDefOptLogDir(logdir)
+  logging = getPMDefOptLogging(logging)
+  storagedir = getPMDefOptStorage(storagedir)
   show.info = getPMDefOptShowInfo(show.info)
   autostart = getPMDefOptAutostart()
   
@@ -83,7 +96,7 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
   # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)
   options(parallelMap.level = level)
-  options(parallelMap.logdir = logdir)
+  options(parallelMap.logging = logging)
   options(parallelMap.show.info = show.info)
   options(parallelMap.autostart = autostart)
   options(parallelMap.status = STATUS_STARTED)   
@@ -115,7 +128,7 @@ parallelStart = function(mode, cpus, ..., level, logdir, show.info, bj.storagedi
     sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
     #FIXME handle resourcses
-    bj.storagedir = getPMDefOptBatchJobsStorageDir(bj.storagedir)
+    storagedir = getPMDefOptStorageDir(storagedir)
     checkDir("BatchJobs storage", bj.storagedir)
     options(parallelMap.BatchJobs.storagedir=bj.storagedir)   
     dir.create(getBatchJobsExportsDir())

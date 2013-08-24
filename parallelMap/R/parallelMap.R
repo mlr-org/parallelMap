@@ -1,16 +1,10 @@
 #' Maps a function over lists or vectors in parallel.
 #'
 #' Use the parallelization mode and the other options set in
-#' \code{\link{parallelStart}}. For parallel/multicore \code{\link[parallel]{mclapply}}
-#' is used, for snowfall \code{\link[snowfall]{sfClusterApplyLB}}.
+#' \code{\link{parallelStart}}.
 #'
-#' Large objects should be separately exported via \code{\link{parallelExport}},
+#' Large objects can be separately exported via \code{\link{parallelExport}},
 #' they can be simply used under their exported name in slave body code.
-#'
-#' Note that there is a bug in \code{\link[parallel]{mclapply}} of parallel because exceptions raised
-#' during slave calls are not corretly converted to try-errror objects (as claimed in the documentation) but
-#' instead a warning is generated. Because of this, \code{parallelMap} does not generate an exception in this
-#' case either.
 #'
 #' @param fun [\code{function}]\cr
 #'   Function to map over \code{...}.
@@ -48,7 +42,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   mode = getPMOptMode()
   cpus = getPMOptCpus()
   lev = getPMOptLevel()
-  logdir = getPMOptLogDir()
+  logdir = getPMOptStorageDir()
   show.info = getPMOptShowInfo()
   
   # potentially autostart by calling parallelStart with defaults from R profile
@@ -144,4 +138,12 @@ slaveWrapper = function(.x, .fun, .logdir=as.character(NA)) {
     sink(NULL)
   }
   return(res)
+}
+
+parallelLapply = funxtion(xs, fun, more.args, level=NA_character_) {
+  parallelMap(fun, xs, more.args=more.args, level=level, simplify=FALSE, use.names=FALSE)
+}
+
+parallelSapply = funxtion(xs, fun, more.args, use.names=TRUE, level=NA_character_) {
+  parallelMap(fun, xs, more.args=more.args, simplify=TRUE, use.names=use.names, level=level)
 }

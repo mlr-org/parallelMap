@@ -1,4 +1,4 @@
-
+# check dir exists and is indeed a dir
 checkDir = function(dirname, dir) {
   if (!file.exists(dir))
     stopf("%s directory does not exists: %s", dirname, dir)
@@ -10,15 +10,17 @@ isShowInfoEnabled = function() {
   getPMOptShowInfo()
 }
 
+# show message if show.info is TRUE
 showInfoMessage = function(msg, ...) {
   if (isShowInfoEnabled()) {
     messagef(msg, ...)
   }
 }
 
+# either the option level is not set or it is and the level of parmap matches
 isParallelizationLevel = function(level) {
-  optlevel = getOption("parallelMap.level")
-  is.na(optlevel) || is.na(level) || level != optlevel
+  optlevel = getPMOptLevel()
+  is.na(optlevel) || (!is.na(level) && level == optlevel)
 }
 
 exportToSlavePkgParallel = function(objname, objval) {

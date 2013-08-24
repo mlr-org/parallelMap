@@ -13,12 +13,14 @@ STATUS_STOPPED = "stopped"
 
 .onLoad = function(libname, pkgname) {
   # init all settings from defaults
-  options(parallelMap.mode = getPMDefOptMode())
-  options(parallelMap.cpus = getPMDefOptCpus())
-  options(parallelMap.level = getPMDefOptLevel())
-  options(parallelMap.logdir = getPMDefOptLogDir())
-  options(parallelMap.autostart = getPMDefOptAutostart())
-  options(parallelMap.show.info = getPMDefOptShowInfo())
-  options(parallelMap.BatchJobs.storagedir = getPMDefOptBatchJobsStorageDir())
-  options(parallelMap.status = STATUS_STOPPED)
+  options(
+    parallelMap.mode = getPMDefOptMode(),
+    parallelMap.cpus = getPMDefOptCpus(),
+    parallelMap.level = getPMDefOptLevel(),
+    parallelMap.logging = getPMDefOptLogging(),
+    parallelMap.autostart = getPMDefOptAutostart(),
+    parallelMap.show.info = getPMDefOptShowInfo(),
+    parallelMap.storagedir = getPMDefOptStorageDir(),
+    parallelMap.status = STATUS_STOPPED
+  )
 }

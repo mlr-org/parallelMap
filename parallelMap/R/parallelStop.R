@@ -2,11 +2,18 @@
 #'
 #' The parallelMap mode is set to \dQuote{local}, i.e., parallelization is turned 
 #' off. 
-#' For snowfall \code{\link[snowfall]{sfStop}} is called.
-#' 
+#'
 #' After a subsequent call of \code{\link{parallelStart}}, no exported objects 
 #' are present on the slaves and no libraries are loaded,
 #' i.e., you have clean R sessions on the slaves. 
+#' 
+#' For socket mode \code{\link[parallel]{stopCluster}} and  
+#' \code{\link[parallel]{setDefaulCluster}} with argument \code{NULL} are called.
+#' 
+#' For mpi mode \code{\link[snowfall]{sfStop}} is called.
+#'
+#' For BatchJobs mode the subdirectory of the \code{storagedir}
+#' containing the exported objects is removed.    
 #'
 #' @return Nothing.
 #' @export
