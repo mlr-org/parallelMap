@@ -14,12 +14,8 @@ test_that("multicore mode", {
   parallelStart(mode="multicore")
   partest4()
   parallelStop()
-  
-  # check error
-  # FIXME this does not work as parallel/multicore only generates a 
-  # warning not an error....
-  #parallelStart(mode="multicore", cpus=2)
-  #f = function(i) stop("fooo")
-  #expect_error(suppressWarnings(parallelMap(f, 1:3)), "fooo")
-  #parallelStop()    
+
+  parallelStart(mode="multicore")
+  partest5()
+  parallelStop()
 })

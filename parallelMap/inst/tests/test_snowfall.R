@@ -23,11 +23,8 @@ if (interactive()) {
     partest4()
     parallelStop()
     
-    # check error
     parallelStart(mode="snowfall", cpus=2)
-    f = function(i) stop("fooo")
-    expect_error(suppressWarnings(parallelMap(f, 1:3)), "fooo")
-    parallelStop()    
-    
+    partest5()
+    parallelStop()
   })
 }  

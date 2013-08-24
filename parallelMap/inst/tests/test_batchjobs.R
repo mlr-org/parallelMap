@@ -18,12 +18,8 @@ if (isExpensiveExampleOk()) {
     partest4()
     parallelStop()
     
-    # check error
-    #FIXME generalize these
     parallelStart(mode="BatchJobs", storagedir=tempdir())
-    f = function(i) stop("fooo")
-    expect_error(suppressWarnings(parallelMap(f, 1:3)), "fooo")
+    partest5()
     parallelStop()    
-    
   })
 }  

@@ -11,5 +11,6 @@ test_that("local mode", {
   partest1()
   partest3()
   partest4()
+  partest5()
   parallelStop()
 })

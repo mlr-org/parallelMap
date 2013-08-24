@@ -79,4 +79,10 @@ partest4 = function() {
   expect_true(is.list(res) && length(res) == 2 && is.function(res[[1]]))
 }
 
+#test that error generate exceptions
+partest5 = function() {
+  f = function(i) stop("foo")
+  expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+}
+
 
