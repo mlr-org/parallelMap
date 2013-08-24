@@ -44,7 +44,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   lev = getPMOptLevel()
   logging = getPMOptLogging()
   # use NA to encode "no logging" in logdir
-  logdir = ifelse (logging, getPMOptStorageDir(), NA_character_)
+  logdir = ifelse(logging, getNextLogDir(), NA_character_)
   show.info = getPMOptShowInfo()
   
   # potentially autostart by calling parallelStart with defaults from R profile
@@ -120,7 +120,10 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   }
   if (isTRUE(simplify) && length(res) > 0)
     res = simplify2array(res, higher=(simplify == "array"))
-
+  
+  # count number of mapping operations for log dir
+  options(parallelMap.nextmap = (getPMOptNextMap() + 1L))
+  
   return(res)
 }
 

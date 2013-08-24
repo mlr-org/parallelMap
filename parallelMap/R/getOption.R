@@ -36,6 +36,10 @@ getPMOptStorageDir = function() {
   getPMOption("storagedir")
 }
 
+getPMOptNextMap = function() {
+  getPMOption("nextmap")
+}
+
 ##### PM default options #####
 
 getPMDefOptMode = function(mode) {

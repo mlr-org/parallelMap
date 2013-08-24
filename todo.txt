@@ -1,3 +1,7 @@
+ys = parallelSapply(1:2, identity)
+
+logging show time
+
 unterverz bei logging, "parallelMap_%03i_logs"
 clean up dieser logs bei parallaleStart uind stop bei stop mit optoion = FASE
 deleteLogs function
@@ -8,6 +12,10 @@ cpus bei bj
 -- TESTEN
 - da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 externer test mit mlr?
+
+why do i get this all the time with socket mode?
+1: closing unused connection 4 (<-localhost:11835) 
+set cpus to high number to get more warnings i think
 
 what should we display on comnsole for BJ?
 
@@ -20,10 +28,6 @@ fix NEWS
 ##### LATER #####
 
 chunking in parallelMap
-
-why do i get this all the time with socket mode?
-1: closing unused connection 4 (<-localhost:11835) 
-set cpus to high number to get more warnings i think
 
 depend on new bj
 

@@ -18,32 +18,31 @@ partest1 = function() {
 
 # test that log files are correctly generated
 partest2 = function(log.dir) {
-  del = function() 
-    unlink(list.files(log.dir, pattern="?????.log", full.names=TRUE))
   
   # do log files exist under correct path / name?
-  check.exists = function(n) 
+  check.exists = function(iter, n) {
+    fp = file.path(log.dir, sprintf("parallelMap_logs_%03i", iter))
     sapply(seq_len(n), function(i) 
-      expect_true(file.exists(file.path(log.dir, sprintf("%05i.log", i)))))
+      expect_true(file.exists(file.path(fp, sprintf("%05i.log", i)))))
+  }
   
   # do log files contain the printed output fromn the slave?
-  check.contains = function(xs)  {
+  check.contains = function(iter, xs)  {
+    fp = file.path(log.dir, sprintf("parallelMap_logs_%03i", iter))
     Map(function(i, x) {
-      s = readLines(file.path(log.dir, sprintf("%05i.log", i)))
+      s = readLines(file.path(fp, sprintf("%05i.log", i)))
       s = collapse(s, sep="\n")
       expect_true(grep(x, s) == 1)
     }, seq_along(xs), xs)
   }
   
-  del()
   parallelMap(cat, c("xxx", "yyy"))
-  check.exists(2)
-  check.contains(c("xxx", "yyy"))
+  check.exists(iter=1, n=2)
+  check.contains(iter=1, c("xxx", "yyy"))
 
-  del()
   parallelMap(print, c("xxx", "yyy"))
-  check.exists(2)
-  check.contains(c("xxx", "yyy"))
+  check.exists(iter=2, n=2)
+  check.contains(iter=2, c("xxx", "yyy"))
 
   # FIXME: for some reason this fails only in test?
   #del()
@@ -51,10 +50,9 @@ partest2 = function(log.dir) {
   #check.exists(2)
   #check.contains(c("xxx", "yyy"))
 
-  del()
   parallelMap(warning, c("xxx", "yyy"))
-  check.exists(2)
-  check.contains(c("xxx", "yyy"))
+  check.exists(iter=3, n=2)
+  check.contains(iter=3, c("xxx", "yyy"))
 }
 
 # test that exported variables exist on slave

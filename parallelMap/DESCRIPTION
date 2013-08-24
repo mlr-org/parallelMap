@@ -35,3 +35,4 @@ Collate:
     'batchjobs.R'
     'registerLevels.R'
     'parApply.R'
+    'logging.R'

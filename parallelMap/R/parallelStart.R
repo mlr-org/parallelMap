@@ -52,8 +52,12 @@
 #'   Default is the option \code{parallelMap.default.level} or, if not set, 
 #'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
 #' @param logging [\code{logical(1)}]\cr
-#'   Should slave output be logged to files via \code{\link{sink}} in the \code{storagedir}?
-#'   Files are named "<iteration_number>.log".
+#'   Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?
+#'   Files are named "<iteration_number>.log" and put into unique
+#'   subdirectories named \dQuote{parallelMap_log_<nr>} for each subsequent
+#'   \code{\link{parallelMap}} operation. 
+#'   Previous logging directories are removed on \code{parallelStart} 
+#'   if \code{logging} is enabled.
 #'   Default is the option \code{parallelMap.default.logging} or, if not set,
 #'   \code{FALSE}.
 #' @param storagedir [\code{character(1)}]\cr
@@ -100,7 +104,7 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
   options(parallelMap.storagedir = storagedir)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)   
-  
+  options(parallelMap.nextmap = 1L)   
   
   # try to autodetect cpus if not set 
   if (is.na(cpus))
@@ -113,6 +117,10 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
   
   # now load extra packs we need
   requirePackages(getExtraPackages(mode), "parallelStart")
+  
+  # delete log dirs from previous runs
+  if (logging) 
+    deleteAllLogDirs()
   
   # init parallel packs / modes, if necessary 
   if (isModeSocket()) {
