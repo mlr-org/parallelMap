@@ -13,7 +13,6 @@ Imports:
     BBmisc (>= 1.3-64)
 Suggests:
     testthat,
-    snowfall,
     parallel,
     Rmpi,
     BatchJobs

@@ -36,13 +36,10 @@ parallelExport = function(..., objnames) {
   
   # do nothing if no exports 
   if (length(objnames) > 0) {
-    if (isModeSocket()) {
+    if (isModeSocket() || isModeMPI()) {
       for (n in objnames) {
         exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
       }
-    } else if (isModeMPI()) {
-      # FIXME really test this with multiople function levels
-      sfExport(list=objnames)
     } else if (isModeBatchJobs()) {
       bj.exports.dir = getBatchJobsExportsDir()
       for (n in objnames) {

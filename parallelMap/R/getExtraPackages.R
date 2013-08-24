@@ -1,9 +1,9 @@
 getExtraPackages = function(mode) {
   packs = 
-    if (isModeMulticore() || isModeSocket())
+    if (mode %in% c(MODE_MULTICORE, MODE_SOCKET))
       "parallel"
     else if (isModeMPI())
-      c("snowfall", "Rmpi")
+      c("Rmpi", "parallel")
     else if (isModeBatchJobs())
       "BatchJobs"
 }

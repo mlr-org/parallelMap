@@ -18,8 +18,8 @@
 #' \describe{
 #' \item{local}{No parallelization with \code{\link{mapply}}.}
 #' \item{multicore}{Multicore execution on a single machine with\code{\link[parallel]{mclapply}}.}
-#' \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
-#' \item{snowfall}{Snow MPI cluster with \code{\link[snowfall]{sfClusterApplyLB}}.}
+#' \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterApplyLB}}.}
+#' \item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterApplyLB}}.}
 #' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., by with \code{\link[BatchJobs]{batchMap}}.}
 #' }
 #' 
@@ -45,7 +45,7 @@
 #'   and 1 otherwise.
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
-#'   for snowfall mode passed to \code{\link[snowfall]{sfInit}}.
+#'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @param level [\code{character(1)}]\cr
 #'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
 #'   that have the same level specified.
@@ -123,9 +123,12 @@ parallelStart = function(mode, cpus, ..., level, logging, storagedir, bj.resourc
       cl = makePSOCKcluster(...)
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
-    sfSetMaxCPUs(cpus)
-    sfInit(parallel=TRUE, cpus=cpus, ...)
-    sfClusterSetupRNG()
+    cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
+    setDefaultCluster(cl)
+    #FIXME rng and max cpus? doc ...
+    #sfSetMaxCPUs(cpus)
+    #sfInit(parallel=TRUE, cpus=cpus, ...)
+    #sfClusterSetupRNG()
   } else if (isModeBatchJobs()) {
     #FIXME handle resourcses
     dir.create(getBatchJobsExportsDir())

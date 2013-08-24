@@ -79,7 +79,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       #res = clusterMap(cl=NULL, fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
       #checkForAndDisplayErrors(res)
     } else if (isModeMPI()) {
-      res = sfClusterApplyLB(toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
+      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
       # throws one single error on master in case of error
     } else if (isModeBatchJobs()) {
       # create registry in selected directory with random, unique name

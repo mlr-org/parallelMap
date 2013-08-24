@@ -1,9 +1,10 @@
 #' Load packages for parallelization.
 #'
-#' In case of snowfall mode, uses a combination of
-#' \code{\link[snowfall]{sfClusterEval}} and \code{\link{require}}
-#' to load the packages. For all other modes, the package is only
-#' (potentially) loaded on the master.
+#' Makes sure that case of socket, mpi and BatchJobs mode, 
+#' the package is loaded in the slave processes.
+#' For all modes the package also (potentially) loaded on the master.
+#' Note that loading the package on the master is (obviously) required for
+#' having it available in the slave operation for modes local and multicore.
 #'
 #' @param packages [\code{character}]\cr
 #'   Names of packages to load.
@@ -24,7 +25,7 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
   checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=TRUE)
   
-  mode = getPMDefOptMode()
+  mode = getPMOptMode()
   
   # remove duplicates
   packages = unique(packages)
@@ -33,15 +34,22 @@ parallelLibrary = function(packages, level=as.character(NA), master=TRUE) {
   if (master) {
     requirePackages(packages, why="parallelLibrary")
   }
+
   if (isParallelizationLevel(level)) {
-    if (isModeSocket()) {
+    messagef("Loading packages on slaves: %s", collapse(packages))
+    if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
       exportToSlavePkgParallel(".parallelMap.pkgs", packages)
-      clusterEvalQ(cl=NULL, for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
-    } else if (isModeMPI()) {
-      # sfLibrary chatters to much...
-      .parallelMap.pkgs = packages
-      sfExport(".parallelMap.pkgs")
-      sfClusterEval(for (p in .parallelMap.pkgs) {require(p, character.only=TRUE)})    
+      # oks is a list (slaves) of logical vectors (pkgs)
+      oks = clusterEvalQ(cl=NULL, {
+        sapply(.parallelMap.pkgs, require, character.only=TRUE, USE.NAMES=TRUE)
+      })  
+      # get not loaded pkgs
+      not.loaded = lapply(oks, function(v) {
+        names(v)[!v]
+      })
+      not.loaded = unique(not.loaded)
+      if (length(not.loaded) > 0L)
+        stopf("Packages could not be loaded on all slaves: %s.",not.loaded)
     } else if (isModeBatchJobs()) {
       # collect in R option, add new packages to old ones
       optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))      

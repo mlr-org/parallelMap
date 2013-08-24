@@ -7,11 +7,9 @@
 #' are present on the slaves and no libraries are loaded,
 #' i.e., you have clean R sessions on the slaves. 
 #' 
-#' For socket mode \code{\link[parallel]{stopCluster}} and  
+#' For socket and mpi mode \code{\link[parallel]{stopCluster}} and  
 #' \code{\link[parallel]{setDefaultCluster}} with argument \code{NULL} are called.
 #' 
-#' For mpi mode \code{\link[snowfall]{sfStop}} is called.
-#'
 #' For BatchJobs mode the subdirectory of the \code{storagedir}
 #' containing the exported objects is removed.    
 #'
@@ -22,11 +20,9 @@ parallelStop = function() {
   if (isStatusStopped()) {
     warningf("parallelStop called, but parallelization was not started. Doing nothing.")
   } else {
-    if (isModeSocket()) {
+    if (isModeSocket() || isModeMPI()) {
       stopCluster(NULL)
       setDefaultCluster(NULL)  
-    } else if (isModeMPI()) {
-      sfStop()
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)
