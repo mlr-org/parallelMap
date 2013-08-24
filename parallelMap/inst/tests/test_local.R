@@ -10,7 +10,7 @@ test_that("local mode", {
   #expect_error(parallelStart(mode="local", logdir=tempdir()))
   partest1()
   partest3()
-  partest4()
+  partest4(slave.error.test=FALSE)
   partest5()
   parallelStop()
 })

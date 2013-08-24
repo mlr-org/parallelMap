@@ -70,13 +70,21 @@ partest3 = function() {
 
 
 # test that exported libraries are loaded
-partest4 = function() {
+partest4 = function(slave.error.test) {
   # testhat is basically the only lib we have in suggests...
   parallelLibrary("testthat")  
   f = function(i) 
      expect_true
   res = parallelMap(f, 1:2)
   expect_true(is.list(res) && length(res) == 2 && is.function(res[[1]]))
+  if (slave.error.test) {
+    expect_error(parallelLibrary("foo", master=FALSE),
+      "Packages could not be loaded on all slaves: foo.")
+    expect_error(parallelLibrary("foo1", "foo2", master=FALSE),
+      "Packages could not be loaded on all slaves: foo1,foo2.")
+    expect_error(parallelLibrary("testthat", "foo", master=FALSE), 
+      "Packages could not be loaded on all slaves: foo.")
+  }
 }
 
 #test that error generate exceptions

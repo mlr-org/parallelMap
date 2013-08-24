@@ -12,7 +12,7 @@ test_that("multicore mode", {
   parallelStop()
   
   parallelStart(mode="multicore")
-  partest4()
+  partest4(slave.error.test=FALSE)
   parallelStop()
 
   parallelStart(mode="multicore")

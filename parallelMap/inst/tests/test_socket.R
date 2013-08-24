@@ -15,7 +15,7 @@ test_that("socket mode", {
   parallelStop()
 
   parallelStart(mode="socket", cpus=2)
-  partest4()
+  partest4(slave.error.test=TRUE)
   parallelStop()
   
   parallelStart(mode="socket", cpus=2)

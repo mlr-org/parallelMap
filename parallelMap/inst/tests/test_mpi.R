@@ -20,7 +20,7 @@ if (interactive()) {
     parallelStop()
 
     parallelStart(mode="mpi", cpus=2)
-    partest4()
+    partest4(slave.error.test=TRUE)
     parallelStop()
     
     parallelStart(mode="mpi", cpus=2)

@@ -15,7 +15,9 @@ if (isExpensiveExampleOk()) {
     parallelStop()
     
     parallelStart(mode="BatchJobs", storagedir=tempdir())
-    partest4()
+    #FIXME we cannot really check that wromg libraries are not loaded on slave here.
+    # because we only load them duzring the job. but the error will show up then
+    partest4(slave.error.test=FALSE)
     parallelStop()
     
     parallelStart(mode="BatchJobs", storagedir=tempdir())
