@@ -1,7 +1,7 @@
 context("mpi mode")
 
-#FIXME: for some reason this blocks R CMD check, at least on my laptop?
 # cran allows no mpi mode testing
+# FIXME: same problem as for socket mode test, but we cannot test on cran anyway
 if (interactive()) {
   test_that("mpi mode", {
     parallelStartMPI(2)

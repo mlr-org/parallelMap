@@ -43,13 +43,7 @@ partest2 = function(log.dir) {
   parallelMap(print, c("xxx", "yyy"))
   check.exists(iter=2, n=2)
   check.contains(iter=2, c("xxx", "yyy"))
-
-  # FIXME: for some reason this fails only in test?
-  #del()
-  #parallelMap(message, c("xxx", "yyy"))
-  #check.exists(2)
-  #check.contains(c("xxx", "yyy"))
-
+  
   parallelMap(warning, c("xxx", "yyy"))
   check.exists(iter=3, n=2)
   check.contains(iter=3, c("xxx", "yyy"))
