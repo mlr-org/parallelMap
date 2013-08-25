@@ -1,15 +1,17 @@
 context("socket mode")
 
 #FIXME: for some reason this blocks R CMD check, at least on my laptop?
+# cran allows socket mode with 2 localhost processes
 test_that("socket mode", {
   expect_error(parallelStartSocket(cpus=2, socket.hosts="localhost"), "You cannot set both")
+  parallelStop()
   
   parallelStartSocket(2)
   partest1()
   parallelStop()
 
   # check with host args as strings too
-  parallelStartSocket(hosts=c("localhost", "localhost"))
+  parallelStartSocket(socket.hosts=c("localhost", "localhost"))
   partest1()
   parallelStop()
 

@@ -22,7 +22,11 @@ parallelStop = function() {
     #warningf("parallelStop called, but parallelization was not started. Doing nothing.")
   } else {
     if (isModeSocket() || isModeMPI()) {
-      stopCluster(NULL)
+      # onlystop if we registred one (exception in parallelStart can happen)
+      # otherwise we get error here. thanks to parallel we cannot even
+      # ask for default cluster...
+      if(getPMOption("parallel.cluster.registered", FALSE))
+        stopCluster(cl=NULL)
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)

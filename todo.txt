@@ -1,6 +1,8 @@
+unit test for batch jobs that runs on lido
+
 what to do if error in parMap? how to clean up?
 
-test export 
+test parexport 
 
 müssen wir bei socket, mpi und multicore rngs init.?
 documentieren
@@ -12,8 +14,6 @@ was ist bei bj mit den seeds?
 -- TESTEN
 - da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 externer test mit mlr?
-
-what should we display on comnsole for BJ?
 
 document handling of errors
 
