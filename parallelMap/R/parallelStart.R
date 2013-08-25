@@ -156,6 +156,7 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   } else if (isModeMPI()) {
     cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
     setDefaultCluster(cl)
+    clusterSetRNGStream(cl=NULL)
   } else if (isModeBatchJobs()) {
     bjed = getBatchJobsExportsDir()
     if (file.exists(bjed))
