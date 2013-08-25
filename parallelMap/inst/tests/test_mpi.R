@@ -2,7 +2,7 @@ context("mpi mode")
 
 #FIXME: for some reason this blocks R CMD check, at least on my laptop?
 # cran allows no mpi mode testing
-if (isExpensiveExampleOk()) {
+if (interactive()) {
   test_that("mpi mode", {
     parallelStartMPI(2)
     partest1()
