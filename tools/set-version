@@ -3,5 +3,8 @@
 v = system("git rev-list HEAD --count", TRUE)
 revision = max(as.integer(v))
 desc = read.dcf("parallelMap/DESCRIPTION")
-desc[,"Version"] = sprintf("%s-%i", desc[,"Version"], revision)
+ver = desc[,"Version"] 
+ver = strsplit(ver, "-")[[1]][1]
+ver = sprintf("%s-%i", ver, revision)
+desc[,"Version"] = ver
 write.dcf(desc, file="parallelMap/DESCRIPTION")
