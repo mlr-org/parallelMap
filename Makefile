@@ -26,8 +26,8 @@ clean:
 roxygenize: clean
 	echo "Roxygenizing package ..."
 	${RSCRIPT} ./tools/roxygenize
-	#echo "Setting version ..."
-	#${RSCRIPT} ./tools/set-version
+	echo "Setting version ..."
+	${RSCRIPT} ./tools/set-version
   
 package: roxygenize
 	echo "Building package file ..."
