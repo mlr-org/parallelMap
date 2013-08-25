@@ -7,8 +7,7 @@
 #' are present on the slaves and no libraries are loaded,
 #' i.e., you have clean R sessions on the slaves. 
 #' 
-#' For socket and mpi mode \code{\link[parallel]{stopCluster}} and  
-#' \code{\link[parallel]{setDefaultCluster}} with argument \code{NULL} are called.
+#' For socket and mpi mode \code{\link[parallel]{stopCluster}} is called.
 #' 
 #' For BatchJobs mode the subdirectory of the \code{storagedir}
 #' containing the exported objects is removed.    
@@ -16,13 +15,10 @@
 #' @return Nothing.
 #' @export
 parallelStop = function() {
-  # warn if we are not in started status
-  if (isStatusStopped()) {
-    #FIXME do we want this warning?
-    #warningf("parallelStop called, but parallelization was not started. Doing nothing.")
-  } else {
+  # only do something if we are in "started" state
+  if (!isStatusStarted()) {
     if (isModeSocket() || isModeMPI()) {
-      # onlystop if we registred one (exception in parallelStart can happen)
+      # only stop if we registred one (exception in parallelStart can happen)
       # otherwise we get error here. thanks to parallel we cannot even
       # ask for default cluster...
       if(getPMOption("parallel.cluster.registered", FALSE))
