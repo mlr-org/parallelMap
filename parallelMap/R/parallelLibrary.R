@@ -2,7 +2,7 @@
 #'
 #' Makes sure that case of socket, mpi and BatchJobs mode, 
 #' the package is loaded in the slave processes.
-#' For all modes the package also (potentially) loaded on the master.
+#' For all modes the package is also (potentially) loaded on the master.
 #' Note that loading the package on the master is (obviously) required for
 #' having it available in the slave operation for modes local and multicore.
 #'
