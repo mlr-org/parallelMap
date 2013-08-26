@@ -1,15 +1,6 @@
-sicherstellen dass auf dem slave nicht weiter parallel. wird
-
-zsutand ist:
-- optionen des pakets + sachen auf der platte
-- bei stop in parstart: zustand von vorher wieder herstellen
-- bei parmap auch
-- bei parStop: soweit aufräumen wir möglih, alles dicht machen, immer grantiert OFF sein 
-
-test parexport 
-
-commit man dir, remove it from gitignore?
 unit test for batch jobs that runs on lido
+
+sicherstellen dass auf dem slave nicht weiter parallel. wird
 
 externer test mit mlr
 da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
@@ -17,6 +8,8 @@ da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht gelade
 fix NEWS
 
 ##### LATER #####
+
+commit man dir, remove it from gitignore?
 
 document handling of errors
 

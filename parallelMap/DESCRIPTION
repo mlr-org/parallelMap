@@ -2,7 +2,8 @@ Package: parallelMap
 Title: Unified interface to some popular parallelization back-ends.
 Description: Unified interface to some popular parallelization
         back-ends.
-Author: Bernd Bischl <bernd_bischl@gmx.net>
+Author: Bernd Bischl <bernd_bischl@gmx.net>, 
+  Michel Lang <lang@statistik.tu-dortmund.de>
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
