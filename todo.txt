@@ -1,4 +1,5 @@
-unit test for batch jobs that runs on lido
+die expoerts werden bei bjobs überhaupt nicht geladen.
+wieso sind sie trotzdem da?
 
 sicherstellen dass auf dem slave nicht weiter parallel. wird
 

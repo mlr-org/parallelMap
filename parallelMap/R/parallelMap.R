@@ -58,7 +58,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     })
   }
 
-  if (isModeLocal() || !isParallelizationLevel(level)) {
+  if (isModeLocal() || !isParallelizationLevel(level) || getPMOptOnSlave()) {
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
     iters = seq_along(..1)
@@ -82,7 +82,9 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       suppressMessages({
         reg = makeRegistry(id=basename(fd), file.dir=fd,
           packages=optionBatchsJobsPackages())
-        batchMap(reg, fun, ..., more.args=more.args)
+        # dont log extra in BatchJobs
+        more.args = c(list(.fun = fun, .logdir=NA_character_), more.args)
+        batchMap(reg, slaveWrapper, ..., more.args=more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
         submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
@@ -140,13 +142,21 @@ slaveWrapper = function(..., .i, .fun, .logdir=NA_character_) {
     sink(.fn, type="message")
     on.exit(sink(NULL))
   }
-
+  
+  # make sure we dont parallelize any further
+  options(parallelMap.on.slave=TRUE)
+  # just make sure, we should not have changed anything on the master
+  # except for BatchJobs / interactive
+  on.exit(options(parallelMap.on.slave=FALSE))
+  
   res = .fun(...)
 
   if (!is.na(.logdir)) {
     .end.time = as.integer(Sys.time())
     print(gc())
     message(sprintf("Job time in seconds: %i", .end.time - .start.time))
+    # I am not sure why i need to do this again, but without i crash in multicore
+    sink(NULL)
   }
   return(res)
 }

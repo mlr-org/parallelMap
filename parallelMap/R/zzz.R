@@ -23,6 +23,7 @@ STATUS_STOPPED = "stopped"
     parallelMap.show.info = getPMDefOptShowInfo(),
     parallelMap.storagedir = getPMDefOptStorageDir(),
     parallelMap.status = STATUS_STOPPED,
+    parallelMap.on.slave = FALSE,
     parallelMap.registered.levels = list()
   )
 }

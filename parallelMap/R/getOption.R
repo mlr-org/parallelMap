@@ -40,12 +40,16 @@ getPMOptStorageDir = function() {
   getPMOption("storagedir")
 }
 
+getPMOptBatchJobsResources = function() {
+  getPMOption("bj.resources", list())
+}
+
 getPMOptNextMap = function() {
   getPMOption("nextmap")
 }
 
-getPMOptBatchJobsResources = function() {
-  getPMOption("bj.resources", list())
+getPMOptOnSlave = function() {
+  getPMOption("on.slave")
 }
 
 ##### PM default options #####
@@ -139,5 +143,3 @@ isStatusStarted = function() {
 isStatusStopped = function() {
   getPMOptStatus() == STATUS_STOPPED
 }
-
-
