@@ -37,7 +37,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   checkArg(simplify, "logical", len=1L, na.ok=FALSE)
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
-  
+
   mode = getPMOptMode()
   cpus = getPMOptCpus()
   lev = getPMOptLevel()
@@ -45,7 +45,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   # use NA to encode "no logging" in logdir
   logdir = ifelse(logging, getNextLogDir(), NA_character_)
   show.info = getPMOptShowInfo()
-  
+
   # potentially autostart by calling parallelStart with defaults from R profile
   # then clean up by calling parallelStop on exit
   if (getPMDefOptAutostart() && isStatusStopped() && !isModeLocal()) {
@@ -61,33 +61,30 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   if (isModeLocal() || !isParallelizationLevel(level)) {
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
-    showInfoMessage("Doing a parallel mapping operation.")
     iters = seq_along(..1)
-    toList = function(...) {
-      Map(function(iter, ...) {
-        c(list(iter), list(...), more.args)
-      }, iters, ...)
-    }
+    showInfoMessage("Doing a parallel mapping operation.")
+
     if (isModeMulticore()) {
-      res = parallel::mclapply(toList(...), FUN=slaveWrapper, mc.cores=cpus, mc.allow.recursive=FALSE, .fun=fun, .logdir=logdir)
+      more.args = c(list(.fun = fun, .logdir=logdir), more.args)
+      res = parallel::mcmapply(slaveWrapper, ..., .i = iters, MoreArgs=more.args, mc.cores=cpus,
+                               SIMPLIFY=FALSE, USE.NAMES=FALSE)
       # produces list of try-error objects in case of error
       checkResultsAndStopWithErrorsMessages(res)
-    } else if (isModeSocket()) {
-      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
-      # throws one single error on master in case of error
-    } else if (isModeMPI()) {
-      res = clusterApplyLB(cl=NULL, toList(...), fun=slaveWrapper, .fun=fun, .logdir=logdir)
+    } else if (isModeSocket() || isModeMPI()) {
+      more.args = c(list(.fun = fun, .logdir=logdir), more.args)
+      res = clusterMap(cl=NULL, slaveWrapper, ..., .i = iters, MoreArgs=more.args,
+                       SIMPLIFY=FALSE, USE.NAMES=FALSE)
       # throws one single error on master in case of error
     } else if (isModeBatchJobs()) {
       # create registry in selected directory with random, unique name
       fd = getBatchJobsRegFileDir()
       # get packages to load on slaves which where collected in R option
       suppressMessages({
-        reg = makeRegistry(id=basename(fd), file.dir=fd, 
+        reg = makeRegistry(id=basename(fd), file.dir=fd,
           packages=optionBatchsJobsPackages())
         batchMap(reg, fun, ..., more.args=more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
-        # if no resources set we submit with the default ones from the bj conf 
+        # if no resources set we submit with the default ones from the bj conf
         submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
         ok = waitForJobs(reg, stop.on.error=TRUE)
       })
@@ -126,30 +123,30 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   }
   if (isTRUE(simplify) && length(res) > 0)
     res = simplify2array(res, higher=(simplify == "array"))
-  
+
   # count number of mapping operations for log dir
   options(parallelMap.nextmap = (getPMOptNextMap() + 1L))
-  
+
   return(res)
 }
 
-slaveWrapper = function(.x, .fun, .logdir=NA_character_) {
+slaveWrapper = function(..., .i, .fun, .logdir=NA_character_) {
   if (!is.na(.logdir)) {
     options(warning.length=8170, warn=1)
-    .fn = file.path(.logdir, sprintf("%05i.log", .x[[1]]))
+    .fn = file.path(.logdir, sprintf("%05i.log", .i))
     .fn = file(.fn, open="wt")
     .start.time = as.integer(Sys.time())
     sink(.fn)
     sink(.fn, type="message")
+    on.exit(sink(NULL))
   }
 
-  res = do.call(.fun, .x[-1])
+  res = .fun(...)
 
   if (!is.na(.logdir)) {
-    .end.time = as.integer(Sys.time())    
+    .end.time = as.integer(Sys.time())
     print(gc())
     message(sprintf("Job time in seconds: %i", .end.time - .start.time))
-    sink(NULL)
   }
   return(res)
 }
