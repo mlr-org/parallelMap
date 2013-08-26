@@ -1,21 +1,14 @@
-commit man dir, remove it from gitignore?
+2: closing unused connection 3 (<-localhost:11307) 
 
+test parexport 
+
+commit man dir, remove it from gitignore?
 unit test for batch jobs that runs on lido
 
 what to do if error in parMap? how to clean up?
 
-test parexport 
-
-müssen wir bei socket, mpi und multicore rngs init.?
-documentieren
-uwe fragen
-was ist bei bj mit den seeds?
-
-2: closing unused connection 3 (<-localhost:11307) 
-
--- TESTEN
-- da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
-externer test mit mlr?
+externer test mit mlr
+da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 
 document handling of errors
 
@@ -29,3 +22,6 @@ depend on new bj
 
 parallelApply, parallelVapply
 
+option for RNG seed, for pkg parallel and batchjobs, use same argument. can that be done for all?
+
+document seeding for all modes
