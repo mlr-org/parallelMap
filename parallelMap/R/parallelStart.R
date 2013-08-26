@@ -104,9 +104,8 @@ parallelStart = function(mode, cpus, socket.hosts, level, logging, storagedir, b
   checkArg(bj.resources, "list")
   show.info = getPMDefOptShowInfo(show.info)
 
-  
   # multicore not supported on windows
-  if (.Platform$OS.type == "windows")
+  if (mode == MODE_MULTICORE && .Platform$OS.type == "windows")
     stop("Multicore mode not supported on windows!")
   # check that storagedir is indeed a valid dir 
   checkDir("Storage", storagedir)
