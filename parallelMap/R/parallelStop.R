@@ -19,13 +19,15 @@ parallelStop = function() {
   if (isStatusStarted()) {
     if (isModeSocket() || isModeMPI()) {
       # only stop if we registred one (exception in parallelStart can happen)
-      # otherwise we get error here. thanks to parallel we cannot even
-      # ask for default cluster without exception
       # the whole following code is full of horrible stuff but I cannot change that
-      cl = try(parallel:::defaultCluster(), silent=TRUE)
-      if (!is.error(cl) && !is.null(cl)) {
-        # great, another bug in parallel, stopCluster does not close socket connections
-        # when you call it on the default cluster because of envir assign "magic"
+      # parallel is really buggy and the design is horrible
+      # a) stopCluster will not work when called via stopCluster(NULL) on the default cluster
+      #    Through some envir assign "magic" cl gets set to NULL before it is stopped
+      #    via S3 inheritance
+      # b) stopCluster will also throw amn exception when none is registered. great, and apparently 
+      #    we have no way of asking whether one is alrealdy registered. 
+      cl = get("default", envir=getFromNamespace(".reg", ns="parallel"))
+      if (!is.null(cl)) {
         stopCluster(cl=cl)
         setDefaultCluster(NULL)
       }

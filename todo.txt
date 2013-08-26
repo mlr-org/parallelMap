@@ -1,7 +1,7 @@
+remove ::: as much as possible
+
 die expoerts werden bei bjobs überhaupt nicht geladen.
 wieso sind sie trotzdem da?
-
-sicherstellen dass auf dem slave nicht weiter parallel. wird
 
 externer test mit mlr
 da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
