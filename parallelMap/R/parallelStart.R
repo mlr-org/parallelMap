@@ -49,9 +49,6 @@
 #'   Only used in socket mode, otherwise ignored. 
 #'   Names of hosts where parallel processes are spawned.
 #'   Default is the option \code{parallelMap.default.socket.hosts}, if this option exists.
-#' @param ... [any]\cr
-#'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
-#'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @param level [\code{character(1)}]\cr
 #'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
 #'   that have the same level specified.
@@ -82,9 +79,12 @@
 #'   Verbose output on console?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set, 
 #'   \code{TRUE}.
+#' @param ... [any]\cr
+#'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
+#'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storagedir, bj.resources=list(), show.info) {
+parallelStart = function(mode, cpus, socket.hosts, level, logging, storagedir, bj.resources=list(), show.info, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -104,9 +104,12 @@ parallelStart = function(mode, cpus, socket.hosts, ..., level, logging, storaged
   checkArg(bj.resources, "list")
   show.info = getPMDefOptShowInfo(show.info)
 
+  
+  # multicore not supported on windows
+  if (.Platform$OS.type == "windows")
+    stop("Multicore mode not supported on windows!")
   # check that storagedir is indeed a valid dir 
   checkDir("Storage", storagedir)
-  
   
   # store options for session, we already need them for helper funs below
   options(parallelMap.autostart = autostart)
@@ -182,16 +185,16 @@ parallelStartMulticore = function(cpus, level, logging, storagedir, show.info) {
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, level, logging, storagedir, show.info) {
+parallelStartSocket = function(cpus, socket.hosts, level, logging, storagedir, show.info, ...) {
   parallelStart(mode=MODE_SOCKET, cpus=cpus, socket.hosts=socket.hosts, level=level, logging=logging, 
     storagedir=storagedir, show.info=show.info)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, level, logging, storagedir, show.info) {
+parallelStartMPI = function(cpus, level, logging, storagedir, show.info, ...) {
   parallelStart(mode=MODE_MPI, cpus=cpus, level=level, logging=logging, 
-    storagedir=storagedir, show.info=show.info)
+    storagedir=storagedir, show.info=show.info, ...)
 }
 
 #' @export
