@@ -9,7 +9,7 @@
 #' 
 #' For an introductory tutorial and information on the options configuration, please
 #' go to the project's github page at:
-#FIXME explean in wiki page
+#FIXME explain in wiki page
 #' \url{http://www.github.com}
 #'
 #' Currently the following modes are supported, which internally dispatch the mapping operation
@@ -48,7 +48,7 @@
 #' @param socket.hosts [\code{character}]\cr
 #'   Only used in socket mode, otherwise ignored. 
 #'   Names of hosts where parallel processes are spawned.
-#'   Default is the option \code{parallelMap.default.socket.hosts}, if this ption exists.
+#'   Default is the option \code{parallelMap.default.socket.hosts}, if this option exists.
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
@@ -73,7 +73,7 @@
 #'   Existing directory where log files and intermediate objects for BatchsJobs
 #'   mode are stored.
 #'   Note that all nodes must have write access to exactly this path.
-#'   Default is the current working directory.#'   
+#'   Default is the current working directory.  
 #' @param bj.resources [\code{list}]\cr
 #'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
 #'   See \code{\link[BatchJobs]{submitJobs}}.
