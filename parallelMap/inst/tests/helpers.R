@@ -58,6 +58,16 @@ partest3 = function() {
   f = function(i) 
     i + foo
   expect_equal(parallelMap(f, 1:2), list(101, 102))
+  
+  # now test with foo2 defined one level fruther above
+  f = function(i) 
+    i + foo2
+  foo2 = 100 
+  g = function() {
+    parallelExport("foo2")
+  }
+  g()
+  expect_equal(parallelMap(f, 1:2), list(101, 102))
 }
 
 
