@@ -16,13 +16,19 @@
 #' @export
 parallelStop = function() {
   # only do something if we are in "started" state
-  if (!isStatusStarted()) {
+  if (isStatusStarted()) {
     if (isModeSocket() || isModeMPI()) {
       # only stop if we registred one (exception in parallelStart can happen)
       # otherwise we get error here. thanks to parallel we cannot even
-      # ask for default cluster...
-      if(getPMOption("parallel.cluster.registered", FALSE))
-        stopCluster(cl=NULL)
+      # ask for default cluster without exception
+      # the whole following code is full of horrible stuff but I cannot change that
+      cl = try(parallel:::defaultCluster(), silent=TRUE)
+      if (!is.error(cl) && !is.null(cl)) {
+        # great, another bug in parallel, stopCluster does not close socket connections
+        # when you call it on the default cluster because of envir assign "magic"
+        stopCluster(cl=cl)
+        setDefaultCluster(NULL)
+      }
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)

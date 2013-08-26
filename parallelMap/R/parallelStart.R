@@ -155,7 +155,6 @@ parallelStart = function(mode, cpus, socket.hosts, level, logging, storagedir, b
     # set names from cpus or socket.hosts, only 1 can be defined here
     cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)      
     setDefaultCluster(cl)
-    options(parallelMap.parallel.cluster.registered=TRUE)
   } else if (isModeMPI()) {
     cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
     setDefaultCluster(cl)
