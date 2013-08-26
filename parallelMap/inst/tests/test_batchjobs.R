@@ -7,7 +7,7 @@ test_that("BatchJobs mode", {
   if (Sys.info()["nodename"] %in% c("lidong1", "lidong2")) {
     storagedir = getwd()
   }
-  print(storagedir)
+
   parallelStartBatchJobs(storagedir=storagedir)
   partest1()
   parallelStop()

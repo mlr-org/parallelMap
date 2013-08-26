@@ -2,8 +2,8 @@ Package: parallelMap
 Title: Unified interface to some popular parallelization back-ends.
 Description: Unified interface to some popular parallelization
         back-ends.
-Author: Bernd Bischl <bernd_bischl@gmx.net>, 
-  Michel Lang <lang@statistik.tu-dortmund.de>
+Author: Bernd Bischl <bernd_bischl@gmx.net>, Michel Lang
+        <lang@statistik.tu-dortmund.de>
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
@@ -13,7 +13,7 @@ Imports: BBmisc (>= 1.3-64)
 Suggests: testthat, parallel, Rmpi, BatchJobs
 LazyData: yes
 ByteCompile: yes
-Version: 1.0-51
+Version: 1.0-67
 Collate: 'autodetectCpus.R' 'batchjobs.R' 'displayErrorMessages.R'
         'getExtraPackages.R' 'getOption.R' 'logging.R'
         'parallelExport.R' 'parallelLibrary.R' 'parallelMap.R'
