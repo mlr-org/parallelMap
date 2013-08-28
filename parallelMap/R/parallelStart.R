@@ -8,9 +8,7 @@
 #' also define in your R profile.
 #' 
 #' For an introductory tutorial and information on the options configuration, please
-#' go to the project's github page at:
-#FIXME explain in wiki page
-#' \url{http://www.github.com}
+#' go to the project's github page at \url{https://github.com/berndbischl/parallelMap}.
 #'
 #' Currently the following modes are supported, which internally dispatch the mapping operation
 #' to functions from different parallelization packages:
@@ -25,11 +23,6 @@
 #' 
 #' For BatchJobs you need to define a storage directory through the argument storagedir or
 #' the option \code{parallelMap.storagedir}
-#' 
-#' For snowfall \code{\link[snowfall]{sfSetMaxCPUs}}, 
-#' \code{\link[snowfall]{sfInit}}, \code{\link[snowfall]{sfClusterSetupRNG}}
-#' are called in this order.
-#'
 #'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
@@ -159,10 +152,11 @@ parallelStart = function(mode, cpus, socket.hosts, level, logging, storagedir, b
     setDefaultCluster(cl)
     clusterSetRNGStream(cl=NULL)
   } else if (isModeBatchJobs()) {
-    bjed = getBatchJobsExportsDir()
-    if (file.exists(bjed))
-      cleanUpBatchJobsExports()
-    dir.create(bjed)
+    #FIXME add later
+    #bjed = getBatchJobsExportsDir()
+    #if (file.exists(bjed))
+    #  cleanUpBatchJobsExports()
+    #dir.create(bjed)
   }
   invisible(NULL)
 }

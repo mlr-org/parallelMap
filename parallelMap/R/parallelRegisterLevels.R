@@ -8,7 +8,7 @@
 #'   Availabe levels that used in your \code{\link{parallelMap}} operations in your package.
 #' @return Nothing.
 #' @export
-registerLevels = function(package, levels) {
+parallelRegisterLevels = function(package, levels) {
   checkArg(package, "character", len=1L, na.ok=FALSE)
   checkArg(levels, "character", na.ok=FALSE)
   reg.levs = getPMOption("registered.levels", list())
@@ -21,7 +21,7 @@ registerLevels = function(package, levels) {
 #'
 #' @return Invisibly returns a list object that contains the displayed information.
 #' @export
-showRegisteredLevels = function() {
+parallelShowRegisteredLevels = function() {
   reg.levs = getPMOption("registered.levels")
   for (i in seq_along(reg.levs)) {
     p = names(reg.levs)[[i]]
