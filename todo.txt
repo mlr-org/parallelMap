@@ -1,14 +1,19 @@
-remove ::: as much as possible
-
-die expoerts werden bei bjobs überhaupt nicht geladen.
-wieso sind sie trotzdem da?
-
 externer test mit mlr
 da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
 
 fix NEWS
 
 ##### LATER #####
+
+regarding parExport
+- enable function
+- enable all test
+    # use object in some parent frame above: geht
+    # except: use object in parent global frame: geht nicht
+    # call function from other package B, depends: geht
+    # call function from other package B, suggests: geht nicht
+    # call function from own package A: geht, wird das dann geladen?
+    # sowas wie get/assign sollte man halt nicht tun
 
 commit man dir, remove it from gitignore?
 
