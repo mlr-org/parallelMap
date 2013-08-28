@@ -16,9 +16,9 @@ test_that("BatchJobs mode", {
   partest2(storagedir)
   parallelStop()
   
-  parallelStartBatchJobs(storagedir=storagedir)
-  partest3()
-  parallelStop()
+#   parallelStartBatchJobs(storagedir=storagedir)
+#   partest3()
+#   parallelStop()
   
   parallelStartBatchJobs(storagedir=storagedir)
   # we cannot really check that wromg libraries are not loaded on slave here.

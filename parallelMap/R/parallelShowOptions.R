@@ -3,8 +3,7 @@
 #' Displayed are current and default settings. 
 #' 
 #' For details on the configuration procedure please read 
-#FIXME url. 
-#' \code{\link{parallelStart}} and \url{github}.
+#' \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
 #' 
 #' @export
 parallelShowOptions = function() {

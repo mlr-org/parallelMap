@@ -13,9 +13,9 @@ Imports: BBmisc (>= 1.3-64)
 Suggests: testthat, parallel, Rmpi, BatchJobs
 LazyData: yes
 ByteCompile: yes
-Version: 1.0-67
+Version: 1.0-75
 Collate: 'autodetectCpus.R' 'batchjobs.R' 'displayErrorMessages.R'
         'getExtraPackages.R' 'getOption.R' 'logging.R'
-        'parallelExport.R' 'parallelLibrary.R' 'parallelMap.R'
-        'parallelShowOptions.R' 'parallelStart.R' 'parallelStop.R'
-        'parApply.R' 'registerLevels.R' 'utils.R' 'zzz.R'
+        'parallelLibrary.R' 'parallelMap.R' 'parallelShowOptions.R'
+        'parallelStart.R' 'parallelStop.R' 'utils.R' 'zzz.R'
+        'parallelApply.R' 'parallelRegisterLevels.R'

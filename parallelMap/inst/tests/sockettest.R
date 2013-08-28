@@ -16,9 +16,9 @@ sockettest = function() {
   partest2(tempdir())
   parallelStop()
   
-  parallelStartSocket(2)
-  partest3()
-  parallelStop()
+#   parallelStartSocket(2)
+#   partest3()
+#   parallelStop()
 
   parallelStartSocket(2)
   partest4(slave.error.test=TRUE)

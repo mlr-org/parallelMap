@@ -49,26 +49,27 @@ partest2 = function(log.dir) {
   check.contains(iter=3, c("xxx", "yyy"))
 }
 
-# test that exported variables exist on slave
-partest3 = function() {
-  # export nothing, no change
-  parallelExport()
-  foo = 100  
-  parallelExport("foo")  
-  f = function(i) 
-    i + foo
-  expect_equal(parallelMap(f, 1:2), list(101, 102))
-  
-  # now test with foo2 defined one level fruther above
-  f = function(i) 
-    i + foo2
-  foo2 = 100 
-  g = function() {
-    parallelExport("foo2")
-  }
-  g()
-  expect_equal(parallelMap(f, 1:2), list(101, 102))
-}
+#FIXME add later
+# # test that exported variables exist on slave
+# partest3 = function() {
+#   # export nothing, no change
+#   parallelExport()
+#   foo = 100  
+#   parallelExport("foo")  
+#   f = function(i) 
+#     i + foo
+#   expect_equal(parallelMap(f, 1:2), list(101, 102))
+#   
+#   # now test with foo2 defined one level fruther above
+#   f = function(i) 
+#     i + foo2
+#   foo2 = 100 
+#   g = function() {
+#     parallelExport("foo2")
+#   }
+#   g()
+#   expect_equal(parallelMap(f, 1:2), list(101, 102))
+# }
 
 
 # test that exported libraries are loaded

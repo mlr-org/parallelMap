@@ -34,8 +34,9 @@ parallelStop = function() {
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)
+      #FIXME add later
       # remove exported objects
-      cleanUpBatchJobsExports()
+      #cleanUpBatchJobsExports()
     } 
     if (!isModeLocal()) {
       showInfoMessage("Stopped parallelization. All cleaned up.")

@@ -3,8 +3,9 @@
 #' Use the parallelization mode and the other options set in
 #' \code{\link{parallelStart}}.
 #'
-#' Large objects can be separately exported via \code{\link{parallelExport}},
-#' they can be simply used under their exported name in slave body code.
+#FIXME add later
+# Large objects can be separately exported via \code{\link{parallelExport}},
+# they can be simply used under their exported name in slave body code.
 #'
 #' @param fun [\code{function}]\cr
 #'   Function to map over \code{...}.
