@@ -130,11 +130,11 @@ The following options are currently available:
   parallelMap.default.autostart       = TRUE / FALSE
   parallelMap.default.mode            = "local" / "multicore" / "socket" / "MPI" / "BatchJobs"
   parallelMap.default.cpus            = <integer>
-  parallelMap.default.level           = TRUE / FALSE
-  parallelMap.default.socket.hosts    = TRUE / FALSE
+  parallelMap.default.level           = <string> or NA
+  parallelMap.default.socket.hosts    = character vector of host names where to spawn in socket mode
   parallelMap.default.show.info       = TRUE / FALSE
   parallelMap.default.logging         = TRUE / FALSE
-  parallelMap.default.storagedir      = <path>
+  parallelMap.default.storagedir      = <path>, must be on a shared file system for master / slaves
 ```
 
 For their precise meaning please read the documentation of parallelStart.
