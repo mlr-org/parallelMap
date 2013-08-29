@@ -1,7 +1,10 @@
 Package: parallelMap
-Title: Unified interface to some popular parallelization back-ends.
-Description: Unified interface to some popular parallelization
-        back-ends.
+Title: Unified interface to some popular parallelization back-ends for
+        interactive usage and package development.
+Description: Map over lists in parallel. Supports local, multicore, mpi
+        and BatchJobs mode. Allows "tagging" of the parallel operation
+        with a level name that can be later selected by the user to
+        switch on parallel execution for exactly this operation.
 Author: Bernd Bischl <bernd_bischl@gmx.net>, Michel Lang
         <lang@statistik.tu-dortmund.de>
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
@@ -13,7 +16,7 @@ Imports: BBmisc (>= 1.3-64)
 Suggests: testthat, parallel, Rmpi, BatchJobs
 LazyData: yes
 ByteCompile: yes
-Version: 1.0-75
+Version: 1.0-80
 Collate: 'autodetectCpus.R' 'batchjobs.R' 'displayErrorMessages.R'
         'getExtraPackages.R' 'getOption.R' 'logging.R'
         'parallelLibrary.R' 'parallelMap.R' 'parallelShowOptions.R'
