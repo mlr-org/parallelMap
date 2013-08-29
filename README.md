@@ -128,7 +128,7 @@ The following options are currently available:
 
 ```splus
   parallelMap.default.autostart       = TRUE / FALSE
-  parallelMap.default.mode            = "local" / "multicore" / "socket" / "MPI" / "BatchJobs"
+  parallelMap.default.mode            = "local" / "multicore" / "socket" / "mpi" / "BatchJobs"
   parallelMap.default.cpus            = <integer>
   parallelMap.default.level           = <string> or NA
   parallelMap.default.socket.hosts    = character vector of host names where to spawn in socket mode
