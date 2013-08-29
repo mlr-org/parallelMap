@@ -3,7 +3,7 @@
 setwd("html")
 try ({
   library(knitr)
-  knit_rd("BBmisc")
+  knit_rd("parallelMap")
 })
 setwd("..")
 
