@@ -1,9 +1,3 @@
-externer test mit mlr
-da hier ist extrem scheiße, aufrufende pakete werden auf dem slave nicht geladen.
-
-fix NEWS
-
-##### LATER #####
 
 regarding parExport
 - enable function
