@@ -11,9 +11,11 @@ parallelMap was written with users (like me) in mind who want a unified parallel
 * Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package. 
 * Allows the client user of your developed package to completely configure the paralleization from the outside. 
 * Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easiliy configurable via options. 
-* Supports the most important parallelization modi. For me, these currently are usage of muliple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
+* Supports the most important parallelization modi. For me, these currently are: usage of muliple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
 * Does not make debugging annoying and tedious. 
 
+The complete package documentation is available here:
+http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/
 
 Mini Tutorial
 =============
@@ -23,34 +25,32 @@ Here is a short tutorial that already contains the most important concepts and o
 ```splus
 ##### Example 1) #####
 
+library(parallelMap)
 parallelStartSocket(2)    # start in socket mode and create 2 processes on localhost
 f = function(i) i + 5     # define our job
 y = parallelMap(f, 1:2)   # like R's Map but in parallel
 parallelStop()            # turn parallelization off again
 ```
 
-If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in parallelStart. parallelStart is a catch-all procedure, that allows to set all available.....
+If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in parallelStart. parallelStart is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of parallelStart exists with a smaller, appropriate interface.
 
-Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a parallelLibary before calling parallelMap in the above example. 
-And in some cases it might be more efficient to directly export some large data to the global environment of the slave than passing it directly to the job function by using the more.args argument of parallelMap.
-(Whether the former acfually IS more efficient, depends on the paralleliazation mode.)
-Such a data export can be done with the function parallelExport. 
+Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a parallelLibary before calling parallelMap.
 
 ```splus
 ##### Example 2) #####
 
+library(parallelMap)
 parallelStartSocket(2)    
-parallelLibrary("foo1", "foo2") 
-mydata = iris
-mytarget = "Species"
-parallelExport("mydara", "mytarget")
+parallelLibrary("MASS") 
+# subsample iris, fit an LDA model and return prediction error
 f = function(i) {
-  n = nrow(mydata)
-  train = 
-  form = reformulate(target, ".")
-  model = lda(form, data=mydata)
+  n = nrow(iris)
+  train = sample(n, n/2)
+  test = setdiff(1:n, train)
+  model = lda(Species~., data=iris[train,])
+  pred = predict(model, newdata=iris[test,])
+  mean(pred$class != iris[test,]$Species)
 }
-
 y = parallelMap(f, 1:2)   
 parallelStop()            
 ```
@@ -113,6 +113,15 @@ y = parallelMap(f, 1:2)
 
 In the console you see what happens:
 
+```
+Auto-starting parallelization.
+Starting parallelization in mode=multicore with cpus=4.
+Loading required package: parallel
+Doing a parallel mapping operation.
+Auto-stopping parallelization.
+Stopped parallelization. All cleaned up.
+```
+
 parallelMap auto-calls parallelStart in the bginning of parallelMap and neatly cleans everything up by calling parallelStop in the end. 
 
 The following options are currently available:
@@ -128,9 +137,14 @@ The following options are currently available:
   parallelMap.default.storagedir      = <path>
 ```
 
-For their precise meaning please read parallelStart.
+For their precise meaning please read the documentation of parallelStart.
 
-The complete package documentation is available here. 
+
+Package development: Tagging mapping operations with a level name
+=================================================================
+
+TO COME
+
 
 
 
