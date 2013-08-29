@@ -1,16 +1,17 @@
 #' Stops parallelization.
 #'
-#' The parallelMap mode is set to \dQuote{local}, i.e., parallelization is turned 
-#' off. 
-#'
-#' After a subsequent call of \code{\link{parallelStart}}, no exported objects 
-#' are present on the slaves and no libraries are loaded,
-#' i.e., you have clean R sessions on the slaves. 
+#' Sets mode to \dQuote{local}, i.e., parallelization is turned 
+#' off and all necessary stuff is cleaned up.
 #' 
 #' For socket and mpi mode \code{\link[parallel]{stopCluster}} is called.
 #' 
-#' For BatchJobs mode the subdirectory of the \code{storagedir}
-#' containing the exported objects is removed.    
+#FIXME add later
+# For BatchJobs mode the subdirectory of the \code{storagedir}
+# containing the exported objects is removed.    
+#
+# After a subsequent call of \code{\link{parallelStart}}, no exported objects 
+# are present on the slaves and no libraries are loaded,
+# i.e., you have clean R sessions on the slaves. 
 #'
 #' @return Nothing.
 #' @export

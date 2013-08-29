@@ -1,12 +1,11 @@
-#' A parallel verions of apply-family functions
+#' Parallel versions of apply-family functions.
 #'
-#' \code{parallelLapply}: A parallel \code{\link{lapply}} version.
-#' \code{parallelSapply}: A parallel \code{\link{sapply}} version.
-#' 
-#' All functions are simple wrappers for \code{\link{parallelMap}}
+#' \code{parallelLapply}: A parallel \code{\link{lapply}} version.\cr
+#' \code{parallelSapply}: A parallel \code{\link{sapply}} version.\cr
+#' All functions are simple wrappers for \code{\link{parallelMap}}.
 #'
 #' @param xs [\code{vector} | \code{list}]\cr
-#'   \code{fun} is applied to the the elements of this argument.
+#'   \code{fun} is applied to the elements of this argument.
 #' @param fun [\code{function}]\cr
 #'   Function to map over \code{xs}.
 #' @param ... [any]\cr
@@ -20,7 +19,8 @@
 #' @param level [\code{character(1)}]\cr
 #'   See \code{\link{parallelMap}}.
 #' @return For \code{parallelLapply} an unamed list, 
-#'   \code{parallelSapply} it depends on \code{fun} and the set arguments.
+#'   for \code{parallelSapply} it depends on the return value of 
+#'   \code{fun} and the settings of \code{simplify} and \code{use.names}.
 #' @export
 parallelLapply = function(xs, fun, ..., level=NA_character_) {
   more.args = list(...)

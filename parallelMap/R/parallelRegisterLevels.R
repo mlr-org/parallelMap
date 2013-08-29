@@ -5,7 +5,7 @@
 #' @param package [\code{character(1)}]\cr
 #'   Name of your package.
 #' @param levels [\code{character(1)}]\cr
-#'   Availabe levels that used in your \code{\link{parallelMap}} operations in your package.
+#'   Availabe levels that are used in the \code{\link{parallelMap}} operations of your package.
 #' @return Nothing.
 #' @export
 parallelRegisterLevels = function(package, levels) {

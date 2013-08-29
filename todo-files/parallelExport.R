@@ -1,23 +1,26 @@
 #' Export a larger object which is needed in slave code of \code{\link{parallelMap}}.
 #'
-#' For local and multicore nothing is done, forking does not need extra exports.
+#' For local and multicore modes nothing is done, forking does not need extra exports.
 #' 
+#FIXME reword and explain
 #' For socket mode the objects are exported in a way loosely similar to \code{\link[parallel]{clusterExport}}, but without
 #' the ugly and tedious environment setting. 
 #' 
-#' For BatchJobs the objects are stored on disk under the configured \code{storagedir}.
+#' For BatchJobs mode, the objects are stored on disk under the configured \code{storagedir}.
 #' The subdirectory is called \dQuote{parallelMap_BatchJobs_exports} and 
 #' automatically created during \code{\link{parallelStart}} and
 #' removed during \code{\link{parallelStop}}.
 #'
+#FIXME add level
 #' @param ... [\code{character(1)}]\cr
-#'   Names of object to export.
+#'   Names of objects to export.
 #' @param objnames [\code{character(1)}]\cr
 #'   Names of objects to export.
 #'   Alternative way to pass arguments.
 #' @return Nothing.
 #' @export
 #' @examples
+#FIXME anderer mode
 #' foo <- 100
 #' f <- function(x) x + foo
 #' parallelStart(mode="local")

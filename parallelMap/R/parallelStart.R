@@ -1,12 +1,10 @@
 #' Parallelization setup for parallelMap.
 #'
-#' Defines the underlying parallelization mode for \code{\link{parallelMap}} 
-#' and allows to set a \dQuote{level} of parallelization.
+#' Defines the underlying parallelization mode for \code{\link{parallelMap}}.
+#' Also allows to set a \dQuote{level} of parallelization.
 #' Only calls to \code{\link{parallelMap}} with a matching level are parallelized.
-#' 
 #' The defaults of all settings are taken from your options, which you can
 #' also define in your R profile.
-#' 
 #' For an introductory tutorial and information on the options configuration, please
 #' go to the project's github page at \url{https://github.com/berndbischl/parallelMap}.
 #'
@@ -15,14 +13,14 @@
 #' 
 #' \describe{
 #' \item{local}{No parallelization with \code{\link{mapply}}.}
-#' \item{multicore}{Multicore execution on a single machine with\code{\link[parallel]{mclapply}}.}
-#' \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterApplyLB}}.}
-#' \item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterApplyLB}}.}
-#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., by with \code{\link[BatchJobs]{batchMap}}.}
+#' \item{multicore}{Multicore execution on a single machine with\code{\link[parallel]{mcmapply}}.}
+#' \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
+#' \item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterMap}}.}
+#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs]{batchMap}}.}
 #' }
 #' 
-#' For BatchJobs you need to define a storage directory through the argument storagedir or
-#' the option \code{parallelMap.storagedir}
+#' For BatchJobs mode you need to define a storage directory through the argument \code{storagedir} or
+#' the option \code{parallelMap.default.storagedir}.
 #'
 #' @param mode [\code{character(1)}]\cr
 #'   Which parallel mode should be used:
@@ -32,7 +30,7 @@
 #' @param cpus [\code{integer(1)}]\cr
 #'   Number of used cpus.
 #'   For local and BatchJobs mode this argument is ignored.
-#'   For socket this is the numbers of processes spawned on localhost, if
+#'   For socket mode, this is the number of processes spawned on localhost, if
 #'   you want processes on multiple machines use \code{socket.hosts}.
 #'   Default is the option \code{parallelMap.default.cpus} or, if not set,
 #'   \code{\link[parallel]{detectCores}} for multicore mode, 
@@ -42,11 +40,10 @@
 #'   Only used in socket mode, otherwise ignored. 
 #'   Names of hosts where parallel processes are spawned.
 #'   Default is the option \code{parallelMap.default.socket.hosts}, if this option exists.
-#' @param level [\code{character(1)}]\cr
-#'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
-#'   that have the same level specified.
-#'   Default is the option \code{parallelMap.default.level} or, if not set, 
-#'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
+#' @param bj.resources [\code{list}]\cr
+#'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
+#'   See \code{\link[BatchJobs]{submitJobs}}.
+#'   Defaults are taken from your BatchJobs config file.
 #' @param logging [\code{logical(1)}]\cr
 #'   Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?
 #'   Files are named "<iteration_number>.log" and put into unique
@@ -64,10 +61,11 @@
 #'   mode are stored.
 #'   Note that all nodes must have write access to exactly this path.
 #'   Default is the current working directory.  
-#' @param bj.resources [\code{list}]\cr
-#'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
-#'   See \code{\link[BatchJobs]{submitJobs}}.
-#'   Defaults are taken from your BatchJobs config file.
+#' @param level [\code{character(1)}]\cr
+#'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
+#'   that have the same level specified.
+#'   Default is the option \code{parallelMap.default.level} or, if not set, 
+#'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set, 
@@ -77,7 +75,7 @@
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, level, logging, storagedir, bj.resources=list(), show.info, ...) {
+parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging, storagedir, level, show.info, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -170,28 +168,28 @@ parallelStartLocal = function(show.info) {
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, level, logging, storagedir, show.info) {
+parallelStartMulticore = function(cpus, logging, storagedir, level, show.info) {
   parallelStart(mode=MODE_MULTICORE, cpus=cpus, level=level, logging=logging, 
     storagedir=storagedir, show.info=show.info)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, level, logging, storagedir, show.info, ...) {
+parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, show.info, ...) {
   parallelStart(mode=MODE_SOCKET, cpus=cpus, socket.hosts=socket.hosts, level=level, logging=logging, 
     storagedir=storagedir, show.info=show.info)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, level, logging, storagedir, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level, show.info, ...) {
   parallelStart(mode=MODE_MPI, cpus=cpus, level=level, logging=logging, 
     storagedir=storagedir, show.info=show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartBatchJobs = function(level, logging, storagedir, bj.resources=list(), show.info) {
+parallelStartBatchJobs = function(bj.resources=list(), logging, storagedir, level, show.info) {
   parallelStart(mode=MODE_BATCHJOBS, level=level, logging=logging, 
     storagedir=storagedir, bj.resources=bj.resources, show.info=show.info)
 }

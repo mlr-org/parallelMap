@@ -1,6 +1,6 @@
 #' Maps a function over lists or vectors in parallel.
 #'
-#' Use the parallelization mode and the other options set in
+#' Use the parallelization mode and the other options specified in
 #' \code{\link{parallelStart}}.
 #'
 #FIXME add later
@@ -23,8 +23,9 @@
 #'   of class character?
 #'   Default is \code{FALSE}.
 #' @param level [\code{character(1)}]\cr
-#'   The call is only parallelized if the same level is specified in
-#'   \code{\link{parallelStart}} or this argument is \code{NA}.
+#'   If a (non-missing) level is specified in \code{\link{parallelStart}},
+#'   this call is only parallelized if the level specified here matches.
+#'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
 #' @return Result.
 #' @export

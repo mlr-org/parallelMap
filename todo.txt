@@ -13,6 +13,8 @@ commit man dir, remove it from gitignore?
 
 document handling of errors
 
+document RNG init / stuff
+
 geht erste ebene mit batchjobs, zweite mit mpi oder multicore
 
 chunking in parallelMap
