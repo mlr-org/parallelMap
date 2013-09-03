@@ -9,9 +9,9 @@ Overview
 parallelMap was written with users (like me) in mind who want a unified parallelization procedure in R that
 
 * Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package. 
-* Allows the client user of your developed package to completely configure the paralleization from the outside. 
-* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easiliy configurable via options. 
-* Supports the most important parallelization modi. For me, these currently are: usage of muliple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
+* Allows the client user of your developed package to completely configure the parallelization from the outside. 
+* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easily configurable via options. 
+* Supports the most important parallelization modes. For me, these currently are: usage of multiple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
 * Does not make debugging annoying and tedious. 
 
 The complete package documentation is available here:
@@ -122,7 +122,7 @@ Auto-stopping parallelization.
 Stopped parallelization. All cleaned up.
 ```
 
-parallelMap auto-calls parallelStart in the bginning of parallelMap and neatly cleans everything up by calling parallelStop in the end. 
+parallelMap auto-calls parallelStart in the beginning of parallelMap and neatly cleans everything up by calling parallelStop in the end. 
 
 The following options are currently available:
 
