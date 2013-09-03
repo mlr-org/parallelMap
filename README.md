@@ -32,7 +32,7 @@ y = parallelMap(f, 1:2)   # like R's Map but in parallel
 parallelStop()            # turn parallelization off again
 ```
 
-If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in parallelStart. parallelStart is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of parallelStart exists with a smaller, appropriate interface.
+If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html). parallelStart is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of parallelStart exists with a smaller, appropriate interface.
 
 Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a parallelLibary before calling parallelMap.
 
