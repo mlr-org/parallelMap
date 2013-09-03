@@ -1,4 +1,4 @@
-parallelMap
+bparallelMap
 ===========
 
 R package to interface some popular parallelization back-ends with a unified interface. 
@@ -58,7 +58,7 @@ parallelStop()
 Being Lazy: Configuration and Auto-Start
 ========================================
 
-On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.statistik.tu-dortmund.de/bischl.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.  
+On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.statistik.tu-dortmund.de/~bischl) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.  
 
 Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
 
