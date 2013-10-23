@@ -2,4 +2,4 @@
 
 require("methods")
 require("roxygen2")
-roxygenize("parallelMap")
+roxygenize(".")

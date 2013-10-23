@@ -4,7 +4,6 @@
 parallelMap.Rproj
 parallelMap.Rcheck
 test_src.R
-parallelMap/man
-parallelMap/inst/tests/parallelmap_bj_files
+inst/tests/parallelmap_bj_files
 parallelMap_*.tar.gz
 html
