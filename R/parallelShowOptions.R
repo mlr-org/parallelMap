@@ -12,9 +12,9 @@ parallelShowOptions = function() {
     opt2val = getPMDefOption(opt)
     if (opt == "bj.resources") {
       opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)", 
-        listToShortString(opt1val))    
+        convertToShortString(opt1val))    
       if (!is.null(opt2val))
-        opt2val = listToShortString(opt2val)
+        opt2val = convertToShortString(opt2val)
     }
     if (is.null(opt2val))
       opt2val = "not set"
