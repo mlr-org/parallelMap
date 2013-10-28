@@ -22,7 +22,7 @@ Suggests:
     BatchJobs
 LazyData: yes
 ByteCompile: yes
-Version: 1.0-99
+Version: 1.1
 Collate:
     'autodetectCpus.R'
     'batchjobs.R'
