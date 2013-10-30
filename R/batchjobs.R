@@ -23,16 +23,6 @@ optionBatchsJobsPackages = function(pkgs) {
     options(parallelMap.bj.packages=pkgs)
 }
 
-# FIXME remove this after new version of bj on cran
-getBJErrorMessages = function (reg, ids) {
-  BatchJobs:::syncRegistry(reg)
-  tab = BatchJobs:::dbGetErrorMsgs(reg, ids, filter = FALSE)
-  setNames(tab$error, tab$job_id)
-}
 
 
-# FIXME remove this after new version of bj on cran
-getBJConfig = function() {
-  get(".BatchJobs.conf", envir = getNamespace("BatchJobs"))
-}
 

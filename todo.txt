@@ -1,3 +1,4 @@
+depend on new bj
 
 regarding parExport
 - enable function
@@ -9,8 +10,6 @@ regarding parExport
     # call function from own package A: geht, wird das dann geladen?
     # sowas wie get/assign sollte man halt nicht tun
 
-commit man dir, remove it from gitignore?
-
 document handling of errors
 
 document RNG init / stuff
@@ -19,7 +18,6 @@ geht erste ebene mit batchjobs, zweite mit mpi oder multicore
 
 chunking in parallelMap
 
-depend on new bj
 
 parallelApply, parallelVapply
 
