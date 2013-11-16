@@ -20,37 +20,38 @@ usage:
 
 
 clean:
-	echo "\nCleaning up ..."
+	printf "\nCleaning up ...\n"
 	${DELETE} src/*.o src/*.so *.tar.gz
 	${DELETE} html
+	${DELETE} *.Rcheck 
 	${DELETE} .RData .Rhistory
 
 roxygenize: clean
-	echo "\nRoxygenizing package ..."
+	printf "\nRoxygenizing package ...\n"
 	${RSCRIPT} ./tools/roxygenize
 
 package: roxygenize
-	echo "\nBuilding package file $(TARGZ)"
+	printf "\nBuilding package file $(TARGZ)\n"
 	${R} CMD build .
 
 install: package
-	echo "\nInstalling package $(TARGZ)"
+	printf "\nInstalling package $(TARGZ)\n"
 	${R} CMD INSTALL $(TARGZ)
 
 test: install
-	echo "\nTesting package $(TARGZ)"
+	printf "\nTesting package $(TARGZ)\n"
 	${RSCRIPT} ./test_all.R
 
 check: package
-	echo "\nRunning R CMD check ..."
+	printf "\nRunning R CMD check ...\n"
 	${R} CMD check $(TARGZ)
 
 check-rev-dep: package
-	echo "\nRunning reverse dependency checks for CRAN ..."
+	printf "\nRunning reverse dependency checks for CRAN ...\n"
 	${RSCRIPT} ./tools/check-rev-dep
 
 html: install
-	echo "\nGenerating html docs..."
+	printf "\nGenerating html docs...\n"
 	${DELETE} html
 	mkdir html
 	${RSCRIPT} ./tools/generate-html-docs

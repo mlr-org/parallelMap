@@ -27,9 +27,8 @@ showStartupMsg = function(mode, cpus, socket.hosts) {
       showInfoMessage("Starting parallelization in mode=%s on %i hosts.", 
         mode, length(socket.hosts))
     } else if (mode == MODE_BATCHJOBS) {
-      #FIXME function is exported in later bj version, also then depend on it
       showInfoMessage("Starting parallelization in mode=%s-%s.", 
-        mode, getBJConfig()$cluster.functions$name)
+        mode, BatchJobs::getConfig()$cluster.functions$name)
     }
   }
 }
