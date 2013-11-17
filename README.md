@@ -9,7 +9,7 @@ http://cran.r-project.org/web/packages/parallelMap/index.html
 R Documentation in HTML:
 http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/
 
-Travis CI: [![Build Status](https://travis-ci.org/tudo-r/BatchJobs.png)](https://travis-ci.org/berndbischl/parallelMap)
+Travis CI: [![Build Status](https://travis-ci.org/berndbischl/parallelMap.png)](https://travis-ci.org/berndbischl/parallelMap)
 
 
 Overview
