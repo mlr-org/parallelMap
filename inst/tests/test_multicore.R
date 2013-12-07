@@ -25,4 +25,20 @@ if (isExpensiveExampleOk()) {
     partest5()
     parallelStop()
   })
+
+  test_that("multicore does not run sequentially", {
+    f = function(i) {
+      Sys.sleep(5) 
+      i
+    }
+    
+    parallelStartMulticore(cpus=2L)
+    st = system.time({
+      ys = parallelMap(f, 1:2, simplify=TRUE)
+    })
+        parallelStop()
+    
+    expect_equal(ys, 1:2)
+    expect_true(st[3L] < 8)
+  }) 
 }
