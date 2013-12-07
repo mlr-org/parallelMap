@@ -61,7 +61,8 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
   } else {
     iters = seq_along(..1)
-    showInfoMessage("Doing a parallel mapping operation.")
+    showInfoMessage("Mapping in parallel: mode=%s; cpus=%i; elements=%i.",
+      getPMOptMode(), getPMOptCpus(), length(iters))
 
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir=logdir), more.args)
