@@ -1,9 +1,13 @@
+^makeR
+parallelMap.Rcheck
 todo-files
-tools
+
 ^.*tar.gz$
+
 .gitignore
 .Rproj.user
 .travis.yml
+
 external_test.R
 Makefile
 README.md
