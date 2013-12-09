@@ -2,9 +2,8 @@
 \alias{parallelMap}
 \title{Maps a function over lists or vectors in parallel.}
 \usage{
-  parallelMap(fun, ..., more.args = list(),
-    simplify = FALSE, use.names = FALSE,
-    level = as.character(NA))
+parallelMap(fun, ..., more.args = list(), simplify = FALSE,
+  use.names = FALSE, level = as.character(NA))
 }
 \arguments{
   \item{fun}{[\code{function}]\cr Function to map over
@@ -31,11 +30,11 @@
   Default is \code{NA}.}
 }
 \value{
-  Result.
+Result.
 }
 \description{
-  Use the parallelization mode and the other options
-  specified in \code{\link{parallelStart}}.
+Use the parallelization mode and the other options
+specified in \code{\link{parallelStart}}.
 }
 \examples{
 parallelStart()

@@ -2,7 +2,7 @@
 \alias{parallelRegisterLevels}
 \title{Register available parallelization levels in a client package.}
 \usage{
-  parallelRegisterLevels(package, levels)
+parallelRegisterLevels(package, levels)
 }
 \arguments{
   \item{package}{[\code{character(1)}]\cr Name of your
@@ -13,10 +13,10 @@
   of your package.}
 }
 \value{
-  Nothing.
+Nothing.
 }
 \description{
-  Call this in your\code{\link{.onLoad}} in your
-  \dQuote{zzz.R}.
+Call this in your\code{\link{.onLoad}} in your
+\dQuote{zzz.R}.
 }
 

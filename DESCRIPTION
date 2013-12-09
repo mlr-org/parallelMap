@@ -23,19 +23,3 @@ Suggests:
 LazyData: yes
 ByteCompile: yes
 Version: 1.1
-Collate:
-    'autodetectCpus.R'
-    'batchjobs.R'
-    'displayErrorMessages.R'
-    'getExtraPackages.R'
-    'getOption.R'
-    'logging.R'
-    'parallelLibrary.R'
-    'parallelMap.R'
-    'parallelShowOptions.R'
-    'parallelStart.R'
-    'parallelStop.R'
-    'utils.R'
-    'zzz.R'
-    'parallelApply.R'
-    'parallelRegisterLevels.R'

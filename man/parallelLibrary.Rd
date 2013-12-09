@@ -2,8 +2,7 @@
 \alias{parallelLibrary}
 \title{Load packages for parallelization.}
 \usage{
-  parallelLibrary(..., packages, master = TRUE,
-    level = as.character(NA))
+parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
 }
 \arguments{
   \item{...}{[\code{character(1)}]\cr Names of packages to
@@ -25,14 +24,14 @@
   \code{NA}.}
 }
 \value{
-  Nothing.
+Nothing.
 }
 \description{
-  Makes sure in that case of socket, mpi and BatchJobs
-  mode, the packages are loaded in the slave processes. For
-  all modes, the packages are also (potentially) loaded on
-  the master. Note that loading the packages on the master
-  is (obviously) required for having them available during
-  the slave operation for modes local and multicore.
+Makes sure in that case of socket, mpi and BatchJobs mode,
+the packages are loaded in the slave processes. For all
+modes, the packages are also (potentially) loaded on the
+master. Note that loading the packages on the master is
+(obviously) required for having them available during the
+slave operation for modes local and multicore.
 }
 

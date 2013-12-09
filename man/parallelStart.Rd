@@ -7,23 +7,20 @@
 \alias{parallelStartSocket}
 \title{Parallelization setup for parallelMap.}
 \usage{
-  parallelStart(mode, cpus, socket.hosts,
-    bj.resources = list(), logging, storagedir, level,
-    show.info, ...)
+parallelStart(mode, cpus, socket.hosts, bj.resources = list(), logging,
+  storagedir, level, show.info, ...)
 
-  parallelStartLocal(show.info)
+parallelStartLocal(show.info)
 
-  parallelStartMulticore(cpus, logging, storagedir, level,
-    show.info)
+parallelStartMulticore(cpus, logging, storagedir, level, show.info)
 
-  parallelStartSocket(cpus, socket.hosts, logging,
-    storagedir, level, show.info, ...)
+parallelStartSocket(cpus, socket.hosts, logging, storagedir, level, show.info,
+  ...)
 
-  parallelStartMPI(cpus, logging, storagedir, level,
-    show.info, ...)
+parallelStartMPI(cpus, logging, storagedir, level, show.info, ...)
 
-  parallelStartBatchJobs(bj.resources = list(), logging,
-    storagedir, level, show.info)
+parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
+  show.info)
 }
 \arguments{
   \item{mode}{[\code{character(1)}]\cr Which parallel mode
@@ -90,41 +87,39 @@
   mpi mode passed to \code{\link[parallel]{makeCluster}}.}
 }
 \value{
-  Nothing.
+Nothing.
 }
 \description{
-  Defines the underlying parallelization mode for
-  \code{\link{parallelMap}}. Also allows to set a
-  \dQuote{level} of parallelization. Only calls to
-  \code{\link{parallelMap}} with a matching level are
-  parallelized. The defaults of all settings are taken from
-  your options, which you can also define in your R
-  profile. For an introductory tutorial and information on
-  the options configuration, please go to the project's
-  github page at
-  \url{https://github.com/berndbischl/parallelMap}.
+Defines the underlying parallelization mode for
+\code{\link{parallelMap}}. Also allows to set a
+\dQuote{level} of parallelization. Only calls to
+\code{\link{parallelMap}} with a matching level are
+parallelized. The defaults of all settings are taken from
+your options, which you can also define in your R profile.
+For an introductory tutorial and information on the options
+configuration, please go to the project's github page at
+\url{https://github.com/berndbischl/parallelMap}.
 }
 \details{
-  Currently the following modes are supported, which
-  internally dispatch the mapping operation to functions
-  from different parallelization packages:
+Currently the following modes are supported, which
+internally dispatch the mapping operation to functions from
+different parallelization packages:
 
-  \describe{ \item{local}{No parallelization with
-  \code{\link{mapply}}.} \item{multicore}{Multicore
-  execution on a single machine
-  with\code{\link[parallel]{mcmapply}}.}
-  \item{socket}{Socket cluster on one or multiple machines
-  with \code{\link[parallel]{makePSOCKcluster}} and
-  \code{\link[parallel]{clusterMap}}.} \item{mpi}{Snow MPI
-  cluster on one or multiple machines with
-  \code{\link[parallel]{makeCluster}} and
-  \code{\link[parallel]{clusterMap}}.}
-  \item{BatchJobs}{Parallelization on batch queuing HPC
-  clusters, e.g., Torque, SLURM, etc., with
-  \code{\link[BatchJobs]{batchMap}}.} }
+\describe{ \item{local}{No parallelization with
+\code{\link{mapply}}.} \item{multicore}{Multicore execution
+on a single machine with\code{\link[parallel]{mcmapply}}.}
+\item{socket}{Socket cluster on one or multiple machines
+with \code{\link[parallel]{makePSOCKcluster}} and
+\code{\link[parallel]{clusterMap}}.} \item{mpi}{Snow MPI
+cluster on one or multiple machines with
+\code{\link[parallel]{makeCluster}} and
+\code{\link[parallel]{clusterMap}}.}
+\item{BatchJobs}{Parallelization on batch queuing HPC
+clusters, e.g., Torque, SLURM, etc., with
+\code{\link[BatchJobs]{batchMap}}.} }
 
-  For BatchJobs mode you need to define a storage directory
-  through the argument \code{storagedir} or the option
-  \code{parallelMap.default.storagedir}.
+For BatchJobs mode you need to define a storage directory
+through the argument \code{storagedir} or the option
+\code{parallelMap.default.storagedir}.
 }
 

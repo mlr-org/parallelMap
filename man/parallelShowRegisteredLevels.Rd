@@ -2,14 +2,14 @@
 \alias{parallelShowRegisteredLevels}
 \title{Display registered parallelization levels for all currently loaded packages.}
 \usage{
-  parallelShowRegisteredLevels()
+parallelShowRegisteredLevels()
 }
 \value{
-  Invisibly returns a list object that contains the
-  displayed information.
+Invisibly returns a list object that contains the displayed
+information.
 }
 \description{
-  Display registered parallelization levels for all
-  currently loaded packages.
+Display registered parallelization levels for all currently
+loaded packages.
 }
 
