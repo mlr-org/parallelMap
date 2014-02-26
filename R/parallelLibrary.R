@@ -1,6 +1,6 @@
 #' Load packages for parallelization.
 #'
-#' Makes sure in that case of socket, mpi and BatchJobs mode, 
+#' Makes sure in that case of socket, mpi and BatchJobs mode,
 #' the packages are loaded in the slave processes.
 #' For all modes, the packages are also (potentially) loaded on the master.
 #' Note that loading the packages on the master is (obviously) required for
@@ -12,7 +12,7 @@
 #'   Names of packages to load.
 #'   Alternative way to pass arguments.
 #' @param master [\code{logical(1)}]\cr
-#'   Load packages also on master?       
+#'   Load packages also on master?
 #'   If you set this to \code{FALSE}, nothing actually
 #'   happens for modes local and multicore.
 #'   Default is \code{TRUE}.
@@ -35,9 +35,9 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
   }
   checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=TRUE)
-  
+
   mode = getPMOptMode()
-  
+
   # remove duplicates
   packages = unique(packages)
 
@@ -46,16 +46,16 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
     if (master) {
       requirePackages(packages, why="parallelLibrary")
     }
-  
+
     if (isParallelizationLevel(level)) {
       messagef("Loading packages on slaves: %s", collapse(packages))
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         .parallelMap.pkgs = packages
         exportToSlavePkgParallel(".parallelMap.pkgs", .parallelMap.pkgs)
-        # oks is a list (slaves) of logical vectors (pkgs)        
+        # oks is a list (slaves) of logical vectors (pkgs)
         oks = clusterEvalQ(cl=NULL, {
           sapply(.parallelMap.pkgs, require, character.only=TRUE, USE.NAMES=TRUE)
-        })  
+        })
         # get not loaded pkgs
         not.loaded = lapply(oks, function(v) {
           names(v)[!v]
@@ -65,7 +65,7 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
           stopf("Packages could not be loaded on all slaves: %s.", collapse(not.loaded))
       } else if (isModeBatchJobs()) {
         # collect in R option, add new packages to old ones
-        optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))      
+        optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))
       }
     }
   }
