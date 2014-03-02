@@ -1,10 +1,10 @@
-#' Load packages for parallelization.
+#' @title Load packages for parallelization.
+
+#' @description
+#' Makes sure that the packages are loaded so that they can be used in a job
+#' function which is later run with \code{\link{parallelMap}}.
 #'
-#' Makes sure in that case of socket, mpi and BatchJobs mode,
-#' the packages are loaded in the slave processes.
 #' For all modes, the packages are also (potentially) loaded on the master.
-#' Note that loading the packages on the master is (obviously) required for
-#' having them available during the slave operation for modes local and multicore.
 #'
 #' @param ... [\code{character(1)}]\cr
 #'   Names of packages to load.
@@ -13,8 +13,6 @@
 #'   Alternative way to pass arguments.
 #' @param master [\code{logical(1)}]\cr
 #'   Load packages also on master?
-#'   If you set this to \code{FALSE}, nothing actually
-#'   happens for modes local and multicore.
 #'   Default is \code{TRUE}.
 #' @param level [\code{character(1)}]\cr
 #'   If a (non-missing) level is specified in \code{\link{parallelStart}},
@@ -42,14 +40,15 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
   packages = unique(packages)
 
   if (length(packages) > 0L) {
-    # load packages on master
-    if (master) {
+    # load packages on master, for local and multicore we have to do this as well
+    if (master || mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
       requirePackages(packages, why="parallelLibrary")
     }
 
+    # if level matches, load on slaves
     if (isParallelizationLevel(level)) {
-      messagef("Loading packages on slaves: %s", collapse(packages))
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
+        showInfoMessage("Loading packages on slaves: %s", collapse(packages))
         .parallelMap.pkgs = packages
         exportToSlavePkgParallel(".parallelMap.pkgs", .parallelMap.pkgs)
         # oks is a list (slaves) of logical vectors (pkgs)
@@ -64,6 +63,7 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
         if (length(not.loaded) > 0L)
           stopf("Packages could not be loaded on all slaves: %s.", collapse(not.loaded))
       } else if (isModeBatchJobs()) {
+        showInfoMessage("Storing package info for BatchJobs slave jobs: %s", collapse(packages))
         # collect in R option, add new packages to old ones
         optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))
       }

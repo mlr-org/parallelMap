@@ -78,9 +78,9 @@ parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
   \code{\link{parallelMap}} are are parallelized.}
 
   \item{show.info}{[\code{logical(1)}]\cr Verbose output on
-  console?  Default is the option
-  \code{parallelMap.default.show.info} or, if not set,
-  \code{TRUE}.}
+  console for all further package calls?  Default is the
+  option \code{parallelMap.default.show.info} or, if not
+  set, \code{TRUE}.}
 
   \item{...}{[any]\cr Optional parameters, for socket mode
   passed to \code{\link[parallel]{makePSOCKcluster}}, for

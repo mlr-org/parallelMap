@@ -12,9 +12,7 @@ parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
   packages to load.  Alternative way to pass arguments.}
 
   \item{master}{[\code{logical(1)}]\cr Load packages also
-  on master?  If you set this to \code{FALSE}, nothing
-  actually happens for modes local and multicore.  Default
-  is \code{TRUE}.}
+  on master?  Default is \code{TRUE}.}
 
   \item{level}{[\code{character(1)}]\cr If a (non-missing)
   level is specified in \code{\link{parallelStart}}, the
@@ -27,11 +25,11 @@ parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
 Nothing.
 }
 \description{
-Makes sure in that case of socket, mpi and BatchJobs mode,
-the packages are loaded in the slave processes. For all
-modes, the packages are also (potentially) loaded on the
-master. Note that loading the packages on the master is
-(obviously) required for having them available during the
-slave operation for modes local and multicore.
+Makes sure that the packages are loaded so that they can be
+used in a job function which is later run with
+\code{\link{parallelMap}}.
+
+For all modes, the packages are also (potentially) loaded
+on the master.
 }
 
