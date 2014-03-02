@@ -13,9 +13,9 @@ deleteAllLogDirs = function() {
 }
 
 getNextLogDir = function() {
-  ld = file.path(getPMOptStorageDir(), 
+  ld = file.path(getPMOptStorageDir(),
     sprintf("parallelMap_logs_%03i", getPMOptNextMap()))
-  if (!file.exists(ld)) 
+  if (!file.exists(ld))
     dir.create(ld)
   ld
 }
