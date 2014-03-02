@@ -1,5 +1,5 @@
 #' @title Load packages for parallelization.
-
+#'
 #' @description
 #' Makes sure that the packages are loaded so that they can be used in a job
 #' function which is later run with \code{\link{parallelMap}}.
