@@ -67,7 +67,7 @@
 #'   Default is the option \code{parallelMap.default.level} or, if not set,
 #'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
 #' @param show.info [\code{logical(1)}]\cr
-#'   Verbose output on console?
+#'   Verbose output on console for all further package calls?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set,
 #'   \code{TRUE}.
 #' @param ... [any]\cr
