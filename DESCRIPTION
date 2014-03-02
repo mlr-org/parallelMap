@@ -14,12 +14,12 @@ License: BSD_3_clause + file LICENSE
 Depends:
     R (>= 3.0.0)
 Imports:
-    BBmisc (>= 1.4)
+    BBmisc (>= 1.5)
 Suggests:
     testthat,
     parallel,
     Rmpi,
-    BatchJobs
+    BatchJobs (>= 1.2)
 LazyData: yes
 ByteCompile: yes
 Version: 1.1
