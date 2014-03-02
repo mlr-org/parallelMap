@@ -7,7 +7,7 @@ options(BBmisc.ProgressBar.style = "off")
 if (interactive()) {
   load_all(".", reset=TRUE)
 } else {
-  library(parallelMap)  
+  library(parallelMap)
 }
 source("inst/tests/helpers.R")
 source("inst/tests/sockettest.R")
