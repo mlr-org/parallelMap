@@ -142,13 +142,13 @@ slaveWrapper = function(..., .i, .fun, .logdir=NA_character_) {
     sink(.fn, type="message")
     on.exit(sink(NULL))
   }
-  
+
   # make sure we dont parallelize any further
   options(parallelMap.on.slave=TRUE)
   # just make sure, we should not have changed anything on the master
   # except for BatchJobs / interactive
   on.exit(options(parallelMap.on.slave=FALSE))
-  
+
   res = .fun(...)
 
   if (!is.na(.logdir)) {
