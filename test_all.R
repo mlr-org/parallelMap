@@ -10,6 +10,6 @@ if (interactive()) {
   library(parallelMap)
 }
 source("inst/tests/helpers.R")
-source("inst/tests/sockettest.R")
+source("inst/tests/helper_sockettest.R")
 test_dir("inst/tests")
 
