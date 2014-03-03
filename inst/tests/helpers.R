@@ -6,26 +6,26 @@ partest1 = function() {
   y = c("a", "b"); names(y) = y
   # simplify and names
   expect_equal(parallelMap(identity, y, simplify=TRUE, use.names=TRUE), y)
-  
+
   # more.args and mapping over 2 vectors
   f = function(x,y) x+y
   expect_equal(parallelMap(f, 1:2, more.args=list(y=1)), list(2, 3))
   expect_equal(parallelMap(f, 1:2, 2:3), list(3, 5))
-  
+
   # with level
   expect_equal(parallelMap(identity, 1:2), list(1, 2), level="foo")
 }
 
 # test that log files are correctly generated
 partest2 = function(log.dir) {
-  
+
   # do log files exist under correct path / name?
   check.exists = function(iter, n) {
     fp = file.path(log.dir, sprintf("parallelMap_logs_%03i", iter))
-    sapply(seq_len(n), function(i) 
+    sapply(seq_len(n), function(i)
       expect_true(file.exists(file.path(fp, sprintf("%05i.log", i)))))
   }
-  
+
   # do log files contain the printed output fromn the slave?
   check.contains = function(iter, xs)  {
     fp = file.path(log.dir, sprintf("parallelMap_logs_%03i", iter))
@@ -35,7 +35,7 @@ partest2 = function(log.dir) {
       expect_true(grep(x, s) == 1)
     }, seq_along(xs), xs)
   }
-  
+
   parallelMap(cat, c("xxx", "yyy"))
   check.exists(iter=1, n=2)
   check.contains(iter=1, c("xxx", "yyy"))
@@ -43,7 +43,7 @@ partest2 = function(log.dir) {
   parallelMap(print, c("xxx", "yyy"))
   check.exists(iter=2, n=2)
   check.contains(iter=2, c("xxx", "yyy"))
-  
+
   parallelMap(warning, c("xxx", "yyy"))
   check.exists(iter=3, n=2)
   check.contains(iter=3, c("xxx", "yyy"))
@@ -54,16 +54,16 @@ partest2 = function(log.dir) {
 # partest3 = function() {
 #   # export nothing, no change
 #   parallelExport()
-#   foo = 100  
-#   parallelExport("foo")  
-#   f = function(i) 
+#   foo = 100
+#   parallelExport("foo")
+#   f = function(i)
 #     i + foo
 #   expect_equal(parallelMap(f, 1:2), list(101, 102))
-#   
+#
 #   # now test with foo2 defined one level fruther above
-#   f = function(i) 
+#   f = function(i)
 #     i + foo2
-#   foo2 = 100 
+#   foo2 = 100
 #   g = function() {
 #     parallelExport("foo2")
 #   }
@@ -75,8 +75,8 @@ partest2 = function(log.dir) {
 # test that exported libraries are loaded
 partest4 = function(slave.error.test) {
   # testhat is basically the only lib we have in suggests...
-  parallelLibrary("testthat")  
-  f = function(i) 
+  parallelLibrary("testthat")
+  f = function(i)
      expect_true
   res = parallelMap(f, 1:2)
   expect_true(is.list(res) && length(res) == 2 && is.function(res[[1]]))
@@ -85,7 +85,7 @@ partest4 = function(slave.error.test) {
       "Packages could not be loaded on all slaves: foo.")
     expect_error(parallelLibrary("foo1", "foo2", master=FALSE),
       "Packages could not be loaded on all slaves: foo1,foo2.")
-    expect_error(parallelLibrary("testthat", "foo", master=FALSE), 
+    expect_error(parallelLibrary("testthat", "foo", master=FALSE),
       "Packages could not be loaded on all slaves: foo.")
   }
 }
@@ -94,6 +94,22 @@ partest4 = function(slave.error.test) {
 partest5 = function() {
   f = function(i) stop("foo")
   expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+}
+
+# test that exported files are sourced
+partest6 = function(slave.error.test) {
+  parallelSource("test_source_file.R", master=FALSE)
+  f = function(i) i + ..xxx..
+  res = parallelMap(f, 1:2, simplify=TRUE)
+  expect_equal(res, 10:11)
+  if (slave.error.test) {
+    expect_error(parallelSource("foo", master=FALSE),
+      "Files could not be sourced on all slaves: foo.")
+    expect_error(parallelSource("foo1", "foo2", master=FALSE),
+      "Files could not be sourced on all slaves: foo1,foo2.")
+    expect_error(parallelSource("test_source_file.R", "foo", master=FALSE),
+      "Files could not be sourced on all slaves: foo.")
+  }
 }
 
 
