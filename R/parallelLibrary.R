@@ -32,7 +32,7 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
     packages = as.character(args)
   }
   checkArg(level, "character", len=1L, na.ok=TRUE)
-  checkArg(master, "logical", len=1L, na.ok=TRUE)
+  checkArg(master, "logical", len=1L, na.ok=FALSE)
 
   mode = getPMOptMode()
 
