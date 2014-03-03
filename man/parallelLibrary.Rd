@@ -25,9 +25,9 @@ parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
 Nothing.
 }
 \description{
-Makes sure that the packages are loaded so that they can be
-used in a job function which is later run with
-\code{\link{parallelMap}}.
+Makes sure that the packages are loaded in slave process so
+that they can be used in a job function which is later run
+with \code{\link{parallelMap}}.
 
 For all modes, the packages are also (potentially) loaded
 on the master.

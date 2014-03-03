@@ -98,16 +98,18 @@ partest5 = function() {
 
 # test that exported files are sourced
 partest6 = function(slave.error.test) {
-  parallelSource("test_source_file.R", master=FALSE)
-  f = function(i) i + ..xxx..
+  fn = "inst/test_source_file.R"
+  fn = system.file(fn, package="parallelMap")
+  parallelSource(fn, master=FALSE)
+  f = function(i) i + xxx
   res = parallelMap(f, 1:2, simplify=TRUE)
-  expect_equal(res, 10:11)
+  expect_equal(res, 124:125)
   if (slave.error.test) {
     expect_error(parallelSource("foo", master=FALSE),
       "Files could not be sourced on all slaves: foo.")
     expect_error(parallelSource("foo1", "foo2", master=FALSE),
       "Files could not be sourced on all slaves: foo1,foo2.")
-    expect_error(parallelSource("test_source_file.R", "foo", master=FALSE),
+    expect_error(parallelSource(fn, "foo", master=FALSE),
       "Files could not be sourced on all slaves: foo.")
   }
 }
