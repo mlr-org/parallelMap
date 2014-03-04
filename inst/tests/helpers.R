@@ -98,8 +98,11 @@ partest5 = function() {
 
 # test that exported files are sourced
 partest6 = function(slave.error.test) {
-  fn = "inst/test_source_file.R"
-  fn = system.file(fn, package="parallelMap")
+  # this is all so fucking crappy and broken
+  # apparently the name/path changes depending on how I run the test...
+  fn = system.file("test_source_file.R", package="parallelMap")
+  if (fn == "")
+    fn = system.file("inst/test_source_file.R", package="parallelMap")
   parallelSource(fn, master=FALSE)
   f = function(i) i + xxx
   res = parallelMap(f, 1:2, simplify=TRUE)
