@@ -76,14 +76,20 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
                        SIMPLIFY=FALSE, USE.NAMES=FALSE)
       # throws one single error on master in case of error
     } else if (isModeBatchJobs()) {
-      # create registry in selected directory with random, unique name
       fd = getBatchJobsRegFileDir()
-      # get packages to load on slaves which where collected in R option
+      # FIXME: this is bad but currently we cannot use absolute paths
+      src.files = optionBatchsJobsSrcFiles()
+      wd = getPMOptStorageDir()
+      srcdir = tempfile(pattern="parallelMap_BatchJobs_srcs_", tmpdir=wd)
+      dir.create(srcdir)
+      file.copy(from=src.files, to=srcdir)
+      # create registry in selected directory with random, unique name
       suppressMessages({
-        reg = makeRegistry(id=basename(fd), file.dir=fd,
-          packages=optionBatchsJobsPackages())
-        # FIXME: this is bad but currently we cannot use absolute paths
-        reg$src.file = optionBatchsJobsSrcFiles()
+        reg = makeRegistry(id=basename(fd), file.dir=fd, work.dir=wd,
+          # get packages and sources to load on slaves which where collected in R option
+          packages=optionBatchsJobsPackages(), 
+          src.files=paste(basename(srcdir), basename(src.files), sep="/")
+        )
         # dont log extra in BatchJobs
         more.args = c(list(.fun = fun, .logdir=NA_character_), more.args)
         batchMap(reg, slaveWrapper, ..., more.args=more.args)
@@ -116,6 +122,8 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       # delete registry file dir, if an error happened this will still exist
       # because we threw an exception above, logs also still exist
       unlink(fd, recursive=TRUE)
+      #FIXME: see above about src.files
+      unlink(srcdir, recursive=TRUE)
     }
   }
 
