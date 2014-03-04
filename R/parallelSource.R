@@ -71,7 +71,7 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
       } else if (isModeBatchJobs()) {
         showInfoMessage("Storing package info for BatchJobs slave jobs: %s", collapse(files))
         # collect in R option, add new files to old ones
-        optionBatchsJobsfiles(union(optionBatchsJobsFiles(), files))
+        optionBatchsJobsSrcFiles(union(optionBatchsJobsSrcFiles(), files))
       }
     }
   }

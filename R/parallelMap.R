@@ -82,6 +82,8 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       suppressMessages({
         reg = makeRegistry(id=basename(fd), file.dir=fd,
           packages=optionBatchsJobsPackages())
+        # FIXME: this is bad but currently we cannot use absolute paths
+        reg$src.file = optionBatchsJobsSrcFiles()
         # dont log extra in BatchJobs
         more.args = c(list(.fun = fun, .logdir=NA_character_), more.args)
         batchMap(reg, slaveWrapper, ..., more.args=more.args)
