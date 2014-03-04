@@ -24,6 +24,10 @@ if (isExpensiveExampleOk()) {
     parallelStartMulticore(2)
     partest5()
     parallelStop()
+
+    parallelStartMulticore(2)
+    partest6(slave.error.test=FALSE)
+    parallelStop()
   })
 
   #FIXME: this a bug in R:parallel, see issue. Needs to be fixed upstream

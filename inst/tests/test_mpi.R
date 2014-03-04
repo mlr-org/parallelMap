@@ -27,5 +27,9 @@ if (interactive()) {
     parallelStartMPI(2)
     partest5()
     parallelStop()
+
+    parallelStartMPI(2)
+    partest6(slave.error.test=TRUE)
+    parallelStop()
   })
 }

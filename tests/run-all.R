@@ -11,6 +11,6 @@ test_package("parallelMap")
 if (!interactive()) {
   library(parallelMap)
   source(system.file("tests/helpers.R", package="parallelMap"))
-  source(system.file("tests/sockettest.R", package="parallelMap"))
+  source(system.file("tests/helper_sockettest.R", package="parallelMap"))
   sockettest() 
 }
