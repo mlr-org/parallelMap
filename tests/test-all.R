@@ -1,13 +1,19 @@
 library(testthat)
-test_check("parallelMap")
+# test_check("parallelMap")
 
 #FIXME: bad hack
 # for some reason using test_package and opening a socked node
 # blocks R CMD check
 # but we really want to test at least one real parallel mode on cran
 
+print(getwd())
+print(system.file(package="parallelMap"))
+print(list.files(system.file(package="parallelMap")))
+
 if (!interactive()) {
-  source(system.file("tests/testthat/helpers.R", package="parallelMap"))
-  source(system.file("tests/testthat/helper_sockettest.R", package="parallelMap"))
+  library(BBmisc)
+  library(parallelMap)
+  source("testthat/helpers.R")
+  source("testthat/helper_sockettest.R")
   sockettest()
 }
