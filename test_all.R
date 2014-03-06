@@ -9,7 +9,7 @@ if (interactive()) {
 } else {
   library(parallelMap)
 }
-source("inst/tests/helpers.R")
-source("inst/tests/helper_sockettest.R")
-test_dir("inst/tests")
+source("tests/testthat/helpers.R")
+source("tests/testthat/helper_sockettest.R")
+test_dir("tests/testthat")
 
