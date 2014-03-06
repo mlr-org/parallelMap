@@ -87,9 +87,12 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
       suppressMessages({
         reg = makeRegistry(id=basename(fd), file.dir=fd, work.dir=wd,
           # get packages and sources to load on slaves which where collected in R option
-          packages=optionBatchsJobsPackages(), 
+          packages=optionBatchsJobsPackages(),
           src.files=paste(basename(srcdir), basename(src.files), sep="/")
         )
+        file.exports = list.files(getBatchJobsExportsDir(), full.name=TRUE)
+        file.rename(from=file.exports,
+          to=file.path(BatchJobs:::getExportDir(reg$file.dir), basename(file.exports)))
         # dont log extra in BatchJobs
         more.args = c(list(.fun = fun, .logdir=NA_character_), more.args)
         batchMap(reg, slaveWrapper, ..., more.args=more.args)

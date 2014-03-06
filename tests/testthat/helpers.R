@@ -58,7 +58,6 @@ partest3 = function() {
   f = function(i)
     i + foo
   expect_equal(parallelMap(f, 1:2), list(101, 102))
-
   # now test with foo2 defined one level fruther above
   f = function(i)
     i + foo2
@@ -67,6 +66,13 @@ partest3 = function() {
     parallelExport("foo2")
   }
   g()
+  expect_equal(parallelMap(f, 1:2), list(101, 102))
+
+  # now test with foo3 defined in global env
+  assign("foo3", 100, env=.GlobalEnv)
+  f = function(i)
+    i + foo3
+  parallelExport("foo3")
   expect_equal(parallelMap(f, 1:2), list(101, 102))
 }
 

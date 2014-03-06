@@ -4,8 +4,6 @@
 #' Makes sure that the objects are exported to slave process so that they can be used in a job
 #' function which is later run with \code{\link{parallelMap}}.
 #'
-#' For all modes, the files are also (potentially) loaded on the master.
-#'
 #' @param ... [\code{character}]\cr
 #'   Names of objects to export.
 #' @param objnames [\code{character(1)}]\cr
@@ -37,10 +35,12 @@ parallelExport = function(..., objnames, level=as.character(NA)) {
   if (length(objnames) > 0) {
     if (isParallelizationLevel(level)) {
         if (isModeSocket() || isModeMPI()) {
+          # export via our helper function
           for (n in objnames) {
             exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
           }
         } else if (isModeBatchJobs()) {
+          # export via 
           bj.exports.dir = getBatchJobsExportsDir()
           for (n in objnames) {
             fn = file.path(bj.exports.dir, sprintf("%s.RData", n))
