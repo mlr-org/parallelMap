@@ -5,7 +5,7 @@
 parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
 }
 \arguments{
-  \item{...}{[\code{character(1)}]\cr Names of packages to
+  \item{...}{[\code{character}]\cr Names of packages to
   load.}
 
   \item{packages}{[\code{character(1)}]\cr Names of

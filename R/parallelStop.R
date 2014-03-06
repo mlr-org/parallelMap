@@ -1,17 +1,17 @@
-#' Stops parallelization.
+#' @title Stops parallelization.
 #'
+#' @description
 #' Sets mode to \dQuote{local}, i.e., parallelization is turned
 #' off and all necessary stuff is cleaned up.
 #'
 #' For socket and mpi mode \code{\link[parallel]{stopCluster}} is called.
 #'
-#FIXME add later
-# For BatchJobs mode the subdirectory of the \code{storagedir}
-# containing the exported objects is removed.
-#
-# After a subsequent call of \code{\link{parallelStart}}, no exported objects
-# are present on the slaves and no libraries are loaded,
-# i.e., you have clean R sessions on the slaves.
+#' For BatchJobs mode the subdirectory of the \code{storagedir}
+#' containing the exported objects is removed.
+#'
+#' After a subsequent call of \code{\link{parallelStart}}, no exported objects
+#' are present on the slaves and no libraries are loaded,
+#' i.e., you have clean R sessions on the slaves.
 #'
 #' @return Nothing.
 #' @export
@@ -35,9 +35,8 @@ parallelStop = function() {
     } else if (isModeBatchJobs()) {
       # remove all exported libraries
       options(parallelMap.bj.packages=NULL)
-      #FIXME add later
       # remove exported objects
-      #cleanUpBatchJobsExports()
+      cleanUpBatchJobsExports()
     }
     if (!isModeLocal()) {
       showInfoMessage("Stopped parallelization. All cleaned up.")

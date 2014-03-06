@@ -16,9 +16,9 @@ if (interactive()) {
     partest2(tempdir())
     parallelStop()
 
-    #parallelStartMPI(2)
-    #partest3()
-    #parallelStop()
+    parallelStartMPI(2)
+    partest3()
+    parallelStop()
 
     parallelStartMPI(2)
     partest4(slave.error.test=TRUE)

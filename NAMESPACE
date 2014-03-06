@@ -1,3 +1,4 @@
+export(parallelExport)
 export(parallelLapply)
 export(parallelLibrary)
 export(parallelMap)

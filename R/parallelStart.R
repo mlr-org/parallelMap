@@ -150,11 +150,10 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
     setDefaultCluster(cl)
     clusterSetRNGStream(cl=NULL)
   } else if (isModeBatchJobs()) {
-    #FIXME add later
-    #bjed = getBatchJobsExportsDir()
-    #if (file.exists(bjed))
-    #  cleanUpBatchJobsExports()
-    #dir.create(bjed)
+   bjed = getBatchJobsExportsDir()
+   if (file.exists(bjed))
+     cleanUpBatchJobsExports()
+   dir.create(bjed)
   }
   invisible(NULL)
 }

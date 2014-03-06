@@ -5,8 +5,7 @@
 parallelSource(..., files, master = TRUE, level = as.character(NA))
 }
 \arguments{
-  \item{...}{[\code{character(1)}]\cr File paths to
-  sources.}
+  \item{...}{[\code{character}]\cr File paths to sources.}
 
   \item{files}{[\code{character}]\cr File paths to sources.
   Alternative way to pass arguments.}

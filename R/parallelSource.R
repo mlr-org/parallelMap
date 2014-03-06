@@ -40,7 +40,7 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
   files = unique(files)
 
   if (length(files) > 0L) {
-    if (master)) {
+    if (master) {
       showInfoMessage("Sourcing files on master: %s", collapse(files))
       lapply(files, source)
     }

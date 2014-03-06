@@ -16,13 +16,13 @@ test_that("BatchJobs mode", {
   partest2(storagedir)
   parallelStop()
 
-#   parallelStartBatchJobs(storagedir=storagedir)
-#   partest3()
-#   parallelStop()
+  parallelStartBatchJobs(storagedir=storagedir)
+  partest3()
+  parallelStop()
 
   parallelStartBatchJobs(storagedir=storagedir)
-  # we cannot really check that wromg libraries are not loaded on slave here.
-  # because we only load them duzring the job. but the error will show up then
+  # we cannot really check that wrong libraries are not loaded on slave here.
+  # because we only load them during the job. but the error will show up then
   partest4(slave.error.test=FALSE)
   parallelStop()
 
