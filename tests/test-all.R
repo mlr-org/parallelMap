@@ -1,5 +1,5 @@
 library(testthat)
-# test_check("parallelMap")
+test_check("parallelMap")
 
 #FIXME: bad hack
 # for some reason using test_package and opening a socked node
