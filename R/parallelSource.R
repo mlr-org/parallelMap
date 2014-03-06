@@ -6,7 +6,7 @@
 #'
 #' For all modes, the files are also (potentially) loaded on the master.
 #'
-#' @param ... [\code{character(1)}]\cr
+#' @param ... [\code{character}]\cr
 #'   File paths to sources.
 #' @param files [\code{character}]\cr
 #'   File paths to sources.
@@ -40,14 +40,19 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
   files = unique(files)
 
   if (length(files) > 0L) {
-    # load files on master, for local and multicore we have to do this as well
-    if (master || mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+    if (master)) {
       showInfoMessage("Sourcing files on master: %s", collapse(files))
       lapply(files, source)
     }
 
     # if level matches, load on slaves
     if (isParallelizationLevel(level)) {
+      # only source when we have not already done on master
+      if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+        showInfoMessage("Sourcing files on master (to be available on slaves for this mode): %s",
+          collapse(files))
+        lapply(files, source)
+      }
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Sourcing files on slaves: %s", collapse(files))
         .parallelMap.srcs = files

@@ -6,7 +6,7 @@
 #'
 #' For all modes, the packages are also (potentially) loaded on the master.
 #'
-#' @param ... [\code{character(1)}]\cr
+#' @param ... [\code{character}]\cr
 #'   Names of packages to load.
 #' @param packages [\code{character(1)}]\cr
 #'   Names of packages to load.
@@ -40,13 +40,18 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
   packages = unique(packages)
 
   if (length(packages) > 0L) {
-    # load packages on master, for local and multicore we have to do this as well
-    if (master || mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+    if (master) {
       requirePackages(packages, why="parallelLibrary")
     }
 
     # if level matches, load on slaves
     if (isParallelizationLevel(level)) {
+      # only load when we have not already done on master
+      if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+        showInfoMessage("Loading packages on master (to be available on slaves for this mode): %s",
+          collapse(packages))
+        requirePackages(packages, why="parallelLibrary")
+      }
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Loading packages on slaves: %s", collapse(packages))
         .parallelMap.pkgs = packages
