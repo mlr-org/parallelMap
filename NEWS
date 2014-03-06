@@ -1,3 +1,10 @@
-parallelMap_1.0-83: 
+parallelMap_1.1:
+- Package in general much more stable now
+- parallelLibrary was improved a lot
+- new functions
+-- parallelSource
+-- parallelExport
+
+parallelMap_1.0-83:
 - First submit to CRAN.
 
