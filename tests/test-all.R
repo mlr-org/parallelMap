@@ -6,10 +6,6 @@ test_check("parallelMap")
 # blocks R CMD check
 # but we really want to test at least one real parallel mode on cran
 
-print(getwd())
-print(system.file(package="parallelMap"))
-print(list.files(system.file(package="parallelMap")))
-
 if (!interactive()) {
   library(BBmisc)
   library(parallelMap)
