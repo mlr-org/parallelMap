@@ -20,9 +20,13 @@
 #'   See \code{\link{parallelMap}}.
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
+#' @param show.info [\code{logical(1)}]\cr
+#'   Verbose output on console?
+#'   Can be used to override setting from options / \code{\link{parallelStart}}.
+#'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
+parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(files)) {
@@ -31,8 +35,9 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
   } else {
     files = as.character(args)
   }
-  checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=FALSE)
+  checkArg(level, "character", len=1L, na.ok=TRUE)
+  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
 
   mode = getPMOptMode()
 
@@ -50,11 +55,11 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
       # only source when we have not already done on master
       if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
         showInfoMessage("Sourcing files on master (to be available on slaves for this mode): %s",
-          collapse(files))
+          collapse(files), show.info=show.info)
         lapply(files, source)
       }
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
-        showInfoMessage("Sourcing files on slaves: %s", collapse(files))
+        showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info=show.info)
         .parallelMap.srcs = files
         exportToSlavePkgParallel(".parallelMap.srcs", .parallelMap.srcs)
         errs = clusterEvalQ(cl=NULL, {
@@ -74,7 +79,8 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA)) {
           stopf("Files could not be sourced on all slaves: %s\n%s",
             collapse(names(errs)), collapse(paste(names(errs), errs, sep = "\n"), sep="\n"))
       } else if (isModeBatchJobs()) {
-        showInfoMessage("Storing package info for BatchJobs slave jobs: %s", collapse(files))
+        showInfoMessage("Storing source file info for BatchJobs slave jobs: %s",
+          collapse(files), show.info=show.info)
         # collect in R option, add new files to old ones
         optionBatchsJobsSrcFiles(union(optionBatchsJobsSrcFiles(), files))
       }

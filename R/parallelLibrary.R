@@ -20,9 +20,13 @@
 #'   See \code{\link{parallelMap}}.
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
+#' @param show.info [\code{logical(1)}]\cr
+#'   Verbose output on console?
+#'   Can be used to override setting from options / \code{\link{parallelStart}}.
+#'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
+parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA), show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(packages)) {
@@ -31,8 +35,9 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
   } else {
     packages = as.character(args)
   }
-  checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(master, "logical", len=1L, na.ok=FALSE)
+  checkArg(level, "character", len=1L, na.ok=TRUE)
+  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
 
   mode = getPMOptMode()
 
@@ -48,12 +53,13 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
     if (isParallelizationLevel(level)) {
       # only load when we have not already done on master
       if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
-        showInfoMessage("Loading packages on master (to be available on slaves for this mode): %s",
-          collapse(packages))
+        showInfoMessage("Loading packages on master (to be available on slaves for mode %s): %s",
+          mode, collapse(packages), show.info=show.info)
         requirePackages(packages, why="parallelLibrary")
       }
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
-        showInfoMessage("Loading packages on slaves: %s", collapse(packages))
+        showInfoMessage("Loading packages on slaves for mode %s: %s",
+          mode, collapse(packages), show.info=show.info)
         .parallelMap.pkgs = packages
         exportToSlavePkgParallel(".parallelMap.pkgs", .parallelMap.pkgs)
         # oks is a list (slaves) of logical vectors (pkgs)
@@ -68,7 +74,8 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA)) {
         if (length(not.loaded) > 0L)
           stopf("Packages could not be loaded on all slaves: %s.", collapse(not.loaded))
       } else if (isModeBatchJobs()) {
-        showInfoMessage("Storing package info for BatchJobs slave jobs: %s", collapse(packages))
+        showInfoMessage("Storing package info for BatchJobs slave jobs: %s",
+          collapse(packages), show.info=show.info)
         # collect in R option, add new packages to old ones
         optionBatchsJobsPackages(union(optionBatchsJobsPackages(), packages))
       }

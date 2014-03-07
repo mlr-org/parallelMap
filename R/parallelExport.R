@@ -15,9 +15,13 @@
 #'   See \code{\link{parallelMap}}.
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
+#' @param show.info [\code{logical(1)}]\cr
+#'   Verbose output on console?
+#'   Can be used to override setting from options / \code{\link{parallelStart}}.
+#'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelExport = function(..., objnames, level=as.character(NA)) {
+parallelExport = function(..., objnames, level=as.character(NA), show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(objnames)) {
@@ -27,6 +31,9 @@ parallelExport = function(..., objnames, level=as.character(NA)) {
     objnames = as.character(args)
   }
 
+  checkArg(level, "character", len=1L, na.ok=TRUE)
+  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
+  
   mode = getPMOptMode()
 
   # remove duplicates
@@ -40,7 +47,7 @@ parallelExport = function(..., objnames, level=as.character(NA)) {
             exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
           }
         } else if (isModeBatchJobs()) {
-          # export via 
+          # export via
           bj.exports.dir = getBatchJobsExportsDir()
           for (n in objnames) {
             fn = file.path(bj.exports.dir, sprintf("%s.RData", n))

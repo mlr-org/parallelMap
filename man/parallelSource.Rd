@@ -2,7 +2,8 @@
 \alias{parallelSource}
 \title{Source R files for parallelization.}
 \usage{
-parallelSource(..., files, master = TRUE, level = as.character(NA))
+parallelSource(..., files, master = TRUE, level = as.character(NA),
+  show.info = NA)
 }
 \arguments{
   \item{...}{[\code{character}]\cr File paths to sources.}
@@ -19,6 +20,11 @@ parallelSource(..., files, master = TRUE, level = as.character(NA))
   here matches.  See \code{\link{parallelMap}}.  Useful if
   this function is used in a package.  Default is
   \code{NA}.}
+
+  \item{show.info}{[\code{logical(1)}]\cr Verbose output on
+  console?  Can be used to override setting from options /
+  \code{\link{parallelStart}}.  Default is NA which means
+  no overriding.}
 }
 \value{
 Nothing.

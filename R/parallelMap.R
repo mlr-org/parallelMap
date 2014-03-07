@@ -27,18 +27,25 @@
 #'   this call is only parallelized if the level specified here matches.
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
+#' @param show.info [\code{logical(1)}]\cr
+#'   Verbose output on console?
+#'   Can be used to override setting from options / \code{\link{parallelStart}}.
+#'   Default is NA which means no overriding.
 #' @return Result.
 #' @export
 #' @examples
 #' parallelStart()
 #' parallelMap(identity, 1:2)
 #' parallelStop()
-parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FALSE, level=as.character(NA)) {
+parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FALSE,
+  level=as.character(NA), show.info=NA) {
+
   checkArg(fun, "function")
   checkArg(more.args, "list")
   checkArg(simplify, "logical", len=1L, na.ok=FALSE)
   checkArg(use.names, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
+  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
 
   # potentially autostart by calling parallelStart with defaults from R profile
   # then clean up by calling parallelStop on exit
@@ -47,7 +54,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     parallelStart()
     on.exit({
       if (!isModeLocal())
-        showInfoMessage("Auto-stopping parallelization.")
+        showInfoMessage("Auto-stopping parallelization.", show.info=show.info)
       parallelStop()
     })
   }
@@ -90,7 +97,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
           packages=optionBatchsJobsPackages(),
           src.files=paste(basename(srcdir), basename(src.files), sep="/")
         )
-        file.exports = list.files(getBatchJobsExportsDir(), full.name=TRUE)
+        file.exports = list.files(getBatchJobsExportsDir(), full.names=TRUE)
         file.rename(from=file.exports,
           to=file.path(BatchJobs:::getExportDir(reg$file.dir), basename(file.exports)))
         # dont log extra in BatchJobs

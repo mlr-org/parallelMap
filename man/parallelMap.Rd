@@ -3,7 +3,7 @@
 \title{Maps a function over lists or vectors in parallel.}
 \usage{
 parallelMap(fun, ..., more.args = list(), simplify = FALSE,
-  use.names = FALSE, level = as.character(NA))
+  use.names = FALSE, level = as.character(NA), show.info = NA)
 }
 \arguments{
   \item{fun}{[\code{function}]\cr Function to map over
@@ -28,6 +28,11 @@ parallelMap(fun, ..., more.args = list(), simplify = FALSE,
   call is only parallelized if the level specified here
   matches.  Useful if this function is used in a package.
   Default is \code{NA}.}
+
+  \item{show.info}{[\code{logical(1)}]\cr Verbose output on
+  console?  Can be used to override setting from options /
+  \code{\link{parallelStart}}.  Default is NA which means
+  no overriding.}
 }
 \value{
 Result.
