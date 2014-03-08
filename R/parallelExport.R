@@ -34,18 +34,18 @@ parallelExport = function(..., objnames, level=as.character(NA)) {
 
   if (length(objnames) > 0) {
     if (isParallelizationLevel(level)) {
-        if (isModeSocket() || isModeMPI()) {
-          # export via our helper function
-          for (n in objnames) {
-            exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
-          }
-        } else if (isModeBatchJobs()) {
-          # export via 
-          bj.exports.dir = getBatchJobsExportsDir()
-          for (n in objnames) {
-            fn = file.path(bj.exports.dir, sprintf("%s.RData", n))
-            save2(file = fn, get(n, envir=sys.parent()))
+      showInfoMessage("Exporting to slaves: %s", collapse(objnames))
+      if (isModeSocket() || isModeMPI()) {
+        # export via our helper function
+        for (n in objnames) {
+          exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
         }
+      } else if (isModeBatchJobs()) {
+        # export via fail::put, make sure names are correctly set
+        bj.exports.dir = getBatchJobsExportsDir()
+        fail.handle = fail::fail(bj.exports.dir)
+        objs = setNames(lapply(objnames, get, envir=sys.parent()), objnames)
+        fail.handle$put(li=objs)
       }
     }
   }
