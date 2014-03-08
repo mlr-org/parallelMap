@@ -10,9 +10,12 @@ isShowInfoEnabled = function() {
   getPMOptShowInfo()
 }
 
-# show message if show.info is TRUE
-showInfoMessage = function(msg, ...) {
-  if (isShowInfoEnabled()) {
+# show message if OPTION show.info is TRUE
+#  show.info ARGUMENT provides an immediate OVERRIDE to that option
+showInfoMessage = function(msg, ..., show.info=NA) {
+  if ((is.na(show.info) && isShowInfoEnabled()) ||
+    (!is.na(show.info) && show.info)) {
+
     messagef(msg, ...)
   }
 }

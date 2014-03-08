@@ -2,7 +2,8 @@
 \alias{parallelLibrary}
 \title{Load packages for parallelization.}
 \usage{
-parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
+parallelLibrary(..., packages, master = TRUE, level = as.character(NA),
+  show.info = NA)
 }
 \arguments{
   \item{...}{[\code{character}]\cr Names of packages to
@@ -20,6 +21,11 @@ parallelLibrary(..., packages, master = TRUE, level = as.character(NA))
   here matches.  See \code{\link{parallelMap}}.  Useful if
   this function is used in a package.  Default is
   \code{NA}.}
+
+  \item{show.info}{[\code{logical(1)}]\cr Verbose output on
+  console?  Can be used to override setting from options /
+  \code{\link{parallelStart}}.  Default is NA which means
+  no overriding.}
 }
 \value{
 Nothing.

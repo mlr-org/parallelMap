@@ -14,7 +14,8 @@ License: BSD_3_clause + file LICENSE
 Depends:
     R (>= 3.0.0)
 Imports:
-    BBmisc (>= 1.5)
+    BBmisc (>= 1.5),
+    fail (>= 1.2)
 Suggests:
     testthat,
     parallel,
