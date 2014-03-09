@@ -38,8 +38,16 @@ parallelMap(fun, ..., more.args = list(), simplify = FALSE,
 Result.
 }
 \description{
-Use the parallelization mode and the other options
+Uses the parallelization mode and the other options
 specified in \code{\link{parallelStart}}.
+
+Libraries and source file can be initialized on slaves with
+\code{\link{parallelLibrary}} and
+\code{\link{parallelSource}}.
+
+Large objects can be separately exported via
+\code{\link{parallelExport}}, they can be simply used under
+their exported name in slave body code.
 }
 \examples{
 parallelStart()

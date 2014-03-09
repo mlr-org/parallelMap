@@ -1,11 +1,14 @@
-#' Maps a function over lists or vectors in parallel.
+#' @title Maps a function over lists or vectors in parallel.
 #'
-#' Use the parallelization mode and the other options specified in
+#' @description
+#' Uses the parallelization mode and the other options specified in
 #' \code{\link{parallelStart}}.
 #'
-#FIXME add later
-# Large objects can be separately exported via \code{\link{parallelExport}},
-# they can be simply used under their exported name in slave body code.
+#' Libraries and source file can be initialized on slaves with
+#' \code{\link{parallelLibrary}} and \code{\link{parallelSource}}.
+#'
+#' Large objects can be separately exported via \code{\link{parallelExport}},
+#' they can be simply used under their exported name in slave body code.
 #'
 #' @param fun [\code{function}]\cr
 #'   Function to map over \code{...}.
