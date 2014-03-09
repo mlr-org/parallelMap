@@ -46,7 +46,7 @@ y = parallelMap(f, 1:2)   # like R's Map but in parallel
 parallelStop()            # turn parallelization off again
 ```
 
-If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html). [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) exists with a smaller, appropriate interface.
+If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html). [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html) exists with a smaller, appropriate interface.
 
 
 Exporting to Slaves: Libraries, Sources and Objects
@@ -60,7 +60,7 @@ parallelMap supports these operations with the following three functions
  * [parallelSource](http://berndbischl.github.io/parallelMap/man/parallelSource.html)
  * [parallelExport](http://berndbischl.github.io/parallelMap/man/parallelExport.html)
 
-Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelLibrary.html) before calling [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html).
+Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://berndbischl.github.io/ParamHelpers/man/parallelLibrary.html) before calling [parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html).
 
 ```splus
 ##### Example 2) #####
@@ -87,9 +87,9 @@ parallelStop()
 Being Lazy: Configuration and Auto-Start
 ========================================
 
-On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
+On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
 
-Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
+Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
 
 
 ```splus
@@ -100,7 +100,7 @@ options(
 )
 ```
 
-This allows you to save some typing as running [parallelStart()](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
+This allows you to save some typing as running [parallelStart()](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
 
 ```splus
 parallelStart()
@@ -109,7 +109,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-You can later always overwrite settings be explicitly passing them to [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html), so
+You can later always overwrite settings be explicitly passing them to [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html), so
 
 
 ```splus
@@ -119,7 +119,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-would use your default "multicore" mode and still disable [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
+would use your default "multicore" mode and still disable [parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
 
 Actually, we can reduce the amount of typing even further. Setting this in your R profile (let's enable messages again, so we can see more)
 
@@ -151,7 +151,7 @@ Auto-stopping parallelization.
 Stopped parallelization. All cleaned up.
 ```
 
-[parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) auto-calls [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) in the beginning of [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) and neatly cleans everything up by calling [parallelStop](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStop.html) in the end.
+[parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html) auto-calls [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html) in the beginning of [parallelMap](http://berndbischl.github.io/ParamHelpers/man/parallelMap.html) and neatly cleans everything up by calling [parallelStop](http://berndbischl.github.io/ParamHelpers/man/parallelStop.html) in the end.
 
 The following options are currently available:
 
@@ -166,7 +166,7 @@ The following options are currently available:
   parallelMap.default.storagedir      = <path>, must be on a shared file system for master / slaves
 ```
 
-For their precise meaning please read the documentation of [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html).
+For their precise meaning please read the documentation of [parallelStart](http://berndbischl.github.io/ParamHelpers/man/parallelStart.html).
 
 
 Package development: Tagging mapping operations with a level name
