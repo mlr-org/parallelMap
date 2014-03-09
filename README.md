@@ -60,7 +60,7 @@ parallelMap supports these operations with the following three functions
  * [parallelSource](http://berndbischl.github.io/parallelMap/man/parallelSource.html)
  * [parallelExport](http://berndbischl.github.io/parallelMap/man/parallelExport.html)
 
-Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html) before calling [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html).
+Let's start with loading a package on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html) before calling [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html).
 
 ```splus
 ##### Example 2) #####
@@ -81,7 +81,24 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
+And here is a further example where we export a big matrix to the slaves, then
+apply a preprocessing function to it, which is defined in source file. Yeah, it is kinda
+a nonsensical example but I suppose you will get the point:
 
+##### Example 3) #####
+
+library(parallelMap)
+parallelStartSocket(2)
+parallelSource("preproc.R") # contains definition of preproc()
+bigmatrix = matrix(1, nrow=500, ncol=500)
+parallelExport("bigmatrix")
+f = function(i) {
+  p = preproc(bigmatrix)
+  p + i
+}
+y = parallelMap(f, 1:2)
+parallelStop()
+```
 
 
 Being Lazy: Configuration and Auto-Start
