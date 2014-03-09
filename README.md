@@ -85,6 +85,7 @@ And here is a further example where we export a big matrix to the slaves, then
 apply a preprocessing function to it, which is defined in source file. Yeah, it is kinda
 a nonsensical example but I suppose you will get the point:
 
+```splus
 ##### Example 3) #####
 
 library(parallelMap)
