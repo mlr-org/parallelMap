@@ -1,6 +1,7 @@
 parallelMap_1.1:
 - Package in general much more stable now
 - parallelLibrary was improved a lot
+- better / more configurable info messages on console
 - new functions
 -- parallelSource
 -- parallelExport
