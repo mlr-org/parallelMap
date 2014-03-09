@@ -48,6 +48,18 @@ parallelStop()            # turn parallelization off again
 
 If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html). [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) exists with a smaller, appropriate interface.
 
+
+Exporting to Slaves: Libraries, Sources and Objects 
+==================================================
+
+In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves. 
+
+parallelMap supports these operations with the following three functions
+
+ * [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html)
+ * [parallelSource](http://berndbischl.github.io/parallelMap/man/parallelSource.html)
+ * [parallelExport](http://berndbischl.github.io/parallelMap/man/parallelExport.html)
+ 
 Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelLibrary.html) before calling [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html).
 
 ```splus
@@ -68,6 +80,9 @@ f = function(i) {
 y = parallelMap(f, 1:2)   
 parallelStop()            
 ```
+
+
+
 
 Being Lazy: Configuration and Auto-Start
 ========================================
