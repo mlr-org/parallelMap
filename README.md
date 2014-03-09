@@ -1,10 +1,10 @@
 parallelMap
 ===========
 
-R package to interface some popular parallelization back-ends with a unified interface. 
+R package to interface some popular parallelization back-ends with a unified interface.
 
 
-* Offical CRAN release site: 
+* Offical CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
 * R Documentation in HTML:
@@ -24,17 +24,17 @@ Overview
 
 parallelMap was written with users (like me) in mind who want a unified parallelization procedure in R that
 
-* Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package. 
-* Allows the client user of your developed package to completely configure the parallelization from the outside. 
-* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easily configurable via options. 
+* Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package.
+* Allows the client user of your developed package to completely configure the parallelization from the outside.
+* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easily configurable via options.
 * Supports the most important parallelization modes. For me, these currently are: usage of multiple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
-* Does not make debugging annoying and tedious. 
+* Does not make debugging annoying and tedious.
 
 
 Mini Tutorial
 =============
 
-Here is a short tutorial that already contains the most important concepts and operations: 
+Here is a short tutorial that already contains the most important concepts and operations:
 
 ```splus
 ##### Example 1) #####
@@ -49,25 +49,25 @@ parallelStop()            # turn parallelization off again
 If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html). [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) exists with a smaller, appropriate interface.
 
 
-Exporting to Slaves: Libraries, Sources and Objects 
+Exporting to Slaves: Libraries, Sources and Objects
 ==================================================
 
-In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves. 
+In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves.
 
 parallelMap supports these operations with the following three functions
 
  * [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html)
  * [parallelSource](http://berndbischl.github.io/parallelMap/man/parallelSource.html)
  * [parallelExport](http://berndbischl.github.io/parallelMap/man/parallelExport.html)
- 
+
 Now usually you need some packages loaded on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelLibrary.html) before calling [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html).
 
 ```splus
 ##### Example 2) #####
 
 library(parallelMap)
-parallelStartSocket(2)    
-parallelLibrary("MASS") 
+parallelStartSocket(2)
+parallelLibrary("MASS")
 # subsample iris, fit an LDA model and return prediction error
 f = function(i) {
   n = nrow(iris)
@@ -77,8 +77,8 @@ f = function(i) {
   pred = predict(model, newdata=iris[test,])
   mean(pred$class != iris[test,]$Species)
 }
-y = parallelMap(f, 1:2)   
-parallelStop()            
+y = parallelMap(f, 1:2)
+parallelStop()
 ```
 
 
@@ -87,7 +87,7 @@ parallelStop()
 Being Lazy: Configuration and Auto-Start
 ========================================
 
-On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.  
+On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
 
 Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
 
@@ -103,23 +103,23 @@ options(
 This allows you to save some typing as running [parallelStart()](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
 
 ```splus
-parallelStart()  
-f = function(i) i + 5 
+parallelStart()
+f = function(i) i + 5
 y = parallelMap(f, 1:2)
-parallelStop()         
+parallelStop()
 ```
 
-You can later always overwrite settings be explicitly passing them to [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html), so 
+You can later always overwrite settings be explicitly passing them to [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html), so
 
 
 ```splus
-parallelStart(cpus=2)  
-f = function(i) i + 5 
+parallelStart(cpus=2)
+f = function(i) i + 5
 y = parallelMap(f, 1:2)
-parallelStop()         
+parallelStop()
 ```
 
-would use your default "multicore" mode and still disable [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2. 
+would use your default "multicore" mode and still disable [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
 
 Actually, we can reduce the amount of typing even further. Setting this in your R profile (let's enable messages again, so we can see more)
 
@@ -132,11 +132,11 @@ options(
 )
 ```
 
-allows you now to only write 
+allows you now to only write
 
 
 ```splus
-f = function(i) i + 5 
+f = function(i) i + 5
 y = parallelMap(f, 1:2)
 ```
 
@@ -151,7 +151,7 @@ Auto-stopping parallelization.
 Stopped parallelization. All cleaned up.
 ```
 
-[parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) auto-calls [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) in the beginning of [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) and neatly cleans everything up by calling [parallelStop](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStop.html) in the end. 
+[parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) auto-calls [parallelStart](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStart.html) in the beginning of [parallelMap](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelMap.html) and neatly cleans everything up by calling [parallelStop](http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/html/parallelStop.html) in the end.
 
 The following options are currently available:
 
