@@ -12,7 +12,7 @@
 #'   File paths to sources.
 #'   Alternative way to pass arguments.
 #' @param master [\code{logical(1)}]\cr
-#'   Source files also on master?
+#'   Source files also on master for any mode?
 #'   Default is \code{TRUE}.
 #' @param level [\code{character(1)}]\cr
 #'   If a (non-missing) level is specified in \code{\link{parallelStart}},

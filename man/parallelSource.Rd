@@ -12,7 +12,7 @@ parallelSource(..., files, master = TRUE, level = as.character(NA),
   Alternative way to pass arguments.}
 
   \item{master}{[\code{logical(1)}]\cr Source files also on
-  master?  Default is \code{TRUE}.}
+  master for any mode?  Default is \code{TRUE}.}
 
   \item{level}{[\code{character(1)}]\cr If a (non-missing)
   level is specified in \code{\link{parallelStart}}, the

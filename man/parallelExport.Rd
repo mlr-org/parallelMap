@@ -2,7 +2,8 @@
 \alias{parallelExport}
 \title{Export R objects for parallelization.}
 \usage{
-parallelExport(..., objnames, level = as.character(NA), show.info = NA)
+parallelExport(..., objnames, master = FALSE, level = as.character(NA),
+  show.info = NA)
 }
 \arguments{
   \item{...}{[\code{character}]\cr Names of objects to
@@ -16,6 +17,10 @@ parallelExport(..., objnames, level = as.character(NA), show.info = NA)
   function only exports if the level specified here
   matches.  See \code{\link{parallelMap}}.  Useful if this
   function is used in a package.  Default is \code{NA}.}
+
+  \item{master}{[\code{logical(1)}]\cr Really export to
+  \code{.GlobalEnv} on master for local and multicore mode?
+  Default is \code{FALSE}.}
 
   \item{show.info}{[\code{logical(1)}]\cr Verbose output on
   console?  Can be used to override setting from options /

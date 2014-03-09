@@ -13,7 +13,7 @@ parallelLibrary(..., packages, master = TRUE, level = as.character(NA),
   packages to load.  Alternative way to pass arguments.}
 
   \item{master}{[\code{logical(1)}]\cr Load packages also
-  on master?  Default is \code{TRUE}.}
+  on master for any mode?  Default is \code{TRUE}.}
 
   \item{level}{[\code{character(1)}]\cr If a (non-missing)
   level is specified in \code{\link{parallelStart}}, the

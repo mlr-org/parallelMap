@@ -12,7 +12,7 @@
 #'   Names of packages to load.
 #'   Alternative way to pass arguments.
 #' @param master [\code{logical(1)}]\cr
-#'   Load packages also on master?
+#'   Load packages also on master for any mode?
 #'   Default is \code{TRUE}.
 #' @param level [\code{character(1)}]\cr
 #'   If a (non-missing) level is specified in \code{\link{parallelStart}},
