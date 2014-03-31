@@ -131,6 +131,10 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
           warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
         stopWithJobErrorMessages(err.ids, msgs, extra.msg)
       }
+      expired.ids = findExpired(reg)
+      if (length(expired.ids) > 0) {
+        stop("Some Jobs expired and did not generate any results. Partail results are not supported yet.")
+      }
       res = loadResults(reg, simplify=FALSE, use.names=FALSE)
       # delete registry file dir, if an error happened this will still exist
       # because we threw an exception above, logs also still exist

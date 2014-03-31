@@ -33,5 +33,11 @@ test_that("BatchJobs mode", {
   parallelStartBatchJobs(storagedir=storagedir)
   partest6(slave.error.test=FALSE)
   parallelStop()
+  
+  # test that expire generate exceptions
+  parallelStartBatchJobs(storagedir = storagedir, bj.resources = list(walltime = 1))
+  f = function(i) Sys.sleep(30 * 60)
+  expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+  parallelStop()
 })
 
