@@ -5,6 +5,7 @@ parallelMap_1.1:
 - new functions
 -- parallelSource
 -- parallelExport
+-- errors, if batchJobs expire
 
 parallelMap_1.0-83:
 - First submit to CRAN.
