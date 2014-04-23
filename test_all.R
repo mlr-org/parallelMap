@@ -19,5 +19,5 @@ source("tests/testthat/helper_sockettest.R")
 conf = BatchJobs:::getBatchJobsConf()
 if (conf$cluster.functions$name == "Interactive")
   conf$cluster.functions = makeClusterFunctionsLocal()
-test_dir("tests/testthat", filter = "bat")
+test_dir("tests/testthat")
 
