@@ -3,7 +3,8 @@
 \title{Maps a function over lists or vectors in parallel.}
 \usage{
 parallelMap(fun, ..., more.args = list(), simplify = FALSE,
-  use.names = FALSE, level = as.character(NA), show.info = NA)
+  use.names = FALSE, impute.error = NULL, level = as.character(NA),
+  show.info = NA)
 }
 \arguments{
   \item{fun}{[\code{function}]\cr Function to map over
@@ -22,6 +23,24 @@ parallelMap(fun, ..., more.args = list(), simplify = FALSE,
   \item{use.names}{[\code{logical(1)}]\cr Should result be
   named by first vector if that is of class character?
   Default is \code{FALSE}.}
+
+  \item{impute.error}{[\code{NULL} | \code{function(x)}]\cr
+  This argument can be used for improved error handling.
+  \code{NULL} means that, if an exception is generated on
+  one of the slaves, it is also thrown on the master.
+  Usually all slave jobs will have to terminate until this
+  exception on the master can be thrown.  If you pass a
+  constant value or a function, all jobs are guaranteed to
+  return a result object.  In case of an error, this is a
+  try-object containing the error message.  If you passed a
+  constant object, the try-objects will be substituted with
+  this object.  If you passed a function, it will be used
+  to operate on these try-objects (it will ONLY be applied
+  to the error results).  For example, using
+  \code{identity} would keep and return the try-object, or
+  \code{function(x) 99} would impute a constant value
+  (which could be achieved more easily by simply passing
+  \code{99}).  Default is \code{NULL}.}
 
   \item{level}{[\code{character(1)}]\cr If a (non-missing)
   level is specified in \code{\link{parallelStart}}, this
@@ -48,6 +67,9 @@ Libraries and source file can be initialized on slaves with
 Large objects can be separately exported via
 \code{\link{parallelExport}}, they can be simply used under
 their exported name in slave body code.
+
+Regarding errorhandling, see the argument
+\code{impute.error}.
 }
 \examples{
 parallelStart()
