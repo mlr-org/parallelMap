@@ -177,7 +177,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
       res = vector("list", length(ids))
       res[ids.done] = loadResults(reg, simplify = FALSE, use.names = FALSE)
-      res[ids.notdone] = lapply(msgs, function(s) impute.error(simpleError(s)))
+      res[ids.notdone] = lapply(msgs, function(s) impute.error.fun(simpleError(s)))
       # delete registry file dir, if an error happened this will still exist
       # because we threw an exception above, logs also still exist
       unlink(fd, recursive = TRUE)
