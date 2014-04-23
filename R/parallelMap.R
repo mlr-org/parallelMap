@@ -123,7 +123,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       fd = getBatchJobsRegFileDir()
       # FIXME: this is bad but currently we cannot use absolute paths
       src.files = optionBatchsJobsSrcFiles()
-      wd = getPMOptStorageDir()
+      wd = getwd()
       srcdir = tempfile(pattern = "parallelMap_BatchJobs_srcs_", tmpdir = wd)
       dir.create(srcdir)
       file.copy(from = src.files, to = srcdir)

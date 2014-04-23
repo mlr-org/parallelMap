@@ -44,6 +44,19 @@ test_that("BatchJobs mode", {
     expect_error(suppressWarnings(parallelMap(f, 1:2)), "expired")
     parallelStop()
   }
-  # test that working dir
+
+  # test that working dir on master is working dir on slave
+  oldwd = getwd()
+  bn = "parallelMap_test_temp_dir_123"
+  newwd = file.path(storagedir, bn)
+  dir.create(newwd)
+  setwd(newwd)
+  parallelStartBatchJobs(storagedir = storagedir)
+  f = function(i) getwd()
+  y = parallelMap(f, 1)
+  parallelStop()
+  expect_equal(basename(y[[1]]), bn)
+  setwd(oldwd)
+  unlink(newwd, recursive = TRUE)
 })
 
