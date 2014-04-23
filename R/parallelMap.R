@@ -66,9 +66,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   # if it is a constant value construct function to impute
   if (!is.null(impute.error)) {
     if (is.function(impute.error))
-    impute.error.fun = impute.error.fun
-  else
-    impute.error.fun = function(x) impute.error
+      impute.error.fun = impute.error
+    else
+      impute.error.fun = function(x) impute.error
   }
   checkArg(level, "character", len = 1L, na.ok = TRUE)
   checkArg(show.info, "logical", len = 1L, na.ok = TRUE)
@@ -176,7 +176,6 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
       res = vector("list", length(ids))
       res[ids.done] = loadResults(reg, simplify = FALSE, use.names = FALSE)
-      print(impute.error)
       res[ids.notdone] = lapply(msgs, function(s) impute.error(simpleError(s)))
       # delete registry file dir, if an error happened this will still exist
       # because we threw an exception above, logs also still exist
