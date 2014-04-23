@@ -108,15 +108,17 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
-    showInfoMessage("Mapping in parallel: mode=%s; cpus=%i; elements=%i.",
+    showInfoMessage("Mapping in parallel: mode = %s; cpus = %i; elements = %i.",
       getPMOptMode(), getPMOptCpus(), length(iters))
 
     if (isModeMulticore()) {
-      more.args = c(list(.fun = fun, .logdir=logdir), more.args)
-      res = parallel::mcmapply(slaveWrapper, ..., .i = iters, MoreArgs=more.args, mc.cores=cpus,
+      more.args = c(list(.fun = fun, .logdir = logdir), more.args)
+      res = mcmapply_fixed(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
+      # res = parallel::mcmapply(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
+        # SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeSocket() || isModeMPI()) {
-      more.args = c(list(.fun = fun, .logdir=logdir), more.args)
+      more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeBatchJobs()) {
@@ -132,18 +134,18 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       suppressMessages({
         reg = makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd,
           # get packages and sources to load on slaves which where collected in R option
-          packages=optionBatchsJobsPackages(),
-          src.files=paste(basename(srcdir), basename(src.files), sep="/")
+          packages = optionBatchsJobsPackages(),
+          src.files = paste(basename(srcdir), basename(src.files), sep = "/")
         )
-        file.exports = list.files(getBatchJobsExportsDir(), full.names=TRUE)
-        file.rename(from=file.exports,
-          to=file.path(BatchJobs:::getExportDir(reg$file.dir), basename(file.exports)))
+        file.exports = list.files(getBatchJobsExportsDir(), full.names = TRUE)
+        file.rename(from = file.exports,
+          to = file.path(BatchJobs:::getExportDir(reg$file.dir), basename(file.exports)))
         # dont log extra in BatchJobs
-        more.args = c(list(.fun = fun, .logdir=NA_character_), more.args)
-        batchMap(reg, slaveWrapper, ..., more.args=more.args)
+        more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
+        batchMap(reg, slaveWrapper, ..., more.args = more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
-        submitJobs(reg, resources = getPMOptBatchJobsResources(), max.retries=15)
+        submitJobs(reg, resources = getPMOptBatchJobsResources(), max.retries = 15)
         ok = waitForJobs(reg, stop.on.error = stop.on.error)
       })
       # copy log files of terminated jobs to designated dir
@@ -206,7 +208,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0)
-    res = simplify2array(res, higher=(simplify == "array"))
+    res = simplify2array(res, higher = (simplify == "array"))
 
   # count number of mapping operations for log dir
   options(parallelMap.nextmap = (getPMOptNextMap() + 1L))
