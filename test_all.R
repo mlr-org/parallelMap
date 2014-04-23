@@ -6,7 +6,7 @@ library(BatchJobs)
 options(BBmisc.ProgressBar.style = "off")
 
 if (interactive()) {
-  load_all(".", reset=TRUE)
+  load_all(".", reset = TRUE)
 } else {
   library(parallelMap)
 }
