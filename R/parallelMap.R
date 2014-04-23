@@ -32,7 +32,8 @@
 #'   \code{NULL} means that, if an exception is generated on one of the slaves, it is also
 #'   thrown on the master. Usually all slave jobs will have to terminate until this exception on
 #'   the master can be thrown.
-#'   If you pass a constant value or a function, all jobs are guaranteed to return a result object.
+#'   If you pass a constant value or a function, all jobs are guaranteed to return a result object,
+#'   without generating an exception on the master for slave errors.
 #'   In case of an error,
 #'   this is a try-object containing the error message.
 #'   If you passed a constant object, the try-objects will be substituted with this object.

@@ -3,8 +3,8 @@ context("BatchJobs mode")
 test_that("BatchJobs mode", {
 
   storagedir = tempdir()
-  # if on lido for test, tempdir is not shared and test wih torque wont run
-  if (Sys.info()["nodename"] %in% c("lidong1", "lidong2")) {
+  # if on lido  or SLURM for test, tempdir is not shared and test wih torque wont run
+  if (getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
     storagedir = getwd()
   }
 
@@ -33,13 +33,13 @@ test_that("BatchJobs mode", {
   parallelStartBatchJobs(storagedir=storagedir)
   partest6(slave.error.test=FALSE)
   parallelStop()
-  
+
   # test that expire generate exceptions
   # we can of course only do that on a true batch system
   if (getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
     parallelStartBatchJobs(storagedir = storagedir, bj.resources = list(walltime = 1))
     f = function(i) Sys.sleep(30 * 60)
-    expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+    expect_error(suppressWarnings(parallelMap(f, 1:2)), "expired")
     parallelStop()
   }
   # test that working dir
