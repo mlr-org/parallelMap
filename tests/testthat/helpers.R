@@ -109,6 +109,9 @@ partest5 = function() {
   y = parallelMap(f, 1:2, impute.error = function(x) 123)
   expect_equal(y[[1L]], 123L)
   expect_equal(y[[2L]], 2L)
+  y = parallelMap(f, 1:2, impute.error = 99)
+  expect_equal(y[[1L]], 99L)
+  expect_equal(y[[2L]], 2L)
 }
 
 # test that exported files are sourced
