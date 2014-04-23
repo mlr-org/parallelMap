@@ -2,10 +2,13 @@ parallelMap_1.1:
 - Package in general much more stable now
 - parallelLibrary was improved a lot
 - better / more configurable info messages on console
+- BatchJobs mode: working directory for slave jobs is the current working dir on the master, 
+  not the storage.dir
+- BatchJobs mode: errors are thrown, if jobs expire
+- parallelMap: impute.error option
 - new functions
 -- parallelSource
 -- parallelExport
--- errors, if batchJobs expire
 
 parallelMap_1.0-83:
 - First submit to CRAN.

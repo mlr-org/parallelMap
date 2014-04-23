@@ -35,15 +35,13 @@ test_that("BatchJobs mode", {
   parallelStop()
   
   # test that expire generate exceptions
-  parallelStartBatchJobs(storagedir = storagedir, bj.resources = list(walltime = 1))
-  f = function(i) Sys.sleep(30 * 60)
-  expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
-  parallelStop()
-  
+  # we can of course only do that on a true batch system
+  if (getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
+    parallelStartBatchJobs(storagedir = storagedir, bj.resources = list(walltime = 1))
+    f = function(i) Sys.sleep(30 * 60)
+    expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+    parallelStop()
+  }
   # test that working dir
-
-
-
-}
-)
+})
 
