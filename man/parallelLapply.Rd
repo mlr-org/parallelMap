@@ -6,7 +6,7 @@
 parallelLapply(xs, fun, ..., impute.error = NULL, level = NA_character_)
 
 parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
-  level = NA_character_)
+  impute.error = NULL, level = NA_character_)
 }
 \arguments{
   \item{xs}{[\code{vector} | \code{list}]\cr \code{fun} is

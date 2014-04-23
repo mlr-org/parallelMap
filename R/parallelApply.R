@@ -26,13 +26,16 @@
 #' @export
 parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_character_) {
   more.args = list(...)
-  parallelMap(fun, xs, more.args = more.args, impute.error = impute.error, level = level,
-    simplify = FALSE, use.names = FALSE)
+  parallelMap(fun, xs, more.args = more.args, simplify = FALSE, use.names = FALSE,
+    impute.error = impute.error, level = level)
 }
 
 #' @rdname parallelLapply
 #' @export
-parallelSapply = function(xs, fun, ..., simplify = TRUE, use.names = TRUE, level = NA_character_) {
+parallelSapply = function(xs, fun, ..., simplify = TRUE, use.names = TRUE, impute.error = NULL,
+  level = NA_character_) {
+
   more.args = list(...)
-  parallelMap(fun, xs, more.args = more.args, simplify = simplify, use.names = use.names, level = level)
+  parallelMap(fun, xs, more.args = more.args, simplify = simplify, use.names = use.names,
+    impute.error = impute.error, level = level)
 }
