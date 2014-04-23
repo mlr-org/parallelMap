@@ -8,8 +8,4 @@ test_that("local mode", {
   partest5()
   partest6(slave.error.test=FALSE)
   parallelStop()
-
-  #check that paralleLib does not do output
-  
-
 })
