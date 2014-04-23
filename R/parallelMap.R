@@ -10,6 +10,8 @@
 #' Large objects can be separately exported via \code{\link{parallelExport}},
 #' they can be simply used under their exported name in slave body code.
 #'
+#' Regarding errorhandling, see the argument \code{impute.error}.
+#'
 #' @param fun [\code{function}]\cr
 #'   Function to map over \code{...}.
 #' @param ... [any]\cr
@@ -25,6 +27,20 @@
 #'   Should result be named by first vector if that is
 #'   of class character?
 #'   Default is \code{FALSE}.
+#' @param impute.error [\code{NULL} | \code{function(x)}]\cr
+#'   This argument can be used for improved error handling.
+#'   \code{NULL} means that, if an exception is generated on one of the slaves, it is also
+#'   thrown on the master. Usually all slave jobs will have to terminate until this exception on
+#'   the master can be thrown.
+#'   If you pass a constant value or a function, all jobs are guaranteed to return a result object.
+#'   In case of an error,
+#'   this is a try-object containing the error message.
+#'   If you passed a constant object, the try-objects will be substituted with this object.
+#'   If you passed a function, it will be used to operate
+#'   on these try-objects (it will ONLY be applied to the error results).
+#'   For example, using \code{identity} would  keep and return the try-object, or \code{function(x) 99}
+#'   would impute a constant value (which could be achieved more easily by simply passing \code{99}).
+#'   Default is \code{NULL}.
 #' @param level [\code{character(1)}]\cr
 #'   If a (non-missing) level is specified in \code{\link{parallelStart}},
 #'   this call is only parallelized if the level specified here matches.
@@ -40,15 +56,22 @@
 #' parallelStart()
 #' parallelMap(identity, 1:2)
 #' parallelStop()
-parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FALSE,
-  level=as.character(NA), show.info=NA) {
+parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names = FALSE,
+  impute.error = NULL, level = as.character(NA), show.info = NA) {
 
   checkArg(fun, "function")
   checkArg(more.args, "list")
-  checkArg(simplify, "logical", len=1L, na.ok=FALSE)
-  checkArg(use.names, "logical", len=1L, na.ok=FALSE)
-  checkArg(level, "character", len=1L, na.ok=TRUE)
-  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
+  checkArg(simplify, "logical", len = 1L, na.ok = FALSE)
+  checkArg(use.names, "logical", len = 1L, na.ok = FALSE)
+  # if it is a constant value construct function to impute
+  if (!is.null(impute.error)) {
+    if (is.function(impute.error))
+    impute.error.fun = impute.error.fun
+  else
+    impute.error.fun = function(x) impute.error
+  }
+  checkArg(level, "character", len = 1L, na.ok = TRUE)
+  checkArg(show.info, "logical", len = 1L, na.ok = TRUE)
 
   # potentially autostart by calling parallelStart with defaults from R profile
   # then clean up by calling parallelStop on exit
@@ -57,7 +80,7 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     parallelStart()
     on.exit({
       if (!isModeLocal())
-        showInfoMessage("Auto-stopping parallelization.", show.info=show.info)
+        showInfoMessage("Auto-stopping parallelization.", show.info = show.info)
       parallelStop()
     })
   }
@@ -68,7 +91,20 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   logdir = ifelse(logging, getNextLogDir(), NA_character_)
 
   if (isModeLocal() || !isParallelizationLevel(level) || getPMOptOnSlave()) {
-    res = mapply(fun, ..., MoreArgs=more.args, SIMPLIFY=FALSE, USE.NAMES=FALSE)
+    if (!is.null(impute.error)) {
+      # so we behave in local mode as in parallelSlaveWrapper
+      fun2 = function (...) {
+        res = try(fun(...))
+        if (is.error(res)) {
+          res = list(try.object = res)
+          class(res) =  "parallelMapErrorWrapper"
+        }
+        return(res)
+      }
+    } else {
+      fun2 = fun
+    }
+    res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
     showInfoMessage("Mapping in parallel: mode=%s; cpus=%i; elements=%i.",
@@ -77,25 +113,23 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir=logdir), more.args)
       res = parallel::mcmapply(slaveWrapper, ..., .i = iters, MoreArgs=more.args, mc.cores=cpus,
-                               SIMPLIFY=FALSE, USE.NAMES=FALSE)
-      # produces list of try-error objects in case of error
-      checkResultsAndStopWithErrorsMessages(res)
+        SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir=logdir), more.args)
-      res = clusterMap(cl=NULL, slaveWrapper, ..., .i = iters, MoreArgs=more.args,
-                       SIMPLIFY=FALSE, USE.NAMES=FALSE)
-      # throws one single error on master in case of error
+      res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args,
+        SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeBatchJobs()) {
       fd = getBatchJobsRegFileDir()
       # FIXME: this is bad but currently we cannot use absolute paths
       src.files = optionBatchsJobsSrcFiles()
       wd = getPMOptStorageDir()
-      srcdir = tempfile(pattern="parallelMap_BatchJobs_srcs_", tmpdir=wd)
+      srcdir = tempfile(pattern = "parallelMap_BatchJobs_srcs_", tmpdir = wd)
       dir.create(srcdir)
-      file.copy(from=src.files, to=srcdir)
+      file.copy(from = src.files, to = srcdir)
       # create registry in selected directory with random, unique name
+      stop.on.error = is.null(impute.error)
       suppressMessages({
-        reg = makeRegistry(id=basename(fd), file.dir=fd, work.dir=wd,
+        reg = makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd,
           # get packages and sources to load on slaves which where collected in R option
           packages=optionBatchsJobsPackages(),
           src.files=paste(basename(srcdir), basename(src.files), sep="/")
@@ -108,20 +142,27 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         batchMap(reg, slaveWrapper, ..., more.args=more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
-        submitJobs(reg, resources=getPMOptBatchJobsResources(), max.retries=15)
-        ok = waitForJobs(reg, stop.on.error=TRUE)
+        submitJobs(reg, resources = getPMOptBatchJobsResources(), max.retries=15)
+        ok = waitForJobs(reg, stop.on.error = stop.on.error)
       })
       # copy log files of terminated jobs to designated dir
       if (!is.na(logdir)) {
         term = findTerminated(reg)
         fns = getLogFiles(reg, term)
         dests = file.path(logdir, sprintf("%05i.log", term))
-        file.copy(from=fns, to=dests)
+        file.copy(from = fns, to = dests)
       }
-      err.ids = findErrors(reg)
-      if (length(err.ids) > 0) {
-        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occured to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
-        msgs = BatchJobs::getErrorMessages(reg, err.ids)
+      ids = getJobIds(reg)
+      ids.err = findErrors(reg)
+      ids.exp = findExpired(reg)
+      ids.done = findDone(reg)
+      ids.notdone = c(ids.err, ids.exp)
+      # construct notdone error messages
+      msgs = rep("Job expired!", length(ids.notdone))
+      msgs[ids.err] = BatchJobs::getErrorMessages(reg, ids.err)
+      # handle errors (no impute): kill other jobs + stop on master
+      if (is.null(impute.error) && length(c(ids.notdone)) > 0) {
+        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
         onsys = findOnSystem(reg)
         suppressMessages(
           killJobs(reg, onsys)
@@ -129,19 +170,33 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
         onsys = findOnSystem(reg)
         if (length(onsys) > 0L)
           warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
-        stopWithJobErrorMessages(err.ids, msgs, extra.msg)
+        if (length(ids.notdone) > 0L)
+          stopWithJobErrorMessages(ids.notdone, msgs, extra.msg)
       }
-      expired.ids = findExpired(reg)
-      if (length(expired.ids) > 0) {
-        stop("Some Jobs expired and did not generate any results. Partail results are not supported yet.")
-      }
-      res = loadResults(reg, simplify=FALSE, use.names=FALSE)
+      # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
+      res = vector("list", length(ids))
+      res[ids.done] = loadResults(reg, simplify = FALSE, use.names = FALSE)
+      print(impute.error)
+      res[ids.notdone] = lapply(msgs, function(s) impute.error(simpleError(s)))
       # delete registry file dir, if an error happened this will still exist
       # because we threw an exception above, logs also still exist
-      unlink(fd, recursive=TRUE)
+      unlink(fd, recursive = TRUE)
       #FIXME: see above about src.files
-      unlink(srcdir, recursive=TRUE)
+      unlink(srcdir, recursive = TRUE)
     }
+  }
+
+
+  # handle potential errors in res, depending on user setting
+  if (is.null(impute.error)) {
+    checkResultsAndStopWithErrorsMessages(res)
+  } else {
+    res = lapply(res, function(x) {
+      if (inherits(x, "parallelMapErrorWrapper"))
+        impute.error.fun(x$try.object)
+      else
+        x
+    })
   }
 
   if (use.names && is.character(..1)) {
@@ -159,25 +214,30 @@ parallelMap = function(fun, ..., more.args=list(), simplify=FALSE, use.names=FAL
   return(res)
 }
 
-slaveWrapper = function(..., .i, .fun, .logdir=NA_character_) {
+slaveWrapper = function(..., .i, .fun, .logdir = NA_character_) {
   if (!is.na(.logdir)) {
-    options(warning.length=8170, warn=1)
+    options(warning.length = 8170L, warn = 1L)
     .fn = file.path(.logdir, sprintf("%05i.log", .i))
-    .fn = file(.fn, open="wt")
+    .fn = file(.fn, open = "wt")
     .start.time = as.integer(Sys.time())
     sink(.fn)
-    sink(.fn, type="message")
+    sink(.fn, type = "message")
     on.exit(sink(NULL))
   }
 
   # make sure we dont parallelize any further
-  options(parallelMap.on.slave=TRUE)
+  options(parallelMap.on.slave = TRUE)
   # just make sure, we should not have changed anything on the master
   # except for BatchJobs / interactive
-  on.exit(options(parallelMap.on.slave=FALSE))
+  on.exit(options(parallelMap.on.slave = FALSE))
 
-  res = .fun(...)
-
+  # wrap in try block so we can handle error on master
+  res = try(.fun(...))
+  # now we cant simply return the error object, because clusterMap would act on it. great...
+  if (is.error(res)) {
+    res = list(try.object = res)
+    class(res) =  "parallelMapErrorWrapper"
+  }
   if (!is.na(.logdir)) {
     .end.time = as.integer(Sys.time())
     print(gc())

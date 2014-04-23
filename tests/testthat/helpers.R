@@ -81,7 +81,7 @@ partest4 = function(slave.error.test) {
   # testhat is basically the only lib we have in suggests...
   parallelLibrary("testthat")
   f = function(i)
-     expect_true
+    expect_true
   res = parallelMap(f, 1:2)
   expect_true(is.list(res) && length(res) == 2 && is.function(res[[1]]))
   if (slave.error.test) {
@@ -94,10 +94,21 @@ partest4 = function(slave.error.test) {
   }
 }
 
-#test that error generate exceptions
+#test error handling
 partest5 = function() {
-  f = function(i) stop("foo")
-  expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
+  # exception is thrown on master
+  f = function(i) {
+  if(i == 1)
+    stop("foo")
+  else
+    i
+  }
+  y = parallelMap(f, 1:2, impute.error = identity)
+  expect_true(is.error(y[[1L]]))
+  expect_equal(y[[2L]], 2L)
+  y = parallelMap(f, 1:2, impute.error = function(x) 123)
+  expect_equal(y[[1L]], 123L)
+  expect_equal(y[[2L]], 2L)
 }
 
 # test that exported files are sourced

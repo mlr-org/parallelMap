@@ -39,5 +39,11 @@ test_that("BatchJobs mode", {
   f = function(i) Sys.sleep(30 * 60)
   expect_error(suppressWarnings(parallelMap(f, 1:2)), "foo")
   parallelStop()
-})
+  
+  # test that working dir
+
+
+
+}
+)
 
