@@ -2,6 +2,8 @@ context("BatchJobs mode")
 
 test_that("BatchJobs mode", {
 
+  library(BatchJobs)
+
   storagedir = tempdir()
   # if on lido  or SLURM for test, tempdir is not shared and test wih torque wont run
   if (getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
