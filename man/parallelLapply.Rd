@@ -3,7 +3,7 @@
 \alias{parallelSapply}
 \title{Parallel versions of apply-family functions.}
 \usage{
-parallelLapply(xs, fun, ..., level = NA_character_)
+parallelLapply(xs, fun, ..., impute.error = NULL, level = NA_character_)
 
 parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
   level = NA_character_)
@@ -23,6 +23,9 @@ parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
 
   \item{use.names}{[\code{logical(1)}]\cr See
   \code{\link{sapply}}.  Default is \code{TRUE}.}
+
+  \item{impute.error}{[\code{NULL} | \code{function(x)}]\cr
+  See \code{\link{parallelMap}}.}
 
   \item{level}{[\code{character(1)}]\cr See
   \code{\link{parallelMap}}.}

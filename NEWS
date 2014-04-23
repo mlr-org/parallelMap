@@ -5,7 +5,7 @@ parallelMap_1.1:
 - BatchJobs mode: working directory for slave jobs is the current working dir on the master, 
   not the storage.dir
 - BatchJobs mode: errors are thrown, if jobs expire
-- parallelMap: impute.error option
+- parallelMap/Lapply/Sapply: impute.error option
 - new functions
 -- parallelSource
 -- parallelExport
