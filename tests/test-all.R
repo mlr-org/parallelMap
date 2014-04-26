@@ -1,4 +1,4 @@
-# #FIXME R CMD check does not run on true batch systems, but maybe it does not have to
+# FIXME: R CMD check does not run on true batch systems, but maybe it does not have to
 # we can check there with 'make test' and run 'make check' locally
 
 library(testthat)
