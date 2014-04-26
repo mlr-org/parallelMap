@@ -35,12 +35,13 @@
 #'   If you pass a constant value or a function, all jobs are guaranteed to return a result object,
 #'   without generating an exception on the master for slave errors.
 #'   In case of an error,
-#'   this is a try-object containing the error message.
-#'   If you passed a constant object, the try-objects will be substituted with this object.
+#'   this is a \code{\link{simpleError}} object containing the error message.
+#'   If you passed a constant object, the error-objects will be substituted with this object.
 #'   If you passed a function, it will be used to operate
-#'   on these try-objects (it will ONLY be applied to the error results).
-#'   For example, using \code{identity} would  keep and return the try-object, or \code{function(x) 99}
-#'   would impute a constant value (which could be achieved more easily by simply passing \code{99}).
+#'   on these error-objects (it will ONLY be applied to the error results).
+#'   For example, using \code{identity} would  keep and return the \code{simpleError}-object, 
+#'   or \code{function(x) 99} would impute a constant value 
+#'   (which could be achieved more easily by simply passing \code{99}).
 #'   Default is \code{NULL}.
 #' @param level [\code{character(1)}]\cr
 #'   If a (non-missing) level is specified in \code{\link{parallelStart}},
@@ -195,7 +196,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   } else {
     res = lapply(res, function(x) {
       if (inherits(x, "parallelMapErrorWrapper"))
-        impute.error.fun(x$try.object)
+        impute.error.fun(attr(x$try.object, "condition"))
       else
         x
     })
