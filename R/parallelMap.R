@@ -39,8 +39,8 @@
 #'   If you passed a constant object, the error-objects will be substituted with this object.
 #'   If you passed a function, it will be used to operate
 #'   on these error-objects (it will ONLY be applied to the error results).
-#'   For example, using \code{identity} would  keep and return the \code{simpleError}-object, 
-#'   or \code{function(x) 99} would impute a constant value 
+#'   For example, using \code{identity} would  keep and return the \code{simpleError}-object,
+#'   or \code{function(x) 99} would impute a constant value
 #'   (which could be achieved more easily by simply passing \code{99}).
 #'   Default is \code{NULL}.
 #' @param level [\code{character(1)}]\cr
