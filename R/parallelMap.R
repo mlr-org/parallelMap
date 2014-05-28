@@ -96,7 +96,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     if (!is.null(impute.error)) {
       # so we behave in local mode as in parallelSlaveWrapper
       fun2 = function (...) {
-        res = try(fun(...))
+        res = try(fun(...), silent = getOption("parallelMap.suppress.local.errors"))
         if (is.error(res)) {
           res = list(try.object = res)
           class(res) =  "parallelMapErrorWrapper"

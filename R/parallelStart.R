@@ -70,12 +70,16 @@
 #'   Verbose output on console for all further package calls?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set,
 #'   \code{TRUE}.
+#' @param suppress.local.errors [\code{logical(1)}]\cr
+#'   Should reporting of error messages during function evaluations in local mode be suppressed?
+#'   Default ist FALSE, i.e. every error message is shown.
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging, storagedir, level, show.info, ...) {
+parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging, storagedir, level, show.info,
+  suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -111,6 +115,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)
   options(parallelMap.nextmap = 1L)
+  options(parallelMap.suppress.local.errors = suppress.local.errors)
 
   # try to autodetect cpus if not set
   if (is.na(cpus) && mode %in% c(MODE_MULTICORE, MODE_MPI))
@@ -160,9 +165,9 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
 
 #' @export
 #' @rdname parallelStart
-parallelStartLocal = function(show.info) {
+parallelStartLocal = function(show.info, suppress.local.errors = FALSE) {
   parallelStart(mode=MODE_LOCAL, cpus=NA_integer_, level=NA_character_,
-    logging=FALSE, show.info=show.info)
+    logging=FALSE, show.info=show.info, suppress.local.errors = suppress.local.errors)
 }
 
 #' @export
