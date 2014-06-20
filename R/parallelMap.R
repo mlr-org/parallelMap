@@ -110,7 +110,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   } else {
     iters = seq_along(..1)
     showInfoMessage("Mapping in parallel: mode = %s; cpus = %i; elements = %i.",
-      getPMOptMode(), getPMOptCpus(), length(iters))
+      getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
 
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
@@ -208,7 +208,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   if (!use.names) {
     names(res) = NULL
   }
-  if (isTRUE(simplify) && length(res) > 0)
+  if (isTRUE(simplify) && length(res) > 0L)
     res = simplify2array(res, higher = (simplify == "array"))
 
   # count number of mapping operations for log dir

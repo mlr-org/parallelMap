@@ -88,6 +88,3 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.
   }
   invisible(NULL)
 }
-
-
-

@@ -15,7 +15,6 @@ isShowInfoEnabled = function() {
 showInfoMessage = function(msg, ..., show.info=NA) {
   if ((is.na(show.info) && isShowInfoEnabled()) ||
     (!is.na(show.info) && show.info)) {
-
     messagef(msg, ...)
   }
 }

@@ -24,7 +24,7 @@
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelExport = function(..., objnames, master=FALSE, level=as.character(NA), show.info=NA) {
+parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(objnames)) {
@@ -43,7 +43,7 @@ parallelExport = function(..., objnames, master=FALSE, level=as.character(NA), s
   # remove duplicates
   objnames = unique(objnames)
 
-  if (length(objnames) > 0) {
+  if (length(objnames) > 0L) {
    if (isParallelizationLevel(level)) {
       if (master && (isModeLocal() || isModeMulticore())) {
         showInfoMessage("Exporting objects to .GlobalEnv on master for mode: %s",
@@ -64,13 +64,9 @@ parallelExport = function(..., objnames, master=FALSE, level=as.character(NA), s
         # export via fail::put, make sure names are correctly set
         bj.exports.dir = getBatchJobsExportsDir()
         fail.handle = fail::fail(bj.exports.dir)
-        objs = setNames(lapply(objnames, get, envir=sys.parent()), objnames)
-        fail.handle$put(li=objs)
+        fail.handle$put(li=setNames(lapply(objnames, get, envir=sys.parent()), objnames))
       }
     }
   }
   invisible(NULL)
 }
-
-
-
