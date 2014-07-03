@@ -3,7 +3,7 @@
 \alias{parallelExport}
 \title{Export R objects for parallelization.}
 \usage{
-parallelExport(..., objnames, master = FALSE, level = NA_character_,
+parallelExport(..., objnames, master = TRUE, level = NA_character_,
   show.info = NA)
 }
 \arguments{
@@ -23,7 +23,9 @@ Default is \code{NA}.}
 
 \item{master}{[\code{logical(1)}]\cr
 Really export to package environment on master for local and multicore mode?
-Default is \code{FALSE}.}
+If you do not do this your objects might not get exported for the mapping function call.
+Only disable when you are really sure.
+Default is \code{TRUE}.}
 
 \item{show.info}{[\code{logical(1)}]\cr
 Verbose output on console?
