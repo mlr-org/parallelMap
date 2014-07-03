@@ -17,14 +17,16 @@
 #'   Default is \code{NA}.
 #' @param master [\code{logical(1)}]\cr
 #'   Really export to package environment on master for local and multicore mode?
-#'   Default is \code{FALSE}.
+#'   If you do not do this your objects might not get exported for the mapping function call.
+#'   Only disable when you are really sure.
+#'   Default is \code{TRUE}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
 #'   Can be used to override setting from options / \code{\link{parallelStart}}.
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show.info=NA) {
+parallelExport = function(..., objnames, master=TRUE, level=NA_character_, show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(objnames)) {

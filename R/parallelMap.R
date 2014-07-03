@@ -94,11 +94,12 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     } else {
       fun2 = fun
     }
-    # copy exported objects in PKG_LOCAL_ENV to env of fun2 so we can find them in any case in call
+    # copy exported objects in PKG_LOCAL_ENV to env of fun so we can find them in any case in call
     ee = environment(fun)
     ns = ls(PKG_LOCAL_ENV)
     for (n in ns)
       assign(n, get(n, envir = PKG_LOCAL_ENV), envir = ee)
+
     res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
@@ -106,6 +107,12 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
 
     if (isModeMulticore()) {
+      # copy exported objects in PKG_LOCAL_ENV to env of fun so we can find them in any case in call
+      ee = environment(fun)
+      ns = ls(PKG_LOCAL_ENV)
+      for (n in ns)
+        assign(n, get(n, envir = PKG_LOCAL_ENV), envir = ee)
+
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       res = mcmapply_fixed(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)

@@ -43,6 +43,9 @@ parallelStop = function() {
     }
   }
 
+  # remove our local export collection (local + multicore mode)
+  rm(list = ls(PKG_LOCAL_ENV), envir = PKG_LOCAL_ENV)
+
   # in any case be in local / stopped mode now
   options(parallelMap.mode = MODE_LOCAL)
   options(parallelMap.status = STATUS_STOPPED)
