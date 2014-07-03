@@ -52,12 +52,12 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA), s
     # if level matches, load on slaves
     if (isParallelizationLevel(level)) {
       # only load when we have not already done on master
-      if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+      if (!master && mode %in% c(MODE_LOCAL)) {
         showInfoMessage("Loading packages on master (to be available on slaves for mode %s): %s",
           mode, collapse(packages), show.info=show.info)
         requirePackages(packages, why="parallelLibrary")
       }
-      if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
+      if (mode %in% c(MODE_SOCKET, MODE_MPI, MODE_MULTICORE)) {
         showInfoMessage("Loading packages on slaves for mode %s: %s",
           mode, collapse(packages), show.info=show.info)
         .parallelMap.pkgs = packages

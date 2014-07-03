@@ -58,7 +58,7 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.
           collapse(files), show.info=show.info)
         lapply(files, source)
       }
-      if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
+      if (mode %in% c(MODE_SOCKET, MODE_MPI, MODE_MULTICORE)) {
         showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info=show.info)
         .parallelMap.srcs = files
         exportToSlavePkgParallel(".parallelMap.srcs", .parallelMap.srcs)

@@ -18,7 +18,7 @@
 parallelStop = function() {
   # only do something if we are in "started" state
   if (isStatusStarted()) {
-    if (isModeSocket() || isModeMPI()) {
+    if (isModeSocket() || isModeMPI() || isModeMulticore()) {
       # only stop if we registred one (exception in parallelStart can happen)
       # the whole following code is full of horrible stuff but I cannot change that
       # parallel is really buggy and the design is horrible
