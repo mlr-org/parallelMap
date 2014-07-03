@@ -109,7 +109,7 @@ parallelStop()
 ```
 
 
-Being Lazy: Configuration and Auto-Start
+Being Lazy: Configuration
 ========================================
 
 On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
@@ -146,42 +146,9 @@ parallelStop()
 
 would use your default "multicore" mode and still disable [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
 
-Actually, we can reduce the amount of typing even further. Setting this in your R profile (let's enable messages again, so we can see more)
-
-```splus
-options(
-  parallelMap.default.autostart   = TRUE,
-  parallelMap.default.mode        = "multicore",
-  parallelMap.default.cpus        = 4,
-  parallelMap.default.show.info   = TRUE
-)
-```
-
-allows you now to only write
-
-
-```splus
-f = function(i) i + 5
-y = parallelMap(f, 1:2)
-```
-
-In the console you see what happens:
-
-```
-Auto-starting parallelization.
-Starting parallelization in mode=multicore with cpus=4.
-Loading required package: parallel
-Doing a parallel mapping operation.
-Auto-stopping parallelization.
-Stopped parallelization. All cleaned up.
-```
-
-[parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html) auto-calls [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html) in the beginning of [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html) and neatly cleans everything up by calling [parallelStop](http://berndbischl.github.io/parallelMap/man/parallelStop.html) in the end.
-
 The following options are currently available:
 
 ```splus
-  parallelMap.default.autostart       = TRUE / FALSE
   parallelMap.default.mode            = "local" / "multicore" / "socket" / "mpi" / "BatchJobs"
   parallelMap.default.cpus            = <integer>
   parallelMap.default.level           = <string> or NA
