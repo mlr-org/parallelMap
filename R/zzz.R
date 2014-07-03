@@ -11,6 +11,8 @@ MODES = c(MODE_LOCAL, MODE_MULTICORE, MODE_SOCKET, MODE_MPI, MODE_BATCHJOBS)
 STATUS_STARTED = "started"
 STATUS_STOPPED = "stopped"
 
+PKG_LOCAL_ENV = new.env()
+
 .onLoad = function(libname, pkgname) {
   # init all settings from defaults
   # we cant call any function here in onload that dispatch to BBmisc...

@@ -15,17 +15,16 @@
 #'   See \code{\link{parallelMap}}.
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
-# @param master [\code{logical(1)}]\cr
-#   Really export to \code{.GlobalEnv} on master for local and multicore mode?
-#   Default is \code{FALSE}.
+#' @param master [\code{logical(1)}]\cr
+#'   Really export to package environment on master for local mode?
+#'   Default is \code{FALSE}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
 #'   Can be used to override setting from options / \code{\link{parallelStart}}.
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-# parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show.info=NA) {
-parallelExport = function(..., objnames, level=NA_character_, show.info=NA) {
+parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show.info=NA) {
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(objnames)) {
@@ -35,7 +34,7 @@ parallelExport = function(..., objnames, level=NA_character_, show.info=NA) {
     objnames = as.character(args)
   }
 
-  # checkArg(master, "logical", len=1L, na.ok=FALSE)
+  checkArg(master, "logical", len=1L, na.ok=FALSE)
   checkArg(level, "character", len=1L, na.ok=TRUE)
   checkArg(show.info, "logical", len=1L, na.ok=TRUE)
 
@@ -47,10 +46,10 @@ parallelExport = function(..., objnames, level=NA_character_, show.info=NA) {
   if (length(objnames) > 0L) {
    if (isParallelizationLevel(level)) {
       if (master && (isModeLocal() || isModeMulticore())) {
-        showInfoMessage("Exporting objects to .GlobalEnv on master for mode: %s",
+        showInfoMessage("Exporting objects to package env on master for mode: %s",
           mode, collapse(objnames))
         for (n in objnames)
-          assign(n, get(n, envir=sys.parent()), envir=.GlobalEnv)
+          assign(n, get(n, envir=sys.parent()), envir=PKG_LOCAL_ENV)
       }
       if (isModeSocket() || isModeMPI() || isModeMulticore()) {
         showInfoMessage("Exporting objects to slaves for mode %s: %s",
