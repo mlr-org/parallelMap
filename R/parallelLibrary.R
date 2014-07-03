@@ -28,7 +28,7 @@
 #' @export
 parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA), show.info=NA) {
   args = list(...)
-  checkListElementClass(args, "character")
+  assertList(args, types = "character")
   if (!missing(packages)) {
     assertCharacter(packages, any.missing = FALSE)
     packages = c(as.character(args), packages)

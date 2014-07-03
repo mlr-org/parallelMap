@@ -28,7 +28,7 @@
 #' @export
 parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.info=NA) {
   args = list(...)
-  checkListElementClass(args, "character")
+  assertList(args, types = "character")
   if (!missing(files)) {
     assertCharacter(files, any.missing = FALSE)
     files = c(as.character(args), files)

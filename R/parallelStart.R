@@ -101,8 +101,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
   # multicore not supported on windows
   if (mode == MODE_MULTICORE && .Platform$OS.type == "windows")
     stop("Multicore mode not supported on windows!")
-  # check that storagedir is indeed a valid dir
-  checkDir("Storage", storagedir)
+  assertDirectory(storagedir, access = "w")
 
   # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)

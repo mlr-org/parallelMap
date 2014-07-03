@@ -1,10 +1,3 @@
-# check dir exists and is indeed a dir
-checkDir = function(dirname, dir) {
-  if (!file.exists(dir))
-    stopf("%s directory does not exists: %s", dirname, dir)
-  if (!isDirectory(dir))
-    stopf("% directory is not a directory: %s", dirname, dir)
-}
 
 isShowInfoEnabled = function() {
   getPMOptShowInfo()

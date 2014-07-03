@@ -28,7 +28,7 @@
 #' @export
 parallelExport = function(..., objnames, master=TRUE, level=NA_character_, show.info=NA) {
   args = list(...)
-  checkListElementClass(args, "character")
+  assertList(args, types = "character")
   if (!missing(objnames)) {
     assertCharacter(objnames, any.missing = FALSE)
     objnames = c(as.character(args), objnames)
