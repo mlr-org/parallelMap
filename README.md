@@ -8,7 +8,7 @@ R package to interface some popular parallelization back-ends with a unified int
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
 * R Documentation in HTML:
-  http://www.statistik.tu-dortmund.de/~bischl/rdocs/parallelMap/
+  http://berndbischl.github.io/parallelMap/man
 
 * Run this in R to install the current GitHub version:
   ```r
