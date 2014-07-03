@@ -61,10 +61,10 @@
 parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names = FALSE,
   impute.error = NULL, level = as.character(NA), show.info = NA) {
 
-  checkArg(fun, "function")
-  checkArg(more.args, "list")
-  checkArg(simplify, "logical", len = 1L, na.ok = FALSE)
-  checkArg(use.names, "logical", len = 1L, na.ok = FALSE)
+  assertFunction(fun)
+  assertList(more.args)
+  assertFlag(simplify)
+  assertFlag(use.names)
   # if it is a constant value construct function to impute
   if (!is.null(impute.error)) {
     if (is.function(impute.error))
@@ -72,8 +72,8 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     else
       impute.error.fun = function(x) impute.error
   }
-  checkArg(level, "character", len = 1L, na.ok = TRUE)
-  checkArg(show.info, "logical", len = 1L, na.ok = TRUE)
+  assertString(level, na.ok = TRUE)
+  assertFlag(show.info, na.ok = TRUE)
 
   cpus = getPMOptCpus()
   logging = getPMOptLogging()

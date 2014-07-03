@@ -30,14 +30,14 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(files)) {
-    checkArg(files, "character", na.ok=FALSE)
+    assertCharacter(files, any.missing = FALSE)
     files = c(as.character(args), files)
   } else {
     files = as.character(args)
   }
-  checkArg(master, "logical", len=1L, na.ok=FALSE)
-  checkArg(level, "character", len=1L, na.ok=TRUE)
-  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
+  assertFlag(master)
+  assertString(level, na.ok = TRUE)
+  assertFlag(show.info, na.ok = TRUE)
 
   mode = getPMOptMode()
 

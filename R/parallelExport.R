@@ -28,15 +28,15 @@ parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(objnames)) {
-    checkArg(objnames, "character", na.ok=FALSE)
+    assertCharacter(objnames, any.missing = FALSE)
     objnames = c(as.character(args), objnames)
   } else {
     objnames = as.character(args)
   }
 
-  checkArg(master, "logical", len=1L, na.ok=FALSE)
-  checkArg(level, "character", len=1L, na.ok=TRUE)
-  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
+  assertFlag(master)
+  assertString(level, na.ok = TRUE)
+  assertFlag(show.info, na.ok = TRUE)
 
   mode = getPMOptMode()
 

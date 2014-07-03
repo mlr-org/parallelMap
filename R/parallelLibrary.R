@@ -30,14 +30,14 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA), s
   args = list(...)
   checkListElementClass(args, "character")
   if (!missing(packages)) {
-    checkArg(packages, "character", na.ok=FALSE)
+    assertCharacter(packages, any.missing = FALSE)
     packages = c(as.character(args), packages)
   } else {
     packages = as.character(args)
   }
-  checkArg(master, "logical", len=1L, na.ok=FALSE)
-  checkArg(level, "character", len=1L, na.ok=TRUE)
-  checkArg(show.info, "logical", len=1L, na.ok=TRUE)
+  assertFlag(master)
+  assertString(level, na.ok = TRUE)
+  assertFlag(show.info, na.ok = TRUE)
 
   mode = getPMOptMode()
 

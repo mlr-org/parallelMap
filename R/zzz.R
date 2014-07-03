@@ -1,4 +1,5 @@
 #' @import BBmisc
+#' @import checkmate
 
 # define constants
 MODE_LOCAL = "local"

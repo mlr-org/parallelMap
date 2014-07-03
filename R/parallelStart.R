@@ -95,7 +95,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
   logging = getPMDefOptLogging(logging)
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
-  checkArg(bj.resources, "list")
+  assertList(bj.resources)
   show.info = getPMDefOptShowInfo(show.info)
 
   # multicore not supported on windows

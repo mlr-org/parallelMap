@@ -9,8 +9,8 @@
 #' @return Nothing.
 #' @export
 parallelRegisterLevels = function(package, levels) {
-  checkArg(package, "character", len=1L, na.ok=FALSE)
-  checkArg(levels, "character", na.ok=FALSE)
+  assertString(package)
+  assertCharacter(levels, any.missing = FALSE)
   reg.levs = getPMOption("registered.levels", list())
   reg.levs[[package]] = levels
   options(parallelMap.registered.levels = reg.levs)
