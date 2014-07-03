@@ -19,6 +19,13 @@ R package to interface some popular parallelization back-ends with a unified int
 
 * Travis CI: [![Build Status](https://travis-ci.org/berndbischl/parallelMap.png)](https://travis-ci.org/berndbischl/parallelMap)
 
+
+NEWS
+====
+
+* Autostart option was removed. Always call parallelStart explicitly from now on. See here: [Issue](https://github.com/berndbischl/parallelMap/issues/17) 
+
+
 Overview
 ========
 
