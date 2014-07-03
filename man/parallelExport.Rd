@@ -22,7 +22,7 @@ Useful if this function is used in a package.
 Default is \code{NA}.}
 
 \item{master}{[\code{logical(1)}]\cr
-Really export to package environment on master for local mode?
+Really export to package environment on master for local and multicore mode?
 Default is \code{FALSE}.}
 
 \item{show.info}{[\code{logical(1)}]\cr

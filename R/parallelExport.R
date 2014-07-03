@@ -16,7 +16,7 @@
 #'   Useful if this function is used in a package.
 #'   Default is \code{NA}.
 #' @param master [\code{logical(1)}]\cr
-#'   Really export to package environment on master for local mode?
+#'   Really export to package environment on master for local and multicore mode?
 #'   Default is \code{FALSE}.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console?
@@ -51,7 +51,7 @@ parallelExport = function(..., objnames, master=FALSE, level=NA_character_, show
         for (n in objnames)
           assign(n, get(n, envir=sys.parent()), envir=PKG_LOCAL_ENV)
       }
-      if (isModeSocket() || isModeMPI() || isModeMulticore()) {
+      if (isModeSocket() || isModeMPI()) {
         showInfoMessage("Exporting objects to slaves for mode %s: %s",
           mode, collapse(objnames))
         # export via our helper function

@@ -57,7 +57,7 @@ parallelLibrary = function(..., packages, master=TRUE, level=as.character(NA), s
           mode, collapse(packages), show.info=show.info)
         requirePackages(packages, why="parallelLibrary")
       }
-      if (mode %in% c(MODE_SOCKET, MODE_MPI, MODE_MULTICORE)) {
+      if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Loading packages on slaves for mode %s: %s",
           mode, collapse(packages), show.info=show.info)
         .parallelMap.pkgs = packages

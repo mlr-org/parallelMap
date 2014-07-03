@@ -13,7 +13,7 @@
 #'
 #' \describe{
 #' \item{local}{No parallelization with \code{\link{mapply}}.}
-#' \item{multicore}{Multicore execution on a single machine with \code{\link[parallel]{makeForkCluster}} and \code{\link[parallel]{clusterMap}}.}
+#' \item{multicore}{Multicore execution on a single machine with \code{\link[parallel]{mclapply}}.}
 # \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
 #' \item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterMap}}.}
 #' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs]{batchMap}}.}
@@ -144,11 +144,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
   }
 
   # init parallel packs / modes, if necessary
-  if (isModeMulticore()) {
-    cl = makeForkCluster(nnodes = cpus, ...)
-    setDefaultCluster(cl)
-    clusterSetRNGStream(cl=NULL)
-  } else if (isModeSocket()) {
+  if (isModeSocket()) {
     # set names from cpus or socket.hosts, only 1 can be defined here
     cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)
     setDefaultCluster(cl)
