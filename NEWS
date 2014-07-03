@@ -7,6 +7,7 @@ parallelMap_1.1:
 - BatchJobs mode: errors are thrown, if jobs expire
 - parallelMap/Lapply/Sapply: impute.error option
 - removed autostart option for stability
+- for multicore mode we use makeForkCluster / clusterMap now
 - new functions
 -- parallelSource
 -- parallelExport

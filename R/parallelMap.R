@@ -100,13 +100,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     showInfoMessage("Mapping in parallel: mode = %s; cpus = %i; elements = %i.",
       getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
 
-    if (isModeMulticore()) {
-      more.args = c(list(.fun = fun, .logdir = logdir), more.args)
-      res = mcmapply_fixed(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
-        SIMPLIFY = FALSE, USE.NAMES = FALSE)
-      # res = parallel::mcmapply(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
-        # SIMPLIFY = FALSE, USE.NAMES = FALSE)
-    } else if (isModeSocket() || isModeMPI()) {
+    if (isModeSocket() || isModeMPI() || isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
