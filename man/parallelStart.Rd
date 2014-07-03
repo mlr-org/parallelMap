@@ -106,8 +106,7 @@ to functions from different parallelization packages:
 
 \describe{
 \item{local}{No parallelization with \code{\link{mapply}}.}
-\item{multicore}{Multicore execution on a single machine with\code{\link[parallel]{mcmapply}}.}
-\item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
+\item{multicore}{Multicore execution on a single machine with \code{\link[parallel]{makeForkCluster}} and \code{\link[parallel]{clusterMap}}.}
 \item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterMap}}.}
 \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs]{batchMap}}.}
 }
