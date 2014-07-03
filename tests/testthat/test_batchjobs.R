@@ -1,5 +1,8 @@
 context("BatchJobs mode")
 
+#FIXME: renable later again
+if (isExpensiveExampleOk()) {
+
 test_that("BatchJobs mode", {
 
   library(BatchJobs)
@@ -60,3 +63,4 @@ test_that("BatchJobs mode", {
   unlink(newwd, recursive = TRUE)
 })
 
+}
