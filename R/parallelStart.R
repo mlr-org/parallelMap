@@ -88,7 +88,6 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
 
   #FIXME what should we do onexit if an error happens in this function?
 
-  autostart = getPMDefOptAutostart()
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
   socket.hosts = getPMDefOptSocketHosts(socket.hosts)
@@ -106,7 +105,6 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
   checkDir("Storage", storagedir)
 
   # store options for session, we already need them for helper funs below
-  options(parallelMap.autostart = autostart)
   options(parallelMap.mode = mode)
   options(parallelMap.level = level)
   options(parallelMap.logging = logging)

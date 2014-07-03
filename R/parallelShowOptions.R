@@ -1,18 +1,18 @@
 #' Displays the configured package options.
-#' 
-#' Displayed are current and default settings. 
-#' 
-#' For details on the configuration procedure please read 
+#'
+#' Displayed are current and default settings.
+#'
+#' For details on the configuration procedure please read
 #' \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
-#' 
+#'
 #' @export
 parallelShowOptions = function() {
   mycat = function(opt) {
     opt1val = getPMOption(opt)
     opt2val = getPMDefOption(opt)
     if (opt == "bj.resources") {
-      opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)", 
-        convertToShortString(opt1val))    
+      opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)",
+        convertToShortString(opt1val))
       if (!is.null(opt2val))
         opt2val = convertToShortString(opt2val)
     }
@@ -25,7 +25,6 @@ parallelShowOptions = function() {
   }
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
   catf("")
-  mycat("autostart")
   mycat("mode")
   mycat("cpus")
   mycat("level")

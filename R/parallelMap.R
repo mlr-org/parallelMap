@@ -75,18 +75,6 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   checkArg(level, "character", len = 1L, na.ok = TRUE)
   checkArg(show.info, "logical", len = 1L, na.ok = TRUE)
 
-  # potentially autostart by calling parallelStart with defaults from R profile
-  # then clean up by calling parallelStop on exit
-  if (getPMDefOptAutostart() && isStatusStopped() && getPMDefOptMode() != MODE_LOCAL) {
-    showInfoMessage("Auto-starting parallelization.")
-    parallelStart()
-    on.exit({
-      if (!isModeLocal())
-        showInfoMessage("Auto-stopping parallelization.", show.info = show.info)
-      parallelStop()
-    })
-  }
-
   cpus = getPMOptCpus()
   logging = getPMOptLogging()
   # use NA to encode "no logging" in logdir

@@ -20,7 +20,6 @@ STATUS_STOPPED = "stopped"
     parallelMap.socket.hosts = getPMDefOption("socket.hosts", NULL),
     parallelMap.level = getPMDefOption("level", NA_character_),
     parallelMap.logging = getPMDefOption("logging", FALSE),
-    parallelMap.autostart = getPMDefOption("autostart", TRUE),
     parallelMap.show.info = getPMDefOption("show.info", TRUE),
     parallelMap.storagedir = getPMDefOption("storagedir", getwd()),
     parallelMap.status = STATUS_STOPPED,

@@ -63,7 +63,7 @@ getPMDefOptMode = function(mode) {
 
 getPMDefOptCpus = function(cpus) {
   #NA means "do autodetect"
-  if (missing(cpus)) 
+  if (missing(cpus))
     cpus = getPMDefOption("cpus", NA_integer_)
   cpus = convertInteger(cpus)
   checkArg(cpus, "integer", len=1, na.ok=TRUE, lower=1L)
@@ -71,7 +71,7 @@ getPMDefOptCpus = function(cpus) {
 }
 
 getPMDefOptSocketHosts = function(socket.hosts) {
-  if (missing(socket.hosts)) 
+  if (missing(socket.hosts))
     socket.hosts = getPMDefOption("socket.hosts", NULL)
   if (!is.null(socket.hosts))
     checkArg(socket.hosts, "character", min.len=1L, na.ok=FALSE)
@@ -93,23 +93,17 @@ getPMDefOptLevel = function(level) {
 }
 
 getPMDefOptShowInfo = function(show.info) {
-  if (missing(show.info)) 
+  if (missing(show.info))
     show.info = getPMDefOption("show.info", TRUE)
-  checkArg(show.info, "logical", len=1L, na.ok=FALSE) 
+  checkArg(show.info, "logical", len=1L, na.ok=FALSE)
   return(show.info)
 }
 
 getPMDefOptStorageDir = function(storagedir) {
-  if (missing(storagedir)) 
+  if (missing(storagedir))
     storagedir = getPMDefOption("storagedir", getwd())
-  checkArg(storagedir, "character", len=1L, na.ok=FALSE) 
+  checkArg(storagedir, "character", len=1L, na.ok=FALSE)
   return(storagedir)
-}
-
-getPMDefOptAutostart = function() {
-  autostart = getPMDefOption("autostart", TRUE)
-  checkArg(autostart, "logical", len=1L, na.ok=FALSE) 
-  return(autostart)
 }
 
 ##### modes #####

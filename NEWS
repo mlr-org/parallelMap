@@ -6,6 +6,7 @@ parallelMap_1.1:
   not the storage.dir
 - BatchJobs mode: errors are thrown, if jobs expire
 - parallelMap/Lapply/Sapply: impute.error option
+- removed autostart option for stability
 - new functions
 -- parallelSource
 -- parallelExport
