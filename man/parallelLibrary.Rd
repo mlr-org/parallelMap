@@ -3,7 +3,7 @@
 \alias{parallelLibrary}
 \title{Load packages for parallelization.}
 \usage{
-parallelLibrary(..., packages, master = TRUE, level = as.character(NA),
+parallelLibrary(..., packages, master = TRUE, level = NA_character_,
   show.info = NA)
 }
 \arguments{

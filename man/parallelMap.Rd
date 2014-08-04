@@ -4,7 +4,7 @@
 \title{Maps a function over lists or vectors in parallel.}
 \usage{
 parallelMap(fun, ..., more.args = list(), simplify = FALSE,
-  use.names = FALSE, impute.error = NULL, level = as.character(NA),
+  use.names = FALSE, impute.error = NULL, level = NA_character_,
   show.info = NA)
 }
 \arguments{

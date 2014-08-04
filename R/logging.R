@@ -1,6 +1,6 @@
-
 # get all log dirs under storage dir
 getLogDirs = function() {
+  # FIXME why would someone restrict here to 999 maps?
   list.files(getPMOptStorageDir(), pattern="parallelMap_logs_???", full.names=TRUE)
 }
 

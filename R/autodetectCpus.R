@@ -1,13 +1,13 @@
 autodetectCpus = function(mode) {
-  cpus = 
-    if (isModeMulticore()) {
-      parallel::detectCores()
-    } else if (isModeMPI()) {
-      Rmpi::mpi.universe.size()
-    }
-  if (!(is.integer(cpus) && length(cpus) == 1L && !is.na(cpus)))
-    stopf("The was some problem in autodetecting the number of cpus. Autodetection returned:\n%s",
-      printStrToChar(cpus))
+  if (mode == MODE_MULTICORE) {
+    cpus = parallel::detectCores()
+  } else if (mode == MODE_MPI) {
+    cpus = Rmpi::mpi.universe.size()
+  } else {
+    cpus = NA_integer_
+  }
+  if (!testCount(cpus, positive = TRUE))
+    stopf("The was some problem in autodetecting the number of cpus. Autodetection returned:\n%s", printStrToChar(cpus))
   showInfoMessage("Autodetecting cpus: %i", cpus)
   return(cpus)
 }

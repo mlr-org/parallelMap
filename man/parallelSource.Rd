@@ -3,7 +3,7 @@
 \alias{parallelSource}
 \title{Source R files for parallelization.}
 \usage{
-parallelSource(..., files, master = TRUE, level = as.character(NA),
+parallelSource(..., files, master = TRUE, level = NA_character_,
   show.info = NA)
 }
 \arguments{

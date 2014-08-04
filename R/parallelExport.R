@@ -51,6 +51,7 @@ parallelExport = function(..., objnames, master=TRUE, level=NA_character_, show.
         showInfoMessage("Exporting objects to package env on master for mode: %s",
           mode, collapse(objnames))
         for (n in objnames)
+          # FIXME 2x envir!
           assign(n, get(n, envir=sys.parent()), envir=PKG_LOCAL_ENV)
       }
       if (isModeSocket() || isModeMPI()) {

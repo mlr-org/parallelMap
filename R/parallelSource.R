@@ -26,7 +26,7 @@
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.info=NA) {
+parallelSource = function(..., files, master=TRUE, level=NA_character_, show.info=NA) {
   args = list(...)
   assertList(args, types = "character")
   if (!missing(files)) {
@@ -61,8 +61,7 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.
             collapse(files), show.info=show.info)
           lapply(files, source)
         }
-      }
-      if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
+      } else if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info=show.info)
         .parallelMap.srcs = files
         exportToSlavePkgParallel(".parallelMap.srcs", .parallelMap.srcs)

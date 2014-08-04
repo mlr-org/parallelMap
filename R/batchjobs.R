@@ -18,18 +18,14 @@ cleanUpBatchJobsExports = function() {
 
 optionBatchsJobsPackages = function(pkgs) {
   if (missing(pkgs))
-    getOption("parallelMap.bj.packages", character(0))
+    getOption("parallelMap.bj.packages", character(0L))
   else
     options(parallelMap.bj.packages = pkgs)
 }
 
 optionBatchsJobsSrcFiles = function(srcs) {
   if (missing(srcs))
-    getOption("parallelMap.bj.srcs", character(0))
+    getOption("parallelMap.bj.srcs", character(0L))
   else
     options(parallelMap.bj.srcs = srcs)
 }
-
-
-
-

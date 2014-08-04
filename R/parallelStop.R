@@ -49,5 +49,8 @@ parallelStop = function() {
   # in any case be in local / stopped mode now
   options(parallelMap.mode = MODE_LOCAL)
   options(parallelMap.status = STATUS_STOPPED)
+
+  # FIXME do we clean up log files?
+
   invisible(NULL)
 }

@@ -1,5 +1,5 @@
 getPMOption = function(opt, def) {
-  getOption(sprintf("parallelMap.%s",opt), def)
+  getOption(sprintf("parallelMap.%s", opt), def)
 }
 
 getPMDefOption = function(opt, def) {
@@ -62,7 +62,7 @@ getPMDefOptMode = function(mode) {
 }
 
 getPMDefOptCpus = function(cpus) {
-  #NA means "do autodetect"
+  # NA means "do autodetect"
   if (missing(cpus))
     cpus = getPMDefOption("cpus", NA_integer_)
   cpus = asInt(cpus, na.ok=TRUE, lower=1L)

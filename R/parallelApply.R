@@ -25,8 +25,7 @@
 #'   \code{fun} and the settings of \code{simplify} and \code{use.names}.
 #' @export
 parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_character_) {
-  more.args = list(...)
-  parallelMap(fun, xs, more.args = more.args, simplify = FALSE, use.names = FALSE,
+  parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = FALSE,
     impute.error = impute.error, level = level)
 }
 
@@ -35,7 +34,6 @@ parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_characte
 parallelSapply = function(xs, fun, ..., simplify = TRUE, use.names = TRUE, impute.error = NULL,
   level = NA_character_) {
 
-  more.args = list(...)
-  parallelMap(fun, xs, more.args = more.args, simplify = simplify, use.names = use.names,
+  parallelMap(fun, xs, more.args = list(...), simplify = simplify, use.names = use.names,
     impute.error = impute.error, level = level)
 }

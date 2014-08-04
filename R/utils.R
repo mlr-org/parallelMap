@@ -1,15 +1,8 @@
-
-isShowInfoEnabled = function() {
-  getPMOptShowInfo()
-}
-
 # show message if OPTION show.info is TRUE
 #  show.info ARGUMENT provides an immediate OVERRIDE to that option
 showInfoMessage = function(msg, ..., show.info=NA) {
-  if ((is.na(show.info) && isShowInfoEnabled()) ||
-    (!is.na(show.info) && show.info)) {
+  if (ifelse(is.na(show.info), getPMOptShowInfo(), show.info))
     messagef(msg, ...)
-  }
 }
 
 showStartupMsg = function(mode, cpus, socket.hosts) {
@@ -41,4 +34,3 @@ exportToSlavePkgParallel = function(objname, objval) {
   # I really hope the nextline does what I think in all cases...
   clusterCall(cl=NULL, assign, x=objname, value=objval, pos=1)
 }
-
