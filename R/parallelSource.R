@@ -53,10 +53,14 @@ parallelSource = function(..., files, master=TRUE, level=as.character(NA), show.
     # if level matches, load on slaves
     if (isParallelizationLevel(level)) {
       # only source when we have not already done on master
-      if (!master && mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
-        showInfoMessage("Sourcing files on master (to be available on slaves for this mode): %s",
-          collapse(files), show.info=show.info)
-        lapply(files, source)
+      if (mode %in% c(MODE_LOCAL, MODE_MULTICORE)) {
+        if (master) {
+          showInfoMessage("Source files are already available on the slave")
+        } else {
+          showInfoMessage("Sourcing files on master (to be available on slaves for this mode): %s",
+            collapse(files), show.info=show.info)
+          lapply(files, source)
+        }
       }
       if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info=show.info)
