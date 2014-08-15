@@ -26,7 +26,7 @@
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelSource = function(..., files, master=TRUE, level=NA_character_, show.info=NA) {
+parallelSource = function(..., files, master = TRUE, level = NA_character_, show.info = NA) {
   args = list(...)
   assertList(args, types = "character")
   if (!missing(files)) {
@@ -58,14 +58,14 @@ parallelSource = function(..., files, master=TRUE, level=NA_character_, show.inf
           showInfoMessage("Source files are already available on the slave")
         } else {
           showInfoMessage("Sourcing files on master (to be available on slaves for this mode): %s",
-            collapse(files), show.info=show.info)
+            collapse(files), show.info = show.info)
           lapply(files, source)
         }
       } else if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
-        showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info=show.info)
+        showInfoMessage("Sourcing files on slaves: %s", collapse(files), show.info = show.info)
         .parallelMap.srcs = files
         exportToSlavePkgParallel(".parallelMap.srcs", .parallelMap.srcs)
-        errs = clusterEvalQ(cl=NULL, {
+        errs = clusterEvalQ(cl = NULL, {
           sapply(.parallelMap.srcs, function(f) {
             r = try(source(f))
             if (inherits(r, "try-error"))
@@ -74,19 +74,19 @@ parallelSource = function(..., files, master=TRUE, level=NA_character_, show.inf
               NA_character_
           }, USE.NAMES = TRUE)
         })
-        # to vector, remove NA=ok, we also dont wnat to read error multiple times for multiple slaves
+        # to vector, remove NA = ok, we also dont wnat to read error multiple times for multiple slaves
         errs = unlist(errs)
-        errs = errs[!is.na(errs), drop=FALSE]
+        errs = errs[!is.na(errs), drop = FALSE]
         errs = errs[!duplicated(names(errs))]
         if (length(errs) > 0L)
           stopf("Files could not be sourced on all slaves: %s\n%s",
-            collapse(names(errs)), collapse(paste(names(errs), errs, sep = "\n"), sep="\n"))
+            collapse(names(errs)), collapse(paste(names(errs), errs, sep = "\n"), sep = "\n"))
       } else if (isModeBatchJobs()) {
         showInfoMessage("Storing source file info for BatchJobs slave jobs: %s",
-          collapse(files), show.info=show.info)
+          collapse(files), show.info = show.info)
         suppressMessages({
           reg = getBatchJobsReg()
-          addRegistrySourceFiles(reg, files, source.now = FALSE)
+          addRegistrySourceFiles(reg, files, src.now = FALSE)
         })
       }
     }

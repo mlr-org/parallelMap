@@ -150,7 +150,8 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       msgs[ids.err] = BatchJobs::getErrorMessages(reg, ids.err)
       # handle errors (no impute): kill other jobs + stop on master
       if (is.null(impute.error) && length(c(ids.notdone)) > 0) {
-        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s", fd)
+        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s",
+          reg$file.dir)
         onsys = findOnSystem(reg)
         suppressMessages(
           killJobs(reg, onsys)
