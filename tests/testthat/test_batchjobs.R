@@ -13,30 +13,30 @@ test_that("BatchJobs mode", {
     storagedir = getwd()
   }
 
-  parallelStartBatchJobs(storagedir=storagedir)
+  parallelStartBatchJobs(storagedir = storagedir)
   partest1()
   parallelStop()
 
-  parallelStartBatchJobs(logging=TRUE, storagedir=storagedir)
+  parallelStartBatchJobs(logging = TRUE, storagedir = storagedir)
   partest2(storagedir)
   parallelStop()
 
-  parallelStartBatchJobs(storagedir=storagedir)
+  parallelStartBatchJobs(storagedir = storagedir)
   partest3()
   parallelStop()
 
-  parallelStartBatchJobs(storagedir=storagedir)
+  parallelStartBatchJobs(storagedir = storagedir)
   # we cannot really check that wrong libraries are not loaded on slave here.
   # because we only load them during the job. but the error will show up then
-  partest4(slave.error.test=FALSE)
+  partest4(slave.error.test = FALSE)
   parallelStop()
 
-  parallelStartBatchJobs(storagedir=storagedir)
+  parallelStartBatchJobs(storagedir = storagedir)
   partest5()
   parallelStop()
 
-  parallelStartBatchJobs(storagedir=storagedir)
-  partest6(slave.error.test=FALSE)
+  parallelStartBatchJobs(storagedir = storagedir)
+  partest6(slave.error.test = FALSE)
   parallelStop()
 
   # test that expire generate exceptions
