@@ -15,13 +15,12 @@ Depends:
     R (>= 3.0.0)
 Imports:
     BBmisc (>= 1.7),
-    checkmate (>= 1.1),
-    fail (>= 1.2)
+    checkmate (>= 1.3)
 Suggests:
     testthat,
     parallel,
     Rmpi,
-    BatchJobs (>= 1.2)
+    BatchJobs (>= 1.4)
 LazyData: yes
 ByteCompile: yes
-Version: 1.1
+Version: 1.2
