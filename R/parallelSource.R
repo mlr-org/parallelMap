@@ -84,8 +84,10 @@ parallelSource = function(..., files, master=TRUE, level=NA_character_, show.inf
       } else if (isModeBatchJobs()) {
         showInfoMessage("Storing source file info for BatchJobs slave jobs: %s",
           collapse(files), show.info=show.info)
-        # collect in R option, add new files to old ones
-        optionBatchsJobsSrcFiles(union(optionBatchsJobsSrcFiles(), files))
+        suppressMessages({
+          reg = getBatchJobsReg()
+          addRegistrySourceFiles(reg, files, source.now = FALSE)
+        })
       }
     }
   }

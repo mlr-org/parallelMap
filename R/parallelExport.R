@@ -26,7 +26,7 @@
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export
-parallelExport = function(..., objnames, master=TRUE, level=NA_character_, show.info=NA) {
+parallelExport = function(..., objnames, master = TRUE, level = NA_character_, show.info = NA) {
   args = list(...)
   assertList(args, types = "character")
   if (!missing(objnames)) {
@@ -52,22 +52,22 @@ parallelExport = function(..., objnames, master=TRUE, level=NA_character_, show.
           mode, collapse(objnames))
         for (n in objnames)
           # FIXME 2x envir!
-          assign(n, get(n, envir=sys.parent()), envir=PKG_LOCAL_ENV)
+          assign(n, get(n, envir = sys.parent()), envir = PKG_LOCAL_ENV)
       }
       if (isModeSocket() || isModeMPI()) {
         showInfoMessage("Exporting objects to slaves for mode %s: %s",
           mode, collapse(objnames))
         # export via our helper function
         for (n in objnames) {
-          exportToSlavePkgParallel(n, get(n, envir=sys.parent()))
+          exportToSlavePkgParallel(n, get(n, envir = sys.parent()))
         }
       } else if (isModeBatchJobs()) {
         showInfoMessage("Storing objects in files for BatchJobs slave jobs: %s",
           collapse(objnames))
-        # export via fail::put, make sure names are correctly set
-        bj.exports.dir = getBatchJobsExportsDir()
-        fail.handle = fail::fail(bj.exports.dir)
-        fail.handle$put(li=setNames(lapply(objnames, get, envir=sys.parent()), objnames))
+        objs = setNames(lapply(objnames, get, envir = sys.parent()), objnames)
+        suppressMessages({
+          batchExport(getBatchJobsReg(), li = objs)
+        })
       }
     }
   }

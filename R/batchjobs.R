@@ -1,31 +1,15 @@
-getBatchJobsRegFileDir = function() {
-  tempfile(pattern = "parallelMap_BatchJobs_reg_",
+getBatchJobsNewRegFileDir = function() {
+  fd = tempfile(pattern = "parallelMap_BatchJobs_reg_",
     tmpdir = getPMOptStorageDir())
+  options(parallelMap.bj.reg.filedir = fd)
+  return(fd)
 }
 
-getBatchJobsExportsDir = function() {
-  file.path(getPMOptStorageDir(), "parallelMap_BatchJobs_exports")
+getBatchJobsRegFileDir = function() {
+  getOption("parallelMap.bj.reg.filedir")
 }
 
-cleanUpBatchJobsExports = function() {
-  bj.exports.dir = getBatchJobsExportsDir()
-  fns = list.files(bj.exports.dir, full.names = TRUE)
-  n = length(fns)
-  if (n > 0L)
-    showInfoMessage("Deleting %i BatchJobs exports in: %s", n, bj.exports.dir)
-  unlink(bj.exports.dir, recursive = TRUE)
+getBatchJobsReg = function() {
+  loadRegistry(getBatchJobsRegFileDir())
 }
 
-optionBatchsJobsPackages = function(pkgs) {
-  if (missing(pkgs))
-    getOption("parallelMap.bj.packages", character(0L))
-  else
-    options(parallelMap.bj.packages = pkgs)
-}
-
-optionBatchsJobsSrcFiles = function(srcs) {
-  if (missing(srcs))
-    getOption("parallelMap.bj.srcs", character(0L))
-  else
-    options(parallelMap.bj.srcs = srcs)
-}

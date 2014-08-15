@@ -121,26 +121,12 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeBatchJobs()) {
-      fd = getBatchJobsRegFileDir()
-      # FIXME: this is bad but currently we cannot use absolute paths
-      src.files = optionBatchsJobsSrcFiles()
-      wd = getwd()
-      srcdir = tempfile(pattern = "parallelMap_BatchJobs_srcs_", tmpdir = wd)
-      dir.create(srcdir)
-      file.copy(from = src.files, to = srcdir)
-      # create registry in selected directory with random, unique name
       stop.on.error = is.null(impute.error)
+      # dont log extra in BatchJobs
+      more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
       suppressMessages({
-        reg = makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd,
-          # get packages and sources to load on slaves which where collected in R option
-          packages = optionBatchsJobsPackages(),
-          src.files = paste(basename(srcdir), basename(src.files), sep = "/")
-        )
-        file.exports = list.files(getBatchJobsExportsDir(), full.names = TRUE)
-        file.rename(from = file.exports,
-          to = file.path(BatchJobs:::getExportDir(reg$file.dir), basename(file.exports)))
-        # dont log extra in BatchJobs
-        more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
+        reg = getBatchJobsReg()
+        BatchJobs:::dbRemoveJobs(reg, getJobIds(reg))
         batchMap(reg, slaveWrapper, ..., more.args = more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
@@ -179,11 +165,6 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       res = vector("list", length(ids))
       res[ids.done] = loadResults(reg, simplify = FALSE, use.names = FALSE)
       res[ids.notdone] = lapply(msgs, function(s) impute.error.fun(simpleError(s)))
-      # delete registry file dir, if an error happened this will still exist
-      # because we threw an exception above, logs also still exist
-      unlink(fd, recursive = TRUE)
-      #FIXME: see above about src.files
-      unlink(srcdir, recursive = TRUE)
     }
   }
 

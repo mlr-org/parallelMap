@@ -27,16 +27,14 @@ parallelStop = function() {
       #    via S3 inheritance
       # b) stopCluster will also throw amn exception when none is registered. great, and apparently
       #    we have no way of asking whether one is alrealdy registered.
-      cl = get("default", envir=getFromNamespace(".reg", ns="parallel"))
+      cl = get("default", envir = getFromNamespace(".reg", ns = "parallel"))
       if (!is.null(cl)) {
-        stopCluster(cl=cl)
+        stopCluster(cl = cl)
         setDefaultCluster(NULL)
       }
     } else if (isModeBatchJobs()) {
-      # remove all exported libraries
-      options(parallelMap.bj.packages=NULL)
-      # remove exported objects
-      cleanUpBatchJobsExports()
+      # delete registry file dir
+      unlink(getBatchJobsRegFileDir(), recursive = TRUE)
     }
     if (!isModeLocal()) {
       showInfoMessage("Stopped parallelization. All cleaned up.")

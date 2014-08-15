@@ -78,7 +78,7 @@
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging, storagedir, level, show.info,
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, show.info,
   suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
@@ -148,14 +148,16 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
     cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
-    cl = parallel::makeCluster(spec=cpus, type="MPI", ...)
+    cl = parallel::makeCluster(spec = cpus, type = "MPI", ...)
     setDefaultCluster(cl)
-    clusterSetRNGStream(cl=NULL)
+    clusterSetRNGStream(cl = NULL)
   } else if (isModeBatchJobs()) {
-   bjed = getBatchJobsExportsDir()
-   if (file.exists(bjed))
-     cleanUpBatchJobsExports()
-   dir.create(bjed)
+    # create registry in selected directory with random, unique name
+    fd = getBatchJobsNewRegFileDir()
+    wd = getwd()
+    suppressMessages({
+      reg = makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
+    })
   }
   invisible(NULL)
 }
@@ -163,34 +165,34 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources=list(), logging,
 #' @export
 #' @rdname parallelStart
 parallelStartLocal = function(show.info, suppress.local.errors = FALSE) {
-  parallelStart(mode=MODE_LOCAL, cpus=NA_integer_, level=NA_character_,
-    logging=FALSE, show.info=show.info, suppress.local.errors = suppress.local.errors)
+  parallelStart(mode = MODE_LOCAL, cpus = NA_integer_, level = NA_character_,
+    logging = FALSE, show.info = show.info, suppress.local.errors = suppress.local.errors)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartMulticore = function(cpus, logging, storagedir, level, show.info) {
-  parallelStart(mode=MODE_MULTICORE, cpus=cpus, level=level, logging=logging,
-    storagedir=storagedir, show.info=show.info)
+  parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
+    storagedir = storagedir, show.info = show.info)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, show.info, ...) {
-  parallelStart(mode=MODE_SOCKET, cpus=cpus, socket.hosts=socket.hosts, level=level, logging=logging,
-    storagedir=storagedir, show.info=show.info)
+  parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
+    storagedir = storagedir, show.info = show.info)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartMPI = function(cpus, logging, storagedir, level, show.info, ...) {
-  parallelStart(mode=MODE_MPI, cpus=cpus, level=level, logging=logging,
-    storagedir=storagedir, show.info=show.info, ...)
+  parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
+    storagedir = storagedir, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartBatchJobs = function(bj.resources=list(), logging, storagedir, level, show.info) {
-  parallelStart(mode=MODE_BATCHJOBS, level=level, logging=logging,
-    storagedir=storagedir, bj.resources=bj.resources, show.info=show.info)
+parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info) {
+  parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
+    storagedir = storagedir, bj.resources = bj.resources, show.info = show.info)
 }
