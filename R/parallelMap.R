@@ -94,12 +94,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     } else {
       fun2 = fun
     }
-    # copy exported objects in PKG_LOCAL_ENV to env of fun so we can find them in any case in call
-    ee = environment(fun)
-    ns = ls(PKG_LOCAL_ENV)
-    for (n in ns)
-      assign(n, get(n, envir = PKG_LOCAL_ENV), envir = ee)
-
+    assignInFunctionNamespace(fun, env = PKG_LOCAL_ENV)
     res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
@@ -107,14 +102,10 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
 
     if (isModeMulticore()) {
-      # copy exported objects in PKG_LOCAL_ENV to env of fun so we can find them in any case in call
-      ee = environment(fun)
-      ns = ls(PKG_LOCAL_ENV)
-      for (n in ns)
-        assign(n, get(n, envir = PKG_LOCAL_ENV), envir = ee)
-
+      # also assign MulticoreCluster object in case of recursive calls
+      assignInFunctionNamespace(fun, li = list(MulticoreCluster = MulticoreCluster), env = PKG_LOCAL_ENV)
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
-      res = mcmapply_fixed(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
+      res = MulticoreClusterMap(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
@@ -229,4 +220,15 @@ slaveWrapper = function(..., .i, .fun, .logdir = NA_character_) {
     sink(NULL)
   }
   return(res)
+}
+
+assignInFunctionNamespace = function(fun, li = list(), env = new.env()) {
+  # copy exported objects in PKG_LOCAL_ENV to env of fun so we can find them in any case in call
+  ee = environment(fun)
+  ns = ls(env)
+  for (n in ns)
+    assign(n, get(n, envir = env), envir = ee)
+  ns = names(li)
+  for (n in ns)
+    assign(n, li[[n]], envir = ee)
 }

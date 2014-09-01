@@ -31,3 +31,7 @@ PKG_LOCAL_ENV = new.env()
     parallelMap.suppress.local.errors = FALSE
   )
 }
+
+
+MulticoreCluster = new.env()
+makeMulticoreCluster()

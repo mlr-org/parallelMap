@@ -13,7 +13,7 @@ parallelStart(mode, cpus, socket.hosts, bj.resources = list(), logging,
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE)
 
-parallelStartMulticore(cpus, logging, storagedir, level, show.info)
+parallelStartMulticore(cpus, logging, storagedir, level, show.info, ...)
 
 parallelStartSocket(cpus, socket.hosts, logging, storagedir, level, show.info,
   ...)
@@ -86,7 +86,9 @@ Default ist FALSE, i.e. every error message is shown.}
 
 \item{...}{[any]\cr
 Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
-for mpi mode passed to \code{\link[parallel]{makeCluster}}.}
+for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
+passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule}, \code{mc.set.seed},
+\code{mc.silent} and \code{mc.cleanup} are supported for multicore).}
 }
 \value{
 Nothing.

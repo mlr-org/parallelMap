@@ -75,7 +75,9 @@
 #'   Default ist FALSE, i.e. every error message is shown.
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
-#'   for mpi mode passed to \code{\link[parallel]{makeCluster}}.
+#'   for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
+#'   passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule}, \code{mc.set.seed},
+#'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
 #' @return Nothing.
 #' @export
 parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, show.info,
@@ -143,7 +145,9 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   }
 
   # init parallel packs / modes, if necessary
-  if (isModeSocket()) {
+  if (isModeMulticore()) {
+    cl = makeMulticoreCluster(...)
+  } else if (isModeSocket()) {
     # set names from cpus or socket.hosts, only 1 can be defined here
     cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)
     setDefaultCluster(cl)
@@ -171,16 +175,16 @@ parallelStartLocal = function(show.info, suppress.local.errors = FALSE) {
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, logging, storagedir, level, show.info) {
+parallelStartMulticore = function(cpus, logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, show.info = show.info)
+    storagedir = storagedir, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
-    storagedir = storagedir, show.info = show.info)
+    storagedir = storagedir, show.info = show.info, ...)
 }
 
 #' @export
