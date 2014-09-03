@@ -14,6 +14,8 @@ STATUS_STOPPED = "stopped"
 
 PKG_LOCAL_ENV = new.env()
 
+.MulticoreCluster = new.env()
+
 .onLoad = function(libname, pkgname) {
   # init all settings from defaults
   # we cant call any function here in onload that dispatch to BBmisc...
@@ -30,8 +32,6 @@ PKG_LOCAL_ENV = new.env()
     parallelMap.registered.levels = list(),
     parallelMap.suppress.local.errors = FALSE
   )
+  # set defaults
+  makeMulticoreCluster()
 }
-
-
-MulticoreCluster = new.env()
-makeMulticoreCluster()

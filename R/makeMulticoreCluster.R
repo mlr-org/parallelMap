@@ -5,7 +5,7 @@ makeMulticoreCluster = function(mc.preschedule = FALSE, mc.set.seed = TRUE, mc.s
   assertFlag(mc.silent)
   assertFlag(mc.cleanup)
 
-  x = MulticoreCluster
+  x = get(".MulticoreCluster", envir = getNamespace("parallelMap"))
   x$mc.preschedule = mc.preschedule
   x$mc.set.seed = mc.set.seed
   x$mc.silent = mc.silent
@@ -14,7 +14,7 @@ makeMulticoreCluster = function(mc.preschedule = FALSE, mc.set.seed = TRUE, mc.s
 }
 
 MulticoreClusterMap = function(FUN, ...) {
-  opts = as.list(MulticoreCluster)
+  opts = as.list(get(".MulticoreCluster", envir = getNamespace("parallelMap")))
   mcmapply_fixed(FUN, ...,
     mc.preschedule = opts$mc.preschedule,
     mc.set.seed = opts$mc.set.seed,

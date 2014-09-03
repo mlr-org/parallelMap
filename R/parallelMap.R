@@ -103,7 +103,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
 
     if (isModeMulticore()) {
       # also assign MulticoreCluster object in case of recursive calls
-      assignInFunctionNamespace(fun, li = list(MulticoreCluster = MulticoreCluster), env = PKG_LOCAL_ENV)
+      assignInFunctionNamespace(fun, li = list(.MulticoreCluster = .MulticoreCluster), env = PKG_LOCAL_ENV)
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       res = MulticoreClusterMap(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)

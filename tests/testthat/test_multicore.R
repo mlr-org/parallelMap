@@ -17,7 +17,7 @@ if (isExpensiveExampleOk()) {
     partest2(tempdir())
     parallelStop()
 
-    parallelStartMulticore(2)
+    parallelStartMulticore(2, mc.preschedule = FALSE)
     partest4(slave.error.test = FALSE)
     parallelStop()
 
