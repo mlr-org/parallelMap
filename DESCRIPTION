@@ -6,7 +6,7 @@ Description: Map over lists in parallel. Supports local, multicore, mpi
     with a level name that can be later selected by the user to
     switch on parallel execution for exactly this operation.
 Author: Bernd Bischl <bernd_bischl@gmx.net>, Michel Lang
-    <lang@statistik.tu-dortmund.de>
+    <michellang@gmail.com>
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
