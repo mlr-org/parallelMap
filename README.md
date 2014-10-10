@@ -12,7 +12,7 @@ R package to interface some popular parallelization back-ends with a unified int
 
 * Run this in R to install the current GitHub version:
   ```r
-  devtools::install_github("parallelMap", username="berndbischl")
+  devtools::install_github("berndbischl/parallelMap")
   ```
 
 * [Further installation instructions](https://github.com/tudo-r/PackagesInfo/wiki/Installation-Information)
