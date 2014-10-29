@@ -75,6 +75,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   assertString(level, na.ok = TRUE)
   assertFlag(show.info, na.ok = TRUE)
 
+  if (!is.na(level) && level %nin% unlist(getPMOption("registered.levels", list())))
+    stopf("Level '%s' not registered", level)
+
   cpus = getPMOptCpus()
   logging = getPMOptLogging()
   # use NA to encode "no logging" in logdir
