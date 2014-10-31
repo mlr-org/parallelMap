@@ -3,14 +3,16 @@
 \alias{parallelRegisterLevels}
 \title{Register available parallelization levels in a client package.}
 \usage{
-parallelRegisterLevels(package, levels)
+parallelRegisterLevels(package = NA_character_, levels)
 }
 \arguments{
 \item{package}{[\code{character(1)}]\cr
-Name of your package.}
+Name of your package. Default is \code{NA} (no package, interactive use).}
 
 \item{levels}{[\code{character(1)}]\cr
-Availabe levels that are used in the \code{\link{parallelMap}} operations of your package.}
+Availabe levels that are used in the \code{\link{parallelMap}} operations of your package
+or code.
+If \code{package} is not missing, all levels will be prefixed with \dQuote{[package].}.}
 }
 \value{
 Nothing.
