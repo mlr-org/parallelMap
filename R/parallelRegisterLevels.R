@@ -30,9 +30,13 @@ parallelRegisterLevels = function(package = NA_character_, levels) {
 #' @export
 parallelShowRegisteredLevels = function() {
   reg.levs = getPMOption("registered.levels", list())
-  reg.levs = reg.levs[order(names(reg.levs))]
-  Map(function(pkg, lvls) {
-    catf("%-20s: %s", pkg, collapse(lvls))
-  }, pkg = names(reg.levs), lvls = reg.levs)
+  if (length(reg.levs) == 0L) {
+    message("No levels registered.")
+  } else {
+    reg.levs = reg.levs[order(names(reg.levs))]
+    Map(function(pkg, lvls) {
+      catf("%-20s: %s", pkg, collapse(lvls))
+    }, pkg = names(reg.levs), lvls = reg.levs)
+  }
   invisible(reg.levs)
 }
