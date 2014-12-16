@@ -14,8 +14,8 @@ License: BSD_3_clause + file LICENSE
 Depends:
     R (>= 3.0.0)
 Imports:
-    BBmisc (>= 1.7),
-    checkmate (>= 1.3)
+    BBmisc (>= 1.9),
+    checkmate (>= 1.5)
 Suggests:
     testthat,
     parallel,

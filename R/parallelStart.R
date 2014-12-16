@@ -135,7 +135,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   showStartupMsg(mode, cpus, socket.hosts)
 
   # now load extra packs we need
-  requirePackages(getExtraPackages(mode), "parallelStart")
+  requirePackages(getExtraPackages(mode), "parallelStart", namespace.only = FALSE)
 
   # delete log dirs from previous runs
   if (logging) {
