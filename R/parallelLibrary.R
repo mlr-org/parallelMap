@@ -46,7 +46,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
 
   if (length(packages) > 0L) {
     if (master) {
-      requirePackages(paste0("!", packages), why = "parallelLibrary")
+      requirePackages(packages, why = "parallelLibrary", default.method = "attach")
     }
 
     # if level matches, load on slaves
@@ -58,7 +58,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
         } else {
           showInfoMessage("Loading packages on master (to be available on slaves for mode %s): %s",
             mode, collapse(packages), show.info = show.info)
-        requirePackages(paste0("!", packages), why = "parallelLibrary")
+        requirePackages(packages, why = "parallelLibrary", default.method = "attach")
         }
       } else if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Loading packages on slaves for mode %s: %s",
