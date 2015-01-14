@@ -32,5 +32,5 @@ exportToSlavePkgParallel = function(objname, objval) {
   # stuff defined in the scope of an R function
   # cl = NULL is default cluster, pos=1 is always globalenv
   # I really hope the nextline does what I think in all cases...
-  clusterCall(cl=NULL, assign, x=objname, value=objval, pos=1)
+  parallel::clusterCall(cl=NULL, assign, x=objname, value=objval, pos=1)
 }
