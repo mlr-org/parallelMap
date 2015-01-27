@@ -118,24 +118,24 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
       suppressMessages({
         reg = getBatchJobsReg()
-        BatchJobs:::dbRemoveJobs(reg, getJobIds(reg))
-        batchMap(reg, slaveWrapper, ..., more.args = more.args)
+        BatchJobs:::dbRemoveJobs(reg, BatchJobs::getJobIds(reg))
+        BatchJobs::batchMap(reg, slaveWrapper, ..., more.args = more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
-        submitJobs(reg, resources = getPMOptBatchJobsResources(), max.retries = 15)
-        ok = waitForJobs(reg, stop.on.error = stop.on.error)
+        BatchJobs::submitJobs(reg, resources = getPMOptBatchJobsResources(), max.retries = 15)
+        ok = BatchJobs::waitForJobs(reg, stop.on.error = stop.on.error)
       })
       # copy log files of terminated jobs to designated dir
       if (!is.na(logdir)) {
-        term = findTerminated(reg)
-        fns = getLogFiles(reg, term)
+        term = BatchJobs::findTerminated(reg)
+        fns = BatchJobs::getLogFiles(reg, term)
         dests = file.path(logdir, sprintf("%05i.log", term))
         file.copy(from = fns, to = dests)
       }
-      ids = getJobIds(reg)
-      ids.err = findErrors(reg)
-      ids.exp = findExpired(reg)
-      ids.done = findDone(reg)
+      ids = BatchJobs::getJobIds(reg)
+      ids.err = BatchJobs::findErrors(reg)
+      ids.exp = BatchJobs::findExpired(reg)
+      ids.done = BatchJobs::findDone(reg)
       ids.notdone = c(ids.err, ids.exp)
       # construct notdone error messages
       msgs = rep("Job expired!", length(ids.notdone))
@@ -144,11 +144,11 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       if (is.null(impute.error) && length(c(ids.notdone)) > 0) {
         extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s",
           reg$file.dir)
-        onsys = findOnSystem(reg)
+        onsys = BatchJobs::findOnSystem(reg)
         suppressMessages(
-          killJobs(reg, onsys)
+          BatchJobs::killJobs(reg, onsys)
         )
-        onsys = findOnSystem(reg)
+        onsys = BatchJobs::findOnSystem(reg)
         if (length(onsys) > 0L)
           warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
         if (length(ids.notdone) > 0L)
@@ -156,7 +156,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       }
       # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
       res = vector("list", length(ids))
-      res[ids.done] = loadResults(reg, simplify = FALSE, use.names = FALSE)
+      res[ids.done] = BatchJobs::loadResults(reg, simplify = FALSE, use.names = FALSE)
       res[ids.notdone] = lapply(msgs, function(s) impute.error.fun(simpleError(s)))
     }
   }

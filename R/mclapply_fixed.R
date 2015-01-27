@@ -1,5 +1,5 @@
 if (getRversion() >= "3.1.1") {
-  mcmapply_fixed = parallel::mcmapply
+  mcmapply_fixed = mcmapply
 } else {
   mcmapply_fixed = function (FUN, ..., MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE,
     mc.preschedule = TRUE, mc.set.seed = TRUE, mc.silent = FALSE,

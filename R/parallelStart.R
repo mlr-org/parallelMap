@@ -57,7 +57,7 @@
 #'   Default is the option \code{parallelMap.default.logging} or, if not set,
 #'   \code{FALSE}.
 #' @param storagedir [\code{character(1)}]\cr
-#'   Existing directory where log files and intermediate objects for BatchsJobs
+#'   Existing directory where log files and intermediate objects for BatchJobs
 #'   mode are stored.
 #'   Note that all nodes must have write access to exactly this path.
 #'   Default is the current working directory.
@@ -152,7 +152,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
-    cl = parallel::makeCluster(spec = cpus, type = "MPI", ...)
+    cl = makeCluster(spec = cpus, type = "MPI", ...)
     setDefaultCluster(cl)
     clusterSetRNGStream(cl = NULL)
   } else if (isModeBatchJobs()) {
@@ -160,7 +160,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     fd = getBatchJobsNewRegFileDir()
     wd = getwd()
     suppressMessages({
-      reg = makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
+      reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })
   }
   invisible(NULL)

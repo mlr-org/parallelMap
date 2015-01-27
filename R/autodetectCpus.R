@@ -1,6 +1,6 @@
 autodetectCpus = function(mode) {
   if (mode == MODE_MULTICORE) {
-    cpus = parallel::detectCores()
+    cpus = detectCores()
   } else if (mode == MODE_MPI) {
     cpus = Rmpi::mpi.universe.size()
   } else {

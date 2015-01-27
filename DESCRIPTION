@@ -15,10 +15,10 @@ Depends:
     R (>= 3.0.0)
 Imports:
     BBmisc (>= 1.9),
-    checkmate (>= 1.5)
+    checkmate (>= 1.5),
+    parallel
 Suggests:
     testthat,
-    parallel,
     Rmpi,
     BatchJobs (>= 1.4)
 LazyData: yes

@@ -86,7 +86,7 @@ parallelSource = function(..., files, master = TRUE, level = NA_character_, show
           collapse(files), show.info = show.info)
         suppressMessages({
           reg = getBatchJobsReg()
-          addRegistrySourceFiles(reg, files, src.now = FALSE)
+          BatchJobs::addRegistrySourceFiles(reg, files, src.now = FALSE)
         })
       }
     }

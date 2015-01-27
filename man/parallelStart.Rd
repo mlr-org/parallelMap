@@ -65,7 +65,7 @@ Default is the option \code{parallelMap.default.logging} or, if not set,
 \code{FALSE}.}
 
 \item{storagedir}{[\code{character(1)}]\cr
-Existing directory where log files and intermediate objects for BatchsJobs
+Existing directory where log files and intermediate objects for BatchJobs
 mode are stored.
 Note that all nodes must have write access to exactly this path.
 Default is the current working directory.}

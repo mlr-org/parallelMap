@@ -10,6 +10,6 @@ getBatchJobsRegFileDir = function() {
 }
 
 getBatchJobsReg = function() {
-  loadRegistry(getBatchJobsRegFileDir())
+  BatchJobs::loadRegistry(getBatchJobsRegFileDir())
 }
 

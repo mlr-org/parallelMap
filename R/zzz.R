@@ -1,5 +1,6 @@
 #' @import BBmisc
 #' @import checkmate
+#' @import parallel
 
 # define constants
 MODE_LOCAL = "local"

@@ -82,7 +82,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
         # collect in R option, add new packages to old ones
         suppressMessages({
           reg = getBatchJobsReg()
-          addRegistryPackages(reg, packages)
+          BatchJobs::addRegistryPackages(reg, packages)
         })
       }
     }

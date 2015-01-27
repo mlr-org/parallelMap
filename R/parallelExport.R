@@ -66,7 +66,7 @@ parallelExport = function(..., objnames, master = TRUE, level = NA_character_, s
           collapse(objnames))
         objs = setNames(lapply(objnames, get, envir = sys.parent()), objnames)
         suppressMessages({
-          batchExport(getBatchJobsReg(), li = objs)
+          BatchJobs::batchExport(getBatchJobsReg(), li = objs)
         })
       }
     }
