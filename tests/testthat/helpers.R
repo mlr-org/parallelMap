@@ -1,5 +1,3 @@
-options(BBmisc.ProgressBar.style = "off")
-
 # a test for normal functionality of mapping an its options
 partest1 = function() {
   # normal lapply

@@ -8,6 +8,7 @@ todo-files
 .Rproj.user
 .travis.yml
 
+appveyor.yml
 external_test.R
 Makefile
 README.md
