@@ -1,3 +1,7 @@
+
+options(BBmisc.ProgressBar.style = "off")
+options(parallelMap.default.show.info = FALSE)
+
 # a test for normal functionality of mapping an its options
 partest1 = function() {
   # normal lapply
