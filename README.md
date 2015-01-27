@@ -2,9 +2,10 @@ parallelMap
 ===========
 
 [![Build Status](https://travis-ci.org/berndbischl/parallelMap.svg)](https://travis-ci.org/berndbischl/parallelMap)
+[![Build status](https://ci.appveyor.com/api/projects/status/2fg42cayx6e4yh82/branch/master?svg=true)](https://ci.appveyor.com/project/berndbischl/parallelmap/branch/master)
 [![Coverage Status](https://coveralls.io/repos/berndbischl/parallelMap/badge.svg)](https://coveralls.io/r/berndbischl/parallelMap)
-R package to interface some popular parallelization back-ends with a unified interface.
 
+R package to interface some popular parallelization back-ends with a unified interface.
 
 * Offical CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
