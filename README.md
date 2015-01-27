@@ -2,7 +2,7 @@ parallelMap
 ===========
 
 [![Build Status](https://travis-ci.org/berndbischl/parallelMap.svg)](https://travis-ci.org/berndbischl/parallelMap)
-[![Coverage Status](https://img.shields.io/coveralls/berndbischl/parallelMap.svg)](https://coveralls.io/r/berndbischl/parallelMap?branch=master)
+[![Coverage Status](https://coveralls.io/repos/berndbischl/parallelMap/badge.svg)](https://coveralls.io/r/berndbischl/parallelMap)
 R package to interface some popular parallelization back-ends with a unified interface.
 
 
