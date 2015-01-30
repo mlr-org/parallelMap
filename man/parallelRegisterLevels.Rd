@@ -2,7 +2,7 @@
 % Please edit documentation in R/parallelRegisterLevels.R
 \name{parallelRegisterLevels}
 \alias{parallelRegisterLevels}
-\title{Register available parallelization levels in a client package.}
+\title{Register a parallelization level}
 \usage{
 parallelRegisterLevels(package = NA_character_, levels)
 }
@@ -19,6 +19,17 @@ If \code{package} is not missing, all levels will be prefixed with \dQuote{[pack
 Nothing.
 }
 \description{
-Call this in your\code{\link{.onLoad}} in your \dQuote{zzz.R}.
+Package developers should call this function in their packages' \code{\link[base]{.onLoad}}.
+This enables the user to query available levels and bind parallelization to specific levels.
+This is especially helpful in case of nested calls to \code{\link{parallelMap}}, i.e. where
+the inner call should be parallelized instead of the outer one.
+
+To avoid name clases, we encourage developes to always sepecify the argument \code{package}.
+This will prefix the specified levels with the string containing the package name, e.g.
+\code{parallelRegisterLevels("parallelMap", "dummy")} will register the level \dQuote{parallelMap.dummy}
+and users can start parallelization for this level with
+\code{parallelStart(<backend>, level = "parallelMap.dummy")}.
+If you do not provide \code{package}, the level names will be taken as-is and sorted in will be put
+into the category \dQuote{interactive} by \code{\link{parallelGetRegisteredLevels}}.
 }
 
