@@ -7,9 +7,12 @@
 parallelGetRegisteredLevels()
 }
 \value{
-Returns a named list with all registered levels.
+[code{RegisteredLevels}]. See above.
 }
 \description{
-Get registered parallelization levels for all currently loaded packages.
+The S3 object only has one slot, which is called \code{levels}.
+This contains a named list. Each name refers to \code{package} from the call to
+\code{\link{parallelRegisterLevels}}, while the entries are character
+vectors of the form \dQuote{package.level}.
 }
 
