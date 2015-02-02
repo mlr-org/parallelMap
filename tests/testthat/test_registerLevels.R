@@ -17,6 +17,14 @@ test_that("register levels", {
 })
 
 test_that("warn on unregisterred level", {
+  # check that we warn
   expect_warning(parallelStartBatchJobs(level = "foo"), "not registered")
   parallelStop()
+
+  # check that we DONT warn for no level
+  opt = getOption("warn")
+  options(warn = 2L)
+  parallelStartBatchJobs()
+  parallelStop()
+  options(warn = opt)
 })

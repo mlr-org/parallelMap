@@ -96,7 +96,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
 
   level = getPMDefOptLevel(level)
   rlevls = parallelGetRegisteredLevels()
-  if (level %nin% rlevls) {
+  if (!is.na(level) && level %nin% rlevls) {
     warningf("Selected level='%s' not registered! This is likely an error! Note that you can also
       register custom levels yourself to get rid of this warning, see ?parallelRegisterLevels.R",
       level)
