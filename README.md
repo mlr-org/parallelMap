@@ -53,7 +53,7 @@ y = parallelMap(f, 1:2)   # like R's Map but in parallel
 parallelStop()            # turn parallelization off again
 ```
 
-If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html). [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html) exists with a smaller, appropriate interface.
+If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html). [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) exists with a smaller, appropriate interface.
 
 
 Exporting to Slaves: Libraries, Sources and Objects
@@ -63,11 +63,11 @@ In many (more complex) applications you somehow need to initialize the slave pro
 
 parallelMap supports these operations with the following three functions
 
- * [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html)
- * [parallelSource](http://berndbischl.github.io/parallelMap/man/parallelSource.html)
- * [parallelExport](http://berndbischl.github.io/parallelMap/man/parallelExport.html)
+ * [parallelLibrary](http://www.rdocumentation.org/packages/parallelMap/functions/parallelLibrary.html)
+ * [parallelSource](http://www.rdocumentation.org/packages/parallelMap/functions/parallelSource.html)
+ * [parallelExport](http://www.rdocumentation.org/packages/parallelMap/functions/parallelExport.html)
 
-Let's start with loading a package on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://berndbischl.github.io/parallelMap/man/parallelLibrary.html) before calling [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html).
+Let's start with loading a package on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://www.rdocumentation.org/packages/parallelMap/functions/parallelLibrary.html) before calling [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html).
 
 ```splus
 ##### Example 2) #####
@@ -112,9 +112,9 @@ parallelStop()
 Being Lazy: Configuration
 ========================================
 
-On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
+On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
 
-Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
+Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
 
 
 ```splus
@@ -125,7 +125,7 @@ options(
 )
 ```
 
-This allows you to save some typing as running [parallelStart()](http://berndbischl.github.io/parallelMap/man/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
+This allows you to save some typing as running [parallelStart()](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
 
 ```splus
 parallelStart()
@@ -134,7 +134,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-You can later always overwrite settings be explicitly passing them to [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html), so
+You can later always overwrite settings be explicitly passing them to [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html), so
 
 
 ```splus
@@ -144,7 +144,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-would use your default "multicore" mode and still disable [parallelMap](http://berndbischl.github.io/parallelMap/man/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
+would use your default "multicore" mode and still disable [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
 
 The following options are currently available:
 
@@ -158,7 +158,7 @@ The following options are currently available:
   parallelMap.default.storagedir      = <path>, must be on a shared file system for master / slaves
 ```
 
-For their precise meaning please read the documentation of [parallelStart](http://berndbischl.github.io/parallelMap/man/parallelStart.html).
+For their precise meaning please read the documentation of [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html).
 
 
 Package development: Tagging mapping operations with a level name
@@ -211,7 +211,7 @@ Please read the documentation of
  * [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart)
  * [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap)
 
-for more detailed informationon regarding topic.
+for more detailed information regarding this topic.
 
 
 
