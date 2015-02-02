@@ -15,3 +15,8 @@ test_that("register levels", {
     list(p1 = "p1.lev1", p2 = c("p2.a", "p2.b"), custom = c("custom.x", "custom.y"))
   )
 })
+
+test_that("warn on unregisterred level", {
+  expect_warning(parallelStartBatchJobs(level = "foo"), "not registered")
+  parallelStop()
+})
