@@ -183,9 +183,9 @@ parallelGetRegisteredLevels()
 > mlr: mlr.benchmark, mlr.resample, mlr.selectFeatures, mlr.tuneParams
 ```
 
-In the client package, such tagging the parallelMap call can be simply done like this:
+In the client package, such a tagging of the parallelMap call can simply be done like this:
 ```splus
-parallelMap(myfun, 1:n), level = "package.levelname")
+parallelMap(myfun, 1:n, level = "package.levelname")
 ```
 
 In mlr, we tag parallel operations with such a level, e.g.,
