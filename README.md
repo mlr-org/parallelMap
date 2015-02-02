@@ -202,8 +202,8 @@ Parallelization is now performed as follows:
 * No further parallelization is ever performed if we are already on a slave.
 * If no level is set in parallelStart, the first encountered parallelMap call is parallelized, whether it has a tag or
 not.
-* If a level is set in parallelStart, each encountered parallelMap call is checked, and the
-  first one whose tag-level matches the one one of parallelStart exactly is parallelized.
+* If a level is set in parallelStart, each encountered parallelMap call is checked, and each one
+  call on then master, whose tag-level matches the one of parallelStart exactly, is parallelized.
 
 Please read the documentation of
 
