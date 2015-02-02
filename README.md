@@ -23,7 +23,7 @@ R package to interface some popular parallelization back-ends with a unified int
 NEWS
 ====
 
-* Autostart option was removed. Always call parallelStart explicitly from now on. See here: [Issue](https://github.com/berndbischl/parallelMap/issues/17) 
+* Autostart option was removed. Always call parallelStart explicitly from now on. See here: [Issue](https://github.com/berndbischl/parallelMap/issues/17)
 
 
 Overview
@@ -164,8 +164,54 @@ For their precise meaning please read the documentation of [parallelStart](http:
 Package development: Tagging mapping operations with a level name
 =================================================================
 
-TO COME
+Sometimes it is useful to have more control which parallelMap operation is actually parallelized.
+You can therefore tag parallelMap operations with a so called "level", basically an associated name
+or category. Usually you would do this in a client package, but you can also do that in custom code.
+In your zzz.R you can then register these levels, so parallelMap known about them.
+Here is an example from mlr's
+[zzz.R](https://github.com/berndbischl/mlr/blob/master/R/zzz.R)
+where we call this in .onAttach
 
+```splus
+  parallelRegisterLevels(package = "mlr", levels = c("benchmark", "resample", "selectFeatures", "tuneParams"))
+```
+
+Later on the user can ask what levels are currently available, e.g.:
+```splus
+library(mlr)
+parallelGetRegisteredLevels()
+> mlr: mlr.benchmark, mlr.resample, mlr.selectFeatures, mlr.tuneParams
+```
+
+In the client package, such tagging the parallelMap call can be simply done like this:
+```splus
+parallelMap(myfun, 1:n), level = "package.levelname")
+```
+
+In mlr, we tag parallel operations with such a level, e.g.,
+[here](https://github.com/berndbischl/mlr/blob/master/R/resample.R).
+
+Now, from the outside the client user can simply set and control the parallelization level here
+
+```splus
+parallelStartSocket(ncpus = 2L, level = "package.levelname")
+```
+
+Parallelization is now performed as follows:
+
+* No further parallelization is ever performed if we are already on a slave.
+* If no level is set in parallelStart, the first encountered parallelMap call is parallelized, whether it has a tag or
+not.
+* If a level is set in parallelStart, each encountered parallelMap call is checked, and the
+  first one whose tag-level matches the one one of parallelStart exactly is parallelized.
+
+Please read the documentation of
+
+ * [parallelRegisterLevels](http://www.rdocumentation.org/packages/parallelMap/functions/parallelRegisterLevels)
+ * [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart)
+ * [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap)
+
+for more detailed informationon regarding topic.
 
 
 
