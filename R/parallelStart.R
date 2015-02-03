@@ -88,12 +88,19 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     parallelStop()
   }
 
-  #FIXME what should we do onexit if an error happens in this function?
+  #FIXME: what should we do onexit if an error happens in this function?
 
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
   socket.hosts = getPMDefOptSocketHosts(socket.hosts)
+
   level = getPMDefOptLevel(level)
+  rlevls = parallelGetRegisteredLevels()
+  if (!is.na(level) && level %nin% rlevls) {
+    warningf("Selected level='%s' not registered! This is likely an error! Note that you can also
+      register custom levels yourself to get rid of this warning, see ?parallelRegisterLevels.R",
+      level)
+  }
   logging = getPMDefOptLogging(logging)
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
