@@ -62,10 +62,9 @@
 #'   Note that all nodes must have write access to exactly this path.
 #'   Default is the current working directory.
 #' @param level [\code{character(1)}]\cr
-#'   You can set this so only calls to \code{\link{parallelMap}} are parallelized
-#'   that have the same level specified.
+#'   You can set this so only calls to \code{\link{parallelMap}} that have exactly the same level are parallelized.
 #'   Default is the option \code{parallelMap.default.level} or, if not set,
-#'   \code{NA} which means all calls to \code{\link{parallelMap}} are are parallelized.
+#'   \code{NA} which means all calls to \code{\link{parallelMap}} are are potentially parallelized.
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console for all further package calls?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set,
