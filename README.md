@@ -164,26 +164,34 @@ For their precise meaning please read the documentation of [parallelStart](http:
 Package development: Tagging mapping operations with a level name
 =================================================================
 
-Sometimes it is useful to have more control which parallelMap operation is actually parallelized.
-You can therefore tag parallelMap operations with a so called "level", basically an associated name
-or category. Usually you would do this in a client package, but you can also do that in custom code.
-In your zzz.R you can then register these levels, so parallelMap known about them.
+Sometimes it is useful to have more control over which `parallelMap` operation is actually parallelized.
+You can tag parallelMap operations with a so-called "level", basically a name
+or category associated with the operation. Usually you would do this in a client package, but you can also do it in custom code.
+For packages, register the level(s) that you define in `zzz.R` to tell parallelMap
+about them.
 Here is an example from mlr's
 [zzz.R](https://github.com/berndbischl/mlr/blob/master/R/zzz.R)
 where we call this in .onAttach
 
 ```splus
+.onAttach = function(libname, pkgname) {
+  # ...
   parallelRegisterLevels(package = "mlr", levels = c("benchmark", "resample", "selectFeatures", "tuneParams"))
+}
 ```
 
-Later on the user can ask what levels are currently available, e.g.:
+Later on the user can ask what levels are available, for example
 ```splus
 library(mlr)
 parallelGetRegisteredLevels()
 > mlr: mlr.benchmark, mlr.resample, mlr.selectFeatures, mlr.tuneParams
 ```
 
-In the client package, such a tagging of the parallelMap call can simply be done like this:
+The output shows the registered levels for each package; in this example, only
+one package is loaded that provides levels.
+
+In the client package, the tagging of the `parallelMap` operation is done through
+the `level` argument:
 ```splus
 parallelMap(myfun, 1:n, level = "package.levelname")
 ```
@@ -191,7 +199,7 @@ parallelMap(myfun, 1:n, level = "package.levelname")
 In mlr, we tag parallel operations with such a level, e.g.,
 [here](https://github.com/berndbischl/mlr/blob/master/R/resample.R).
 
-Now, from the outside the client user can simply set and control the parallelization level here
+The user of the package can now set the level when starting the parallel backend, again through the `level` argument:
 
 ```splus
 parallelStartSocket(ncpus = 2L, level = "package.levelname")
@@ -199,11 +207,10 @@ parallelStartSocket(ncpus = 2L, level = "package.levelname")
 
 Parallelization is now performed as follows:
 
-* No further parallelization is ever performed if we are already on a slave.
-* If no level is set in parallelStart, the first encountered parallelMap call is parallelized, whether it has a tag or
-not.
-* If a level is set in parallelStart, each encountered parallelMap call is checked, and each one
-  call on then master, whose tag-level matches the one of parallelStart exactly, is parallelized.
+* If no level is set in `parallelStart`, the first encountered `parallelMap` call on the master is parallelized, whether it has a tag or not.
+* If a level is set in the call to `parallelStart`, only the `parallelMap` calls which have exactly this level set and run on the master are parallelised.
+* No further parallelization is done if we are already on a slave, i.e. if the
+  parent call has already been parallelised through `parallelMap`.
 
 Please read the documentation of
 
@@ -212,8 +219,4 @@ Please read the documentation of
  * [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap)
 
 for more detailed information regarding this topic.
-
-
-
-
 
