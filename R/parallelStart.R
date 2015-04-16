@@ -155,7 +155,12 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     cl = makeMulticoreCluster(...)
   } else if (isModeSocket()) {
     # set names from cpus or socket.hosts, only 1 can be defined here
-    cl = makePSOCKcluster(names = ifelse(is.na(cpus), socket.hosts, cpus), ...)
+    if (is.na(cpus)) {
+      names = socket.hosts
+    } else {
+      names = cpus
+    }
+    cl = makePSOCKcluster(names = names, ...)
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
     cl = makeCluster(spec = cpus, type = "MPI", ...)
