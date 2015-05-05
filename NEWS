@@ -1,3 +1,6 @@
+parallelMap_1.3:
+- parallelGetRegisteredLevels has new argument "flatten"
+
 parallelMap_1.2:
 - Arguments of mcmapply (mc.preschedule, ...) can now be specified via parallelStart
 - We import package "parallel" now

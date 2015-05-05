@@ -39,15 +39,26 @@ parallelRegisterLevels = function(package = "custom", levels) {
 #' @title Get registered parallelization levels for all currently loaded packages.
 #'
 #' @description
+#' With \code{flatten = FALSE}, a structured S3 object is returned.
 #' The S3 object only has one slot, which is called \code{levels}.
 #' This contains a named list. Each name refers to \code{package} from the call to
 #' \code{\link{parallelRegisterLevels}}, while the entries are character
 #' vectors of the form \dQuote{package.level}.
-#' @return [code{RegisteredLevels}]. See above.
+#' With \code{flatten = TRUE}, a simple character vector is returned that contains all
+#' concatenated entries of \code{levels} from above.
+#'
+#' @param flatten [\code{logical(1)}]\cr
+#'   Flatten to character vector or not? See description.
+#'   Default is \code{FALSE}.
+#' @return [code{RegisteredLevels} | \code{character}]. See above.
 #' @export
-parallelGetRegisteredLevels = function() {
+parallelGetRegisteredLevels = function(flatten = FALSE) {
+  assertFlag(flatten)
   lvls = getPMOption("registered.levels", list())
-  makeS3Obj("RegisteredLevels", levels = lvls)
+  if (flatten)
+    return(as.character(unlist(lvls)))
+  else
+    return(makeS3Obj("RegisteredLevels", levels = lvls))
 }
 
 #' @export

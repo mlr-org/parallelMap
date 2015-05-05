@@ -9,11 +9,14 @@ test_that("register levels", {
     parallelGetRegisteredLevels()$levels,
     list(p1 = "p1.lev1", p2 = c("p2.a", "p2.b"))
   )
+  expect_equal(parallelGetRegisteredLevels(flatten = TRUE), c("p1.lev1", "p2.a", "p2.b"))
   parallelRegisterLevels(levels = c("x", "y"))
   expect_equal(
     parallelGetRegisteredLevels()$levels,
     list(p1 = "p1.lev1", p2 = c("p2.a", "p2.b"), custom = c("custom.x", "custom.y"))
   )
+  expect_equal(parallelGetRegisteredLevels(flatten = TRUE),
+    c("p1.lev1", "p2.a", "p2.b", "custom.x", "custom.y"))
 })
 
 test_that("warn on unregisterred level", {
