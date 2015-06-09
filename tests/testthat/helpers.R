@@ -21,7 +21,7 @@ partest1 = function() {
 }
 
 # test that log files are correctly generated
-partest2 = function(log.dir) {
+partest2 = function(log.dir, test.warning = TRUE) {
 
   # do log files exist under correct path / name?
   check.exists = function(iter, n) {
@@ -48,9 +48,11 @@ partest2 = function(log.dir) {
   check.exists(iter=2, n=2)
   check.contains(iter=2, c("xxx", "yyy"))
 
-  parallelMap(warning, c("xxx", "yyy"))
-  check.exists(iter=3, n=2)
-  check.contains(iter=3, c("xxx", "yyy"))
+  if (test.warning) {
+    parallelMap(warning, c("xxx", "yyy"))
+    check.exists(iter=3, n=2)
+    check.contains(iter=3, c("xxx", "yyy"))
+  }
 }
 
 # test that exported variables exist on slave
