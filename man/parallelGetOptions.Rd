@@ -2,12 +2,19 @@
 % Please edit documentation in R/parallelShowOptions.R
 \name{parallelGetOptions}
 \alias{parallelGetOptions}
-\title{Displays the configured package options.}
+\title{Retrieve the configured package options.}
 \usage{
 parallelGetOptions()
 }
+\value{
+[\code{ParallelMapOptions}]. See above.
+}
 \description{
-Displayed are current and default settings.
+Returned are current and default settings, both as lists.
+The return value has slots elements \code{settings} and \code{defaults},
+which are both lists of the same structure, named by option names.
+
+A printer exists to display this object.
 
 For details on the configuration procedure please read
 \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
