@@ -12,7 +12,7 @@ Author: Bernd Bischl <bernd_bischl@gmx.net>, Michel Lang
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
 URL: https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
-License: BSD_3_clause + file LICENSE
+License: BSD_2_clause + file LICENSE
 Depends:
     R (>= 3.0.0)
 Imports:
