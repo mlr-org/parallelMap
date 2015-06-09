@@ -1,5 +1,6 @@
 parallelMap_1.3:
 - parallelGetRegisteredLevels has new argument "flatten"
+- parallelShowOptions was converted to parallelGetOptions (with a printer)
 
 parallelMap_1.2:
 - Arguments of mcmapply (mc.preschedule, ...) can now be specified via parallelStart

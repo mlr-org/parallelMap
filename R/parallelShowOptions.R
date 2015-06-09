@@ -1,15 +1,29 @@
-#' Displays the configured package options.
+#' @title Retrieve the configured package options.
 #'
-#' Displayed are current and default settings.
+#' @description
+#' Returned are current and default settings, both as lists.
+#' The return value has slots elements \code{settings} and \code{defaults},
+#' which are both lists of the same structure, named by option names.
+#'
+#' A printer exists to display this object.
 #'
 #' For details on the configuration procedure please read
 #' \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
 #'
+#' @return [\code{ParallelMapOptions}]. See above.
 #' @export
-parallelShowOptions = function() {
+parallelGetOptions = function() {
+  opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir", "bj.resources")
+  settings = setNames(lapply(opts, getPMOption), opts)
+  defaults = setNames(lapply(opts, getPMDefOption), opts)
+  makeS3Obj("ParallelMapOptions", settings = settings, defaults = defaults)
+}
+
+#' @export
+print.ParallelMapOptions = function(x, ...) {
   mycat = function(opt) {
-    opt1val = getPMOption(opt)
-    opt2val = getPMDefOption(opt)
+    opt1val = opts$settings[[opt]]
+    opt2val = opts$defaults[[opt]]
     if (opt == "bj.resources") {
       opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)",
         convertToShortString(opt1val))
@@ -23,6 +37,7 @@ parallelShowOptions = function() {
     else
       catf("%-20s: %-10s\n                      (%s)", opt, opt1val, opt2val)
   }
+  opts = parallelGetOptions()
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
   catf("")
   mycat("mode")
@@ -34,3 +49,4 @@ parallelShowOptions = function() {
   if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS))
     mycat("bj.resources")
 }
+
