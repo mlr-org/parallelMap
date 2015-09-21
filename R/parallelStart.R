@@ -188,35 +188,35 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
 
 #' @export
 #' @rdname parallelStart
-parallelStartLocal = function(show.info, suppress.local.errors = FALSE) {
+parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
   parallelStart(mode = MODE_LOCAL, cpus = NA_integer_, level = NA_character_,
-    logging = FALSE, show.info = show.info, suppress.local.errors = suppress.local.errors)
+    logging = FALSE, show.info = show.info, suppress.local.errors = suppress.local.errors, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, logging, storagedir, level, show.info, ...) {
+parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
   parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
     storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, show.info, ...) {
+parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing, show.info, ...) {
   parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
     storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, logging, storagedir, level, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
     storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info) {
+parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
-    storagedir = storagedir, bj.resources = bj.resources, show.info = show.info)
+    storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
 }
