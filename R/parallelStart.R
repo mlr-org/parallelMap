@@ -65,6 +65,10 @@
 #'   You can set this so only calls to \code{\link{parallelMap}} that have exactly the same level are parallelized.
 #'   Default is the option \code{parallelMap.default.level} or, if not set,
 #'   \code{NA} which means all calls to \code{\link{parallelMap}} are are potentially parallelized.
+#' @param load.balancing [\code{logical(1)}]\cr
+#'   Enables load balancing for multicore, socket and mpi.
+#'   Set this to \code{TRUE} if you have heterogeneous runtimes.
+#'   Default is \code{FALSE}
 #' @param show.info [\code{logical(1)}]\cr
 #'   Verbose output on console for all further package calls?
 #'   Default is the option \code{parallelMap.default.show.info} or, if not set,
@@ -75,12 +79,13 @@
 #' @param ... [any]\cr
 #'   Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
-#'   passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule}, \code{mc.set.seed},
+#'   passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
+#'   \code{mc.set.seed},
 #'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, show.info,
-  suppress.local.errors = FALSE, ...) {
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+  show.info, suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
@@ -104,6 +109,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
   assertList(bj.resources)
+  assertFlag(load.balancing)
   show.info = getPMDefOptShowInfo(show.info)
 
   # multicore not supported on windows
@@ -117,6 +123,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   options(parallelMap.logging = logging)
   options(parallelMap.storagedir = storagedir)
   options(parallelMap.bj.resources = bj.resources)
+  options(parallelMap.load.balancing = load.balancing)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)
   options(parallelMap.nextmap = 1L)
@@ -152,7 +159,9 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
 
   # init parallel packs / modes, if necessary
   if (isModeMulticore()) {
-    cl = makeMulticoreCluster(...)
+    args = list(...)
+    args$mc.preschedule = args$mc.preschedule %??% !load.balancing
+    cl = do.call(makeMulticoreCluster, args)
   } else if (isModeSocket()) {
     # set names from cpus or socket.hosts, only 1 can be defined here
     if (is.na(cpus)) {
@@ -188,21 +197,21 @@ parallelStartLocal = function(show.info, suppress.local.errors = FALSE) {
 #' @rdname parallelStart
 parallelStartMulticore = function(cpus, logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
-    storagedir = storagedir, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartMPI = function(cpus, logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
 }
 
 #' @export

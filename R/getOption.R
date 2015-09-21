@@ -32,6 +32,10 @@ getPMOptLevel = function() {
   getPMOption("level")
 }
 
+getPMOptLoadBalancing = function() {
+  getPMOption("load.balancing")
+}
+
 getPMOptShowInfo = function() {
   getPMOption("show.info")
 }

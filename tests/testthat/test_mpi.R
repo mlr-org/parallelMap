@@ -8,7 +8,7 @@ if (interactive()) {
     partest1()
     parallelStop()
 
-    parallelStartMPI(2)
+    parallelStartMPI(2, load.balancing = TRUE)
     partest1()
     parallelStop()
 

@@ -10,7 +10,8 @@
 \title{Parallelization setup for parallelMap.}
 \usage{
 parallelStart(mode, cpus, socket.hosts, bj.resources = list(), logging,
-  storagedir, level, show.info, suppress.local.errors = FALSE, ...)
+  storagedir, level, load.balancing = FALSE, show.info,
+  suppress.local.errors = FALSE, ...)
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE)
 
@@ -75,6 +76,11 @@ You can set this so only calls to \code{\link{parallelMap}} that have exactly th
 Default is the option \code{parallelMap.default.level} or, if not set,
 \code{NA} which means all calls to \code{\link{parallelMap}} are are potentially parallelized.}
 
+\item{load.balancing}{[\code{logical(1)}]\cr
+Enables load balancing for multicore, socket and mpi.
+Set this to \code{TRUE} if you have heterogeneous runtimes.
+Default is \code{FALSE}}
+
 \item{show.info}{[\code{logical(1)}]\cr
 Verbose output on console for all further package calls?
 Default is the option \code{parallelMap.default.show.info} or, if not set,
@@ -87,7 +93,8 @@ Default ist FALSE, i.e. every error message is shown.}
 \item{...}{[any]\cr
 Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
 for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
-passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule}, \code{mc.set.seed},
+passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
+\code{mc.set.seed},
 \code{mc.silent} and \code{mc.cleanup} are supported for multicore).}
 }
 \value{

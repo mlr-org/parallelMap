@@ -7,6 +7,10 @@ sockettest = function() {
   partest1()
   parallelStop()
 
+  parallelStartSocket(2, load.balancing = TRUE)
+  partest1()
+  parallelStop()
+
   # check with host args as strings too
   parallelStartSocket(socket.hosts=c("localhost", "localhost"))
   partest1()

@@ -79,6 +79,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     stopf("Level '%s' not registered", level)
 
   cpus = getPMOptCpus()
+  load.balancing = getPMOptLoadBalancing()
   logging = getPMOptLogging()
   # use NA to encode "no logging" in logdir
   logdir = ifelse(logging, getNextLogDir(), NA_character_)
@@ -101,8 +102,8 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
-    showInfoMessage("Mapping in parallel: mode = %s; cpus = %i; elements = %i.",
-      getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
+    showInfoMessage("Mapping in parallel%s: mode = %s; cpus = %i; elements = %i.",
+      ifelse(load.balancing, " (load balanced)", ""), getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
 
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
@@ -110,8 +111,11 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
-      res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args,
-        SIMPLIFY = FALSE, USE.NAMES = FALSE)
+      if (load.balancing) {
+        res = clusterMapLB(cl = NULL, slaveWrapper, ...,  .i = iters, MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+      } else {
+        res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+      }
     } else if (isModeBatchJobs()) {
       stop.on.error = is.null(impute.error)
       # dont log extra in BatchJobs

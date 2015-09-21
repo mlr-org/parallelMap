@@ -11,6 +11,10 @@ if (isExpensiveExampleOk()) {
     partest1()
     parallelStop()
 
+    parallelStartMulticore(2, load.balancing = TRUE)
+    partest1()
+    parallelStop()
+
     expect_error(parallelStartMulticore(storagedir = "xxx"))
 
     parallelStartMulticore(2, logging = TRUE, storagedir = tempdir())
