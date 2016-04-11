@@ -22,7 +22,8 @@ Imports:
 Suggests:
     testthat,
     Rmpi,
-    BatchJobs (>= 1.5)
+    BatchJobs (>= 1.5),
+    batchtools
 LazyData: yes
 ByteCompile: yes
 Version: 1.4

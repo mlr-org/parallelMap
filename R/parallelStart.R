@@ -182,6 +182,12 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     suppressMessages({
       reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })
+  } else if (isModeBatchtools()) {
+    fd = getBatchtoolsNewRegFileDir()
+    wd = getwd()
+    suppressMessages({
+      reg = Batchtools::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
+    })
   }
   invisible(NULL)
 }
@@ -218,5 +224,12 @@ parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing, sh
 #' @rdname parallelStart
 parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
+    storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
+}
+
+#' @export
+#' @rdname parallelStart
+parallelStartBatchTools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
+  parallelStart(mode = MODE_BATCHTOOLS, level = level, logging = logging,
     storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
 }
