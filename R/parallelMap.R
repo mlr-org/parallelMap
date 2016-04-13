@@ -162,6 +162,56 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       res = vector("list", length(ids))
       res[ids.done] = BatchJobs::loadResults(reg, simplify = FALSE, use.names = FALSE)
       res[ids.notdone] = lapply(msgs, function(s) impute.error.fun(simpleError(s)))
+    } else if (isModeBatchtools()) {
+      stop.on.error = is.null(impute.error)
+      # dont log extra in Batchtools
+      more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
+      suppressMessages({
+        reg = getBatchtoolsReg()
+        #FIXME remove jobs? We did this with BatchJobs
+        ids = batchtools::batchMap(reg = reg, fun = slaveWrapper, ..., more.args = more.args)
+        batchtools::submitJobs(ids = ids, reg = reg, resources = getPMOptBatchJobsResources())
+        ok = batchtools::waitForJobs(reg = reg, stop.on.error = stop.on.error)
+      })
+      jobs = list(
+        all = batchtools::findJobs(reg = reg),
+        err = batchtools::findError(reg = reg),
+        exp = batchtools::findExpired(reg = reg),
+        done = batchtools::findDone(reg = reg)
+        )
+      jobs$notdone = rbind(jobs$err, jobs$exp)
+      setkeyv(jobs$notdone, cols = key(jobs$all))
+      jobs$term = rbind(jobs$done, jobs$err)
+      setkeyv(jobs$term, cols = key(jobs$all))
+      # copy log files of terminated jobs to designated dir
+      if (!is.na(logdir)) {
+        #FIXME: This is kind of ugly becaus its copied from batchtools:::readLog
+        x = reg$status[jobs$term, c("job.id", "job.hash"), with = FALSE, nomatch = 0L]
+        log.files = file.path(reg$file.dir, "logs", sprintf("%s.log", x$job.hash))
+        dests = file.path(logdir, sprintf("%05i.log", x$job.id))
+        file.copy(from = log.files, to = dests)
+      }
+      msgs = reg$status[jobs$notdone, c("job.id", "error"), with = FALSE]
+      msgs[jobs$exp, ':='("error","Job expired!"), with = FALSE] 
+      msgs = msgs[, "error", with = FALSE, drop = TRUE]
+      # handle errors (no impute): kill other jobs + stop on master
+      if (is.null(impute.error) && length(c(ids.notdone)) > 0) {
+        extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s",
+          reg$file.dir)
+        onsys = batchtools::findOnSystem(reg = reg)$job.id
+        suppressMessages(
+          batchtools::killJobs(reg = reg, ids = onsys)
+        )
+        onsys = batchtools::findOnSystem(reg = reg)$job.id
+        if (length(onsys) > 0L)
+          warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
+        if (length(ids.notdone) > 0L)
+          stopWithJobErrorMessages(jobs$notdone$job.id, msgs, extra.msg)
+      }
+      # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
+      res = vector("list", length(ids))
+      res[jobs$done$job.id] = batchtools::reduceResultsList(reg = reg)
+      res[jobs$notdone$job.id] = lapply(msgs, function(s) impute.error.fun(simpleError(s)))
     }
   }
 

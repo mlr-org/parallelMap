@@ -186,7 +186,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     fd = getBatchtoolsNewRegFileDir()
     wd = getwd()
     suppressMessages({
-      reg = Batchtools::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
+      reg = batchtools::makeRegistry(file.dir = fd, work.dir = wd)
     })
   }
   invisible(NULL)
@@ -229,7 +229,7 @@ parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, le
 
 #' @export
 #' @rdname parallelStart
-parallelStartBatchTools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
+parallelStartBatchtools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_BATCHTOOLS, level = level, logging = logging,
-    storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
+    storagedir = storagedir, bt.resources = bt.resources, show.info = show.info, ...)
 }
