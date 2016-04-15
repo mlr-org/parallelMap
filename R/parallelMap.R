@@ -180,32 +180,28 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
         done = batchtools::findDone(reg = reg)
         )
       jobs$notdone = rbind(jobs$err, jobs$exp)
-      setkeyv(jobs$notdone, cols = key(jobs$all))
       jobs$term = rbind(jobs$done, jobs$err)
-      setkeyv(jobs$term, cols = key(jobs$all))
       # copy log files of terminated jobs to designated dir
       if (!is.na(logdir)) {
         #FIXME: This is kind of ugly becaus its copied from batchtools:::readLog
-        x = reg$status[jobs$term, c("job.id", "job.hash"), with = FALSE, nomatch = 0L]
+        x = merge(jobs$term, reg$status, all.x = TRUE)[, c("job.id", "job.hash"), with = FALSE]
         log.files = file.path(reg$file.dir, "logs", sprintf("%s.log", x$job.hash))
         dests = file.path(logdir, sprintf("%05i.log", x$job.id))
         file.copy(from = log.files, to = dests)
       }
-      msgs = reg$status[jobs$notdone, c("job.id", "error"), with = FALSE]
-      msgs[jobs$exp, ':='("error","Job expired!"), with = FALSE] 
-      msgs = msgs[, "error", with = FALSE, drop = TRUE]
+      msgs = batchtools::getErrorMessages(reg = reg)$message
       # handle errors (no impute): kill other jobs + stop on master
-      if (is.null(impute.error) && length(c(ids.notdone)) > 0) {
+      if (is.null(impute.error) && nrow(jobs$notdone) > 0) {
         extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your BatchJobs registry is here:\n%s",
           reg$file.dir)
-        onsys = batchtools::findOnSystem(reg = reg)$job.id
+        onsys = batchtools::findOnSystem(reg = reg)
         suppressMessages(
           batchtools::killJobs(reg = reg, ids = onsys)
         )
         onsys = batchtools::findOnSystem(reg = reg)$job.id
         if (length(onsys) > 0L)
           warningf("Still %i jobs from operation on system! kill them manually!", length(onsys))
-        if (length(ids.notdone) > 0L)
+        if (nrow(jobs$notdone) > 0L)
           stopWithJobErrorMessages(jobs$notdone$job.id, msgs, extra.msg)
       }
       # if we reached this line and error occured, we have impute.error != NULL (NULL --> stop before)
