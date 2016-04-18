@@ -1,7 +1,7 @@
 Package: parallelMap
 Title: Unified Interface to Parallelization Back-Ends
 Description: Unified parallelization framework for multiple back-end,
-  designed for internal package and interactive usage.
+    designed for internal package and interactive usage.
     The main operation is parallel mapping over lists.
     Supports 'local', 'multicore', 'mpi' and 'BatchJobs' mode.
     Allows tagging of the parallel operation
@@ -26,3 +26,4 @@ Suggests:
 LazyData: yes
 ByteCompile: yes
 Version: 1.4
+RoxygenNote: 5.0.1
