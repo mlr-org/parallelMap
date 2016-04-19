@@ -168,7 +168,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
       suppressMessages({
         reg = getBatchtoolsReg()
-        #FIXME remove jobs? We did this with BatchJobs
+        suppressMessages(
+          batchtools::clearRegistry(reg = reg)
+        )
         ids = batchtools::batchMap(reg = reg, fun = slaveWrapper, ..., more.args = more.args)
         batchtools::submitJobs(ids = ids, reg = reg, resources = getPMOptBatchJobsResources())
         ok = batchtools::waitForJobs(reg = reg, stop.on.error = stop.on.error)
@@ -184,7 +186,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       # copy log files of terminated jobs to designated dir
       if (!is.na(logdir)) {
         #FIXME: This is kind of ugly becaus its copied from batchtools:::readLog
-        x = merge(jobs$term, reg$status, all.x = TRUE)[, c("job.id", "job.hash"), with = FALSE]
+        x = merge(jobs$term, reg$status, all.x = TRUE, by = "job.id")[, c("job.id", "job.hash"), with = FALSE]
         log.files = file.path(reg$file.dir, "logs", sprintf("%s.log", x$job.hash))
         dests = file.path(logdir, sprintf("%05i.log", x$job.id))
         file.copy(from = log.files, to = dests)
