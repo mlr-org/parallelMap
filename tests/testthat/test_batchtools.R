@@ -1,6 +1,8 @@
 context("batchtools mode")
 
 test_that("batchtools mode", {
+  
+  skip_if_not_installed("batchtools")
 
   library(batchtools)
   storagedir = tempdir()
