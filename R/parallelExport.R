@@ -71,12 +71,13 @@ parallelExport = function(..., objnames, master = TRUE, level = NA_character_, s
       } else if (isModeBatchtools()) {
         showInfoMessage("Storing objects in files for batchtools slave jobs: %s",
           collapse(objnames))
-        bt.file.dir = getBatchtoolsRegFileDir()
-        reg = batchtools::loadRegistry(file.dir = bt.file.dir)
-        exports.dir = file.path(bt.file.dir, "exports")
+        reg = getBatchtoolsReg()
+        exports.dir = file.path(reg$file.dir, "exports")
+        dir.create(exports.dir, showWarnings = FALSE)
+        objs = setNames(lapply(objnames, get, envir = sys.parent()), objnames)
         for (n in objnames) {
           export.file = file.path(exports.dir, paste0(n,".RData"))
-          save(list = n, envir = sys.parent(), file = export.file)
+          do.call(save2, c(objs[n], file = export.file))
           reg$load = union(reg$load, export.file) 
         }
         batchtools::saveRegistry()
