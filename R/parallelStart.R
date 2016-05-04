@@ -84,7 +84,7 @@
 #'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
   show.info, suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
@@ -109,6 +109,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
   assertList(bj.resources)
+  assertList(bt.resources)
   assertFlag(load.balancing)
   show.info = getPMDefOptShowInfo(show.info)
 
@@ -123,6 +124,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   options(parallelMap.logging = logging)
   options(parallelMap.storagedir = storagedir)
   options(parallelMap.bj.resources = bj.resources)
+  options(parallelMap.bt.resources = bt.resources)
   options(parallelMap.load.balancing = load.balancing)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)

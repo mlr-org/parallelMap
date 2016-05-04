@@ -172,7 +172,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
           batchtools::clearRegistry(reg = reg)
         )
         ids = batchtools::batchMap(reg = reg, fun = slaveWrapper, ..., more.args = more.args)
-        batchtools::submitJobs(ids = ids, reg = reg, resources = getPMOptBatchJobsResources())
+        batchtools::submitJobs(ids = ids, reg = reg, resources = getPMOptBatchtoolsResources())
         ok = batchtools::waitForJobs(reg = reg, stop.on.error = stop.on.error)
       })
       jobs = list(
