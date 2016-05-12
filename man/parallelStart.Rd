@@ -41,7 +41,7 @@ For socket mode, this is the number of processes spawned on localhost, if
 you want processes on multiple machines use \code{socket.hosts}.
 Default is the option \code{parallelMap.default.cpus} or, if not set,
 \code{\link[parallel]{detectCores}} for multicore mode,
-\code{\link[Rmpi]{mpi.universe.size}} for mpi mode
+\code{max(1, \link[Rmpi]{mpi.universe.size} - 1)} for mpi mode
 and 1 for socket mode.}
 
 \item{socket.hosts}{[\code{character}]\cr

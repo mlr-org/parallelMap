@@ -2,7 +2,7 @@ autodetectCpus = function(mode) {
   if (mode == MODE_MULTICORE) {
     cpus = detectCores()
   } else if (mode == MODE_MPI) {
-    cpus = Rmpi::mpi.universe.size()
+    cpus = max(1L, Rmpi::mpi.universe.size() - 1L)
   } else {
     cpus = NA_integer_
   }
