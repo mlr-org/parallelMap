@@ -177,7 +177,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       })
       jobs = list(
         all = batchtools::findJobs(reg = reg),
-        err = batchtools::findError(reg = reg),
+        err = batchtools::findErrors(reg = reg),
         exp = batchtools::findExpired(reg = reg),
         done = batchtools::findDone(reg = reg)
         )
