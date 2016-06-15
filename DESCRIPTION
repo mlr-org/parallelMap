@@ -16,6 +16,8 @@ License: BSD_2_clause + file LICENSE
 Depends:
     R (>= 3.0.0)
 Imports:
+    utils,
+    stats,
     BBmisc (>= 1.8),
     checkmate (>= 1.8.0),
     parallel

@@ -1,6 +1,8 @@
 #' @import BBmisc
 #' @import checkmate
 #' @import parallel
+#' @importFrom utils getFromNamespace head tail
+#' @importFrom stats setNames
 
 # define constants
 MODE_LOCAL = "local"
