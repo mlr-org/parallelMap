@@ -34,7 +34,7 @@
 #'   you want processes on multiple machines use \code{socket.hosts}.
 #'   Default is the option \code{parallelMap.default.cpus} or, if not set,
 #'   \code{\link[parallel]{detectCores}} for multicore mode,
-#'   \code{max(1, \link[Rmpi]{mpi.universe.size} - 1)} for mpi mode
+#'   \code{\link[Rmpi]{mpi.universe.size}} for mpi mode
 #'   and 1 for socket mode.
 #' @param socket.hosts [\code{character}]\cr
 #'   Only used in socket mode, otherwise ignored.
@@ -84,7 +84,7 @@
 #'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
   show.info, suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
@@ -109,13 +109,14 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
   assertList(bj.resources)
+  assertList(bt.resources)
   assertFlag(load.balancing)
   show.info = getPMDefOptShowInfo(show.info)
 
   # multicore not supported on windows
   if (mode == MODE_MULTICORE && .Platform$OS.type == "windows")
     stop("Multicore mode not supported on windows!")
-  assertDirectoryExists(storagedir, access = "w")
+  assertDirectory(storagedir, access = "w")
 
   # store options for session, we already need them for helper funs below
   options(parallelMap.mode = mode)
@@ -123,6 +124,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   options(parallelMap.logging = logging)
   options(parallelMap.storagedir = storagedir)
   options(parallelMap.bj.resources = bj.resources)
+  options(parallelMap.bt.resources = bt.resources)
   options(parallelMap.load.balancing = load.balancing)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)
@@ -182,6 +184,12 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     suppressMessages({
       reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })
+  } else if (isModeBatchtools()) {
+    fd = getBatchtoolsNewRegFileDir()
+    wd = getwd()
+    suppressMessages({
+      reg = batchtools::makeRegistry(file.dir = fd, work.dir = wd)
+    })
   }
   invisible(NULL)
 }
@@ -195,23 +203,23 @@ parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export
@@ -219,4 +227,11 @@ parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing, sh
 parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
     storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
+}
+
+#' @export
+#' @rdname parallelStart
+parallelStartBatchtools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
+  parallelStart(mode = MODE_BATCHTOOLS, level = level, logging = logging,
+    storagedir = storagedir, bt.resources = bt.resources, show.info = show.info, ...)
 }
