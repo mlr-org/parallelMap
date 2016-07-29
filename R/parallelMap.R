@@ -112,7 +112,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       if (load.balancing) {
-        res = clusterMapLB(cl = NULL, slaveWrapper, ...,  .i = iters, MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+        res = clusterMapLB(cl = NULL, slaveWrapper, ...,  .i = iters, MoreArgs = more.args)
       } else {
         res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
       }
