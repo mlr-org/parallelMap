@@ -182,7 +182,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     suppressMessages({
       reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })
-  } 
+  }
   invisible(NULL)
 }
 

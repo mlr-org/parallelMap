@@ -141,4 +141,21 @@ partest6 = function(slave.error.test) {
   }
 }
 
+# test that load balancing is active
+partest7 = function() {
+   f = function(i) {
+      if (i == 1) {
+        Sys.sleep(9)
+      } else {
+        Sys.sleep(1)
+      }
+      return(i)
+    }
+    st = system.time({
+      ys = parallelMap(f, 1:10, simplify = TRUE)
+    })
+    expect_equal(ys, 1:10)
+    expect_true(st[3L] < 10)
+}
+
 
