@@ -34,7 +34,7 @@
 #'   you want processes on multiple machines use \code{socket.hosts}.
 #'   Default is the option \code{parallelMap.default.cpus} or, if not set,
 #'   \code{\link[parallel]{detectCores}} for multicore mode,
-#'   \code{\link[Rmpi]{mpi.universe.size}} for mpi mode
+#'   \code{max(1, \link[Rmpi]{mpi.universe.size} - 1)} for mpi mode
 #'   and 1 for socket mode.
 #' @param socket.hosts [\code{character}]\cr
 #'   Only used in socket mode, otherwise ignored.
