@@ -195,23 +195,23 @@ parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = FALSE, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
 }
 
 #' @export

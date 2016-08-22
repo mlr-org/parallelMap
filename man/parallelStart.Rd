@@ -15,14 +15,14 @@ parallelStart(mode, cpus, socket.hosts, bj.resources = list(), logging,
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE, ...)
 
-parallelStartMulticore(cpus, logging, storagedir, level, load.balancing,
-  show.info, ...)
+parallelStartMulticore(cpus, logging, storagedir, level,
+  load.balancing = FALSE, show.info, ...)
 
 parallelStartSocket(cpus, socket.hosts, logging, storagedir, level,
-  load.balancing, show.info, ...)
+  load.balancing = FALSE, show.info, ...)
 
-parallelStartMPI(cpus, logging, storagedir, level, load.balancing, show.info,
-  ...)
+parallelStartMPI(cpus, logging, storagedir, level, load.balancing = FALSE,
+  show.info, ...)
 
 parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
   show.info, ...)
