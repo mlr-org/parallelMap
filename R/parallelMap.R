@@ -102,8 +102,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     res = mapply(fun2, ..., MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   } else {
     iters = seq_along(..1)
-    showInfoMessage("Mapping in parallel%s: mode = %s; cpus = %i; elements = %i.",
-      ifelse(load.balancing, " (load balanced)", ""), getPMOptMode(), getPMOptCpus(), length(iters), show.info = show.info)
+    showInfoMessage("Mapping in parallel%s: mode = %s; level = %s; cpus = %i; elements = %i.",
+      ifelse(load.balancing, " (load balanced)", ""), getPMOptMode(),
+      level, getPMOptCpus(), length(iters), show.info = show.info)
 
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
