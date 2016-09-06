@@ -179,13 +179,13 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     args = list(...)
     if(checkmate::testFlag(args$chunks.as.arrayjobs)) {
       options(parallelMap.chunksasarrayjobs = args$chunks.as.arrayjobs)
-      if(checkmate::testInt(args$nchunks)) {
-        options(parallelMap.nchunks = args$n.chunks)
-      } else {
-        options(parallelMap.nchunks = 1)
-      }
     } else {
-      options(parallelMap.chunksasarrayjobs = FALSE)
+      options(parallelMap.chunksasarrayjobs = NULL)
+    }
+    if(checkmate::testInt(args$n.chunks)) {
+      options(parallelMap.nchunks = args$n.chunks)
+    } else {
+      options(parallelMap.nchunks = NULL)
     }
     # create registry in selected directory with random, unique name
     fd = getBatchJobsNewRegFileDir()
