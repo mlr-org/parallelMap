@@ -49,7 +49,7 @@ getPMOptBatchJobsResources = function() {
 }
 
 getPMOptChunks = function() {
-  getPMOption("nchunks", 1)
+  getPMOption("nchunks", 0)
 }
 
 getPMOptChunksAsArray = function() {
