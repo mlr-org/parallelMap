@@ -97,7 +97,7 @@ Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcl
 for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
 passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
 \code{mc.set.seed},
-\code{mc.silent} and \code{mc.cleanup} are supported for multicore), for BatchJobs passed to \code{\link[BatchJobs]{submitJobs}} (\code{nchunks} and \code{chunks.as.arrajobs} are possible) or \code{\link[BatchJobs]{makeRegistry}} (\code{work.dir} is possible).}
+\code{mc.silent} and \code{mc.cleanup} are supported for multicore), for BatchJobs passed to \code{\link[BatchJobs]{submitJobs}} (\code{n.chunks} (if less than 1 no chunking of jobs) and \code{chunks.as.arrayjobs} are possible) or \code{\link[BatchJobs]{makeRegistry}} (\code{work.dir} is possible).}
 }
 \value{
 Nothing.
