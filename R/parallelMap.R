@@ -127,9 +127,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
         if(getPMOptChunks() < 1) {
-          ids <- findJobs(reg)
+          ids = findJobs(reg)
         } else {
-          ids <- BBmisc::chunk(BatchJobs::findJobs(reg),
+          ids = BBmisc::chunk(BatchJobs::findJobs(reg),
                                n.chunks = getPMOptChunks())
         }
         BatchJobs::submitJobs(reg, resources = getPMOptBatchJobsResources(),
