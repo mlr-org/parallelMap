@@ -2,7 +2,10 @@
 
 language: r
 sudo: false
-cache: packages
+cache: 
+  - packages
+  directories:
+    - $HOME/travis/open-mpi
 
 r:
   - oldrel

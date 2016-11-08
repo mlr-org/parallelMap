@@ -17,10 +17,10 @@ if [ ! -d "$TRAVIS_ROOT/open-mpi" ]; then
                --without-portals4 --without-psm --without-psm2 \
                --without-libfabric --without-usnic \
                --without-udreg --without-ugni --without-xpmem \
-               --without-alps --without-munge \
+               --without-alps \
                --without-sge --without-loadleveler --without-tm \
                --without-lsf --without-slurm \
-               --without-pvfs2 --without-plfs \
+               --without-pvfs2 \
                --without-cuda --disable-oshmem \
                --disable-mpi-fortran --disable-oshmem-fortran \
                --disable-libompitrace \
@@ -31,3 +31,5 @@ if [ ! -d "$TRAVIS_ROOT/open-mpi" ]; then
 else
    echo "Open-MPI already installed"
 fi
+
+export PATH=$TRAVIS_ROOT/open-mpi/bin:$PATH
