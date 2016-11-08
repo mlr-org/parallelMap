@@ -88,6 +88,14 @@ parallelSource = function(..., files, master = TRUE, level = NA_character_, show
           reg = getBatchJobsReg()
           BatchJobs::addRegistrySourceFiles(reg, files, src.now = FALSE)
         })
+      } else if (isModeBatchtools()) {
+        showInfoMessage("Storing source file info for batchtools slave jobs: %s",
+          collapse(files), show.info = show.info)
+        suppressMessages({
+          reg = getBatchtoolsReg()
+          reg$source = unique(c(reg$source, files))
+          batchtools::saveRegistry(reg = reg)
+        })
       }
     }
   }
