@@ -84,7 +84,7 @@
 #'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
   show.info, suppress.local.errors = FALSE, ...) {
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
@@ -109,6 +109,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   storagedir = getPMDefOptStorageDir(storagedir)
   # defaults are in batchjobs conf
   assertList(bj.resources)
+  assertList(bt.resources)
   assertFlag(load.balancing)
   show.info = getPMDefOptShowInfo(show.info)
 
@@ -123,6 +124,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
   options(parallelMap.logging = logging)
   options(parallelMap.storagedir = storagedir)
   options(parallelMap.bj.resources = bj.resources)
+  options(parallelMap.bt.resources = bt.resources)
   options(parallelMap.load.balancing = load.balancing)
   options(parallelMap.show.info = show.info)
   options(parallelMap.status = STATUS_STARTED)
@@ -182,6 +184,12 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     suppressMessages({
       reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })
+  } else if (isModeBatchtools()) {
+    fd = getBatchtoolsNewRegFileDir()
+    wd = getwd()
+    suppressMessages({
+      reg = batchtools::makeRegistry(file.dir = fd, work.dir = wd)
+    })
   }
   invisible(NULL)
 }
@@ -219,4 +227,11 @@ parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing = F
 parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info, ...) {
   parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
     storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
+}
+
+#' @export
+#' @rdname parallelStart
+parallelStartBatchtools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
+  parallelStart(mode = MODE_BATCHTOOLS, level = level, logging = logging,
+    storagedir = storagedir, bt.resources = bt.resources, show.info = show.info, ...)
 }
