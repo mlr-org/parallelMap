@@ -20,7 +20,6 @@ r_github_packages:
   - rstats-db/RSQLite
 
 before_install:
-  - mkdir $TRAVIS_ROOT
   - sh ./travis/install-mpi.sh $TRAVIS_ROOT
 
 after_success:
