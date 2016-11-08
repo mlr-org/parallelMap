@@ -71,6 +71,7 @@ parallelExport = function(..., objnames, master = TRUE, level = NA_character_, s
       } else if (isModeBatchtools()) {
         showInfoMessage("Storing objects in files for batchtools slave jobs: %s", collapse(objnames))
         reg = getBatchtoolsReg()
+        objs = setNames(lapply(objnames, get, envir = sys.parent()), objnames)
         batchExport(export = objs, reg = reg)
       }
     }
