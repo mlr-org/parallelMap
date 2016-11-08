@@ -15,7 +15,7 @@ test_that("BatchJobs mode", {
   parallelStop()
 
   parallelStartBatchJobs(logging = TRUE, storagedir = storagedir)
-  partest2(storagedir)
+  expect_warning(partest2(storagedir), "xxx")
   parallelStop()
 
   parallelStartBatchJobs(storagedir = storagedir)

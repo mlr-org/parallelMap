@@ -104,7 +104,7 @@ partest4 = function(slave.error.test) {
 partest5 = function() {
   # exception is thrown on master
   f = function(i) {
-  if(i == 1)
+  if (i == 1)
     stop("foo")
   else
     i

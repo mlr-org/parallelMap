@@ -1,7 +1,7 @@
 context("local mode")
 
 test_that("local mode", {
-  parallelStartLocal()
+  parallelStartLocal(suppress.local.errors = TRUE)
   partest1()
   partest3()
   partest4(slave.error.test=FALSE)
