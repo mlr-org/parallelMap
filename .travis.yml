@@ -3,12 +3,8 @@
 language: r
 sudo: false
 cache:
-  directories:
-    - $HOME/travis/open-mpi
-    - $HOME/R/Library
-
-env:
-  - R_LIB_USER=$HOME/R/Library TRAVIS_ROOT=$HOME/travis
+  directories: $HOME/travis/open-mpi
+  packages: true
 
 r:
   - oldrel
@@ -20,7 +16,7 @@ r_github_packages:
   - rstats-db/RSQLite
 
 before_install:
-  - sh ./travis/install-mpi.sh $TRAVIS_ROOT
+  - sh ./travis/install-mpi.sh $HOME/travis
 
 after_success:
   - Rscript -e 'library(covr); coveralls()'

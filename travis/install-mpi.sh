@@ -31,3 +31,5 @@ if [ ! -d "$TRAVIS_ROOT/open-mpi" ]; then
 else
    echo "Open-MPI already installed"
 fi
+
+export PATH=$TRAVIS_ROOT/open-mpi/bin:$PATH
