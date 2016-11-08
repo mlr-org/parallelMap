@@ -19,6 +19,11 @@ r_github_packages:
   - jimhester/covr
   - rstats-db/RSQLite
 
+before_install:
+  - export TRAVIS_ROOT=$HOME/travis
+  - mkdir $TRAVIS_ROOT
+  - sh ./travis/install-mpi.sh $TRAVIS_ROOT
+
 after_success:
   - Rscript -e 'library(covr); coveralls()'
 
