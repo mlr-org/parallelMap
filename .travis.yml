@@ -2,28 +2,25 @@
 
 language: r
 sudo: false
-cache: 
-  - packages
+cache:
   directories:
     - $HOME/travis/open-mpi
+    - $HOME/R/Library
+
+env:
+  - R_LIB_USER=$HOME/R/Library
+  - TRAVIS_ROOT=$HOME/travis
 
 r:
   - oldrel
   - release
   - devel
 
-r_binary_packages:
-  - checkmate
-  - testthat
-  - Rmpi
-  - BBmisc
-
 r_github_packages:
   - jimhester/covr
   - rstats-db/RSQLite
 
 before_install:
-  - export TRAVIS_ROOT=$HOME/travis
   - mkdir $TRAVIS_ROOT
   - sh ./travis/install-mpi.sh $TRAVIS_ROOT
 
