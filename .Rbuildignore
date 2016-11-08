@@ -1,7 +1,6 @@
 ^makeR
 parallelMap.Rcheck
 todo-files
-travis
 
 ^.*tar.gz$
 

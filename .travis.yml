@@ -1,27 +1,21 @@
-# travis config, based on https://github.com/craigcitro/r-travis
-
+sudo: required
+dist: trusty
 language: r
-sudo: false
-cache:
-  directories: $HOME/travis/open-mpi
-  packages: true
 
 r:
   - oldrel
   - release
   - devel
 
-r_github_packages:
-  - jimhester/covr
-  - rstats-db/RSQLite
+addons:
+  apt:
+    packages:
+      - r-cran-rmpi
+      - libssh2-1-dev
 
-before_install:
-  - sh ./travis/install-mpi.sh $HOME/travis
+r_binary_packages:
+  - covr
+  - batchjobs
 
 after_success:
-  - Rscript -e 'library(covr); coveralls()'
-
-notifications:
-  email:
-    on_success: change
-    on_failure: change
+  - Rscript -e 'library(covr);coveralls()'
