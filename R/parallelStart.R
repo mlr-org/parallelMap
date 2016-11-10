@@ -81,7 +81,7 @@
 #'   for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
 #'   passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
 #'   \code{mc.set.seed},
-#'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore).
+#'   \code{mc.silent} and \code{mc.cleanup} are supported for multicore), for BatchJobs passed to \code{\link[BatchJobs]{submitJobs}} (\code{n.chunks} (if less than 1 no chunking of jobs) and \code{chunks.as.arrayjobs} are possible) or \code{\link[BatchJobs]{makeRegistry}} (\code{work.dir} is possible).
 #' @return Nothing.
 #' @export
 parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), logging, storagedir, level, load.balancing = FALSE,
@@ -176,9 +176,24 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), loggin
     setDefaultCluster(cl)
     clusterSetRNGStream(cl = NULL)
   } else if (isModeBatchJobs()) {
+    args = list(...)
+    if(checkmate::testFlag(args$chunks.as.arrayjobs)) {
+      options(parallelMap.chunksasarrayjobs = args$chunks.as.arrayjobs)
+    } else {
+      options(parallelMap.chunksasarrayjobs = NULL)
+    }
+    if(checkmate::testInt(args$n.chunks)) {
+      options(parallelMap.nchunks = args$n.chunks)
+    } else {
+      options(parallelMap.nchunks = NULL)
+    }
     # create registry in selected directory with random, unique name
     fd = getBatchJobsNewRegFileDir()
-    wd = getwd()
+    if(checkmate::testDirectory(args$work.dir)) {
+      wd = args$work.dir
+    } else {
+      wd = getwd()
+    }
     suppressMessages({
       reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
     })

@@ -48,6 +48,14 @@ getPMOptBatchJobsResources = function() {
   getPMOption("bj.resources", list())
 }
 
+getPMOptChunks = function() {
+  getPMOption("nchunks", 0)
+}
+
+getPMOptChunksAsArray = function() {
+  getPMOption("chunksasarrayjobs", FALSE)
+}
+
 getPMOptNextMap = function() {
   getPMOption("nextmap")
 }
