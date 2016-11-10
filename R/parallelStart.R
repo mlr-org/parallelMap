@@ -44,6 +44,9 @@
 #'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
 #'   See \code{\link[BatchJobs]{submitJobs}}.
 #'   Defaults are taken from your BatchJobs config file.
+#' @param bt.resources [\cpde{list}]\cr
+#'   Analog to \coe{bj.resources}.
+#'   See \code{\link[batchtools]{submitJobs}}.
 #' @param logging [\code{logical(1)}]\cr
 #'   Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?
 #'   Files are named "<iteration_number>.log" and put into unique
