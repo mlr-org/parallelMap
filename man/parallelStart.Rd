@@ -58,6 +58,10 @@ Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
 See \code{\link[BatchJobs]{submitJobs}}.
 Defaults are taken from your BatchJobs config file.}
 
+\item{bt.resources}{[\code{list}]\cr
+Analog to \code{bj.resources}.
+See \code{\link[batchtools]{submitJobs}}.}
+
 \item{logging}{[\code{logical(1)}]\cr
 Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?
 Files are named "<iteration_number>.log" and put into unique
