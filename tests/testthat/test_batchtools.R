@@ -1,15 +1,11 @@
 context("batchtools mode")
 
 test_that("batchtools mode", {
-  
-  skip_if_not_installed("batchtools")
-
-  library(batchtools)
-  storagedir = tempdir()
-  # if on lido  or SLURM for test, tempdir is not shared and test wih torque wont run
-  if (makeRegistry(file.dir = NA)$cluster.functions$name %in% c("SLURM", "Torque")) {
-    storagedir = getwd()
-  }
+  requireNamespace("batchtools")
+  reg = batchtools::makeRegistry(NA)
+  storagedir = reg$temp.dir
+  if (is.null(storagedir) || is.na(storagedir))
+    storagedir = tempfile()
 
   parallelStartBatchtools(storagedir = storagedir)
   partest1()
@@ -40,8 +36,8 @@ test_that("batchtools mode", {
 
   # test that expire generate exceptions
   # we can of course only do that on a true batch system
-  if (makeRegistry(file.dir = NA)$cluster.functions$name %in% c("SLURM", "Torque")) {
-    parallelStartBatchtools(storagedir = storagedir, bj.resources = list(walltime = 1))
+  if (batchtools::makeRegistry(file.dir = NA)$cluster.functions$name %in% c("SLURM", "Torque")) {
+    parallelStartBatchtools(storagedir = storagedir, bj.resources = list(walltime = 5))
     f = function(i) Sys.sleep(30 * 60)
     expect_error(suppressWarnings(parallelMap(f, 1:2)), "expired")
     parallelStop()
@@ -61,4 +57,3 @@ test_that("batchtools mode", {
   setwd(oldwd)
   unlink(newwd, recursive = TRUE)
 })
-

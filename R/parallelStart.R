@@ -183,16 +183,15 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   } else if (isModeBatchJobs()) {
     # create registry in selected directory with random, unique name
     fd = getBatchJobsNewRegFileDir()
-    wd = getwd()
     suppressMessages({
-      reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = wd)
+      reg = BatchJobs::makeRegistry(id = basename(fd), file.dir = fd, work.dir = getwd())
     })
   } else if (isModeBatchtools()) {
     fd = getBatchtoolsNewRegFileDir()
-    wd = getwd()
-    suppressMessages({
-      reg = batchtools::makeRegistry(file.dir = fd, work.dir = wd)
-    })
+    old = getOption("batchtools.verbose")
+    options(batchtools.verbose = FALSE)
+    on.exit(options(batchtools.verbose = old))
+    reg = batchtools::makeRegistry(file.dir = fd, work.dir = getwd())
   }
   invisible(NULL)
 }
