@@ -189,11 +189,11 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
         res = batchtools::reduceResultsList(ids, reg = reg)
       } else {
         if (is.null(impute.error)) {
-          if (!ok && stats$system > 0L) {
+          if (stats$system > 0L) {
             extra.msg = sprintf("Please note that remaining jobs were killed when 1st error occurred to save cluster time.\nIf you want to further debug errors, your batchtools registry is here:\n%s",
               reg$file.dir)
             batchtools::killJobs(reg = reg)
-            stopWithJobErrorMessages(batchtools::findNotDone(reg = reg)$job.id, batchtools::getErrorMessages(reg = reg)$message, extra.msg)
+            stopWithJobErrorMessages(batchtools::findNotDone(reg = reg)$job.id, batchtools::getErrorMessages(missing.as.error = TRUE, reg = reg)$message, extra.msg)
           }
         } else { # if we reached this line and error occurred, we have impute.error != NULL (NULL --> stop before)
           res = batchtools::findJobs(reg = reg)
