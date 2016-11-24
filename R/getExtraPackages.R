@@ -1,8 +1,8 @@
 getExtraPackages = function(mode) {
-  if (mode %in% MODE_MPI)
-    "Rmpi"
-  else if (mode %in% MODE_BATCHJOBS)
-    "BatchJobs"
-  else
+  switch(mode,
+    MODE_MPI = "Rmpi",
+    MODE_BATCHJOBS = "BatchJobs",
+    MODE_BATCHTOOLS = "batchtools",
     character(0L)
+  )
 }

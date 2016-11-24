@@ -110,7 +110,7 @@ partest5 = function() {
     i
   }
   y = parallelMap(f, 1:2, impute.error = identity)
-  expect_true(is.error(y[[1L]]))
+  expect_true(BBmisc::is.error(y[[1L]]))
   expect_equal(y[[2L]], 2L)
   y = parallelMap(f, 1:2, impute.error = function(x) 123)
   expect_equal(y[[1L]], 123L)

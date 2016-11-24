@@ -3,15 +3,16 @@
 \name{parallelStart}
 \alias{parallelStart}
 \alias{parallelStartBatchJobs}
+\alias{parallelStartBatchtools}
 \alias{parallelStartLocal}
 \alias{parallelStartMPI}
 \alias{parallelStartMulticore}
 \alias{parallelStartSocket}
 \title{Parallelization setup for parallelMap.}
 \usage{
-parallelStart(mode, cpus, socket.hosts, bj.resources = list(), logging,
-  storagedir, level, load.balancing = FALSE, show.info,
-  suppress.local.errors = FALSE, ...)
+parallelStart(mode, cpus, socket.hosts, bj.resources = list(),
+  bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+  show.info, suppress.local.errors = FALSE, ...)
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE, ...)
 
@@ -25,6 +26,9 @@ parallelStartMPI(cpus, logging, storagedir, level, load.balancing = FALSE,
   show.info, ...)
 
 parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
+  show.info, ...)
+
+parallelStartBatchtools(bt.resources = list(), logging, storagedir, level,
   show.info, ...)
 }
 \arguments{
@@ -53,6 +57,10 @@ Default is the option \code{parallelMap.default.socket.hosts}, if this option ex
 Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
 See \code{\link[BatchJobs]{submitJobs}}.
 Defaults are taken from your BatchJobs config file.}
+
+\item{bt.resources}{[\code{list}]\cr
+Analog to \code{bj.resources}.
+See \code{\link[batchtools]{submitJobs}}.}
 
 \item{logging}{[\code{logical(1)}]\cr
 Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?

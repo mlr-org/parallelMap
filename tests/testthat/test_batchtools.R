@@ -1,44 +1,43 @@
-context("BatchJobs mode")
+context("batchtools mode")
 
-test_that("BatchJobs mode", {
-  requireNamespace("BatchJobs")
+test_that("batchtools mode", {
+  requireNamespace("batchtools")
+  reg = batchtools::makeRegistry(NA)
+  storagedir = reg$temp.dir
+  if (is.null(storagedir) || is.na(storagedir))
+    storagedir = tempfile()
 
-  storagedir = tempdir()
-  # if on lido  or SLURM for test, tempdir is not shared and test wih torque wont run
-  if (BatchJobs::getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
-    storagedir = getwd()
-  }
-
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   partest1()
   parallelStop()
 
-  parallelStartBatchJobs(logging = TRUE, storagedir = storagedir)
-  expect_warning(partest2(storagedir), "xxx")
-  parallelStop()
+  # FIXME: Wait until https://github.com/hadley/testthat/issues/460 is fixed
+  # parallelStartBatchtools(logging = TRUE, storagedir = storagedir)
+  # partest2(storagedir)
+  # parallelStop()
 
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   partest3()
   parallelStop()
 
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   # we cannot really check that wrong libraries are not loaded on slave here.
   # because we only load them during the job. but the error will show up then
   partest4(slave.error.test = FALSE)
   parallelStop()
 
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   partest5()
   parallelStop()
 
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   partest6(slave.error.test = FALSE)
   parallelStop()
 
   # test that expire generate exceptions
   # we can of course only do that on a true batch system
-  if (BatchJobs::getConfig()$cluster.functions$name %in% c("SLURM", "Torque")) {
-    parallelStartBatchJobs(storagedir = storagedir, bj.resources = list(walltime = 1))
+  if (batchtools::makeRegistry(file.dir = NA)$cluster.functions$name %in% c("SLURM", "Torque")) {
+    parallelStartBatchtools(storagedir = storagedir, bj.resources = list(walltime = 5))
     f = function(i) Sys.sleep(30 * 60)
     expect_error(suppressWarnings(parallelMap(f, 1:2)), "expired")
     parallelStop()
@@ -50,7 +49,7 @@ test_that("BatchJobs mode", {
   newwd = file.path(storagedir, bn)
   dir.create(newwd)
   setwd(newwd)
-  parallelStartBatchJobs(storagedir = storagedir)
+  parallelStartBatchtools(storagedir = storagedir)
   f = function(i) getwd()
   y = parallelMap(f, 1)
   parallelStop()

@@ -2,6 +2,7 @@ parallelMap_1.4:
 - Load balancing for multicore, socket and mpi can now be controlled via the flag
   "load.balancing" passed to parallelStart().
   Note that the default for multicore now defaults to disabled load balancing.
+- BatchTools mode
 
 parallelMap_1.3:
 - parallelGetRegisteredLevels has new argument "flatten"

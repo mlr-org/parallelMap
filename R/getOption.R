@@ -48,6 +48,10 @@ getPMOptBatchJobsResources = function() {
   getPMOption("bj.resources", list())
 }
 
+getPMOptBatchtoolsResources = function() {
+  getPMOption("bt.resources", list())
+}
+
 getPMOptNextMap = function() {
   getPMOption("nextmap")
 }
@@ -130,6 +134,11 @@ isModeMPI = function() {
 isModeBatchJobs = function() {
   getPMOptMode() == MODE_BATCHJOBS
 }
+
+isModeBatchtools = function() {
+  getPMOptMode() == MODE_BATCHTOOLS
+}
+
 
 ##### status #####
 

@@ -70,7 +70,7 @@ Libraries and source file can be initialized on slaves with
 Large objects can be separately exported via \code{\link{parallelExport}},
 they can be simply used under their exported name in slave body code.
 
-Regarding errorhandling, see the argument \code{impute.error}.
+Regarding error handling, see the argument \code{impute.error}.
 }
 \examples{
 parallelStart()
