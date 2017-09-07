@@ -77,4 +77,3 @@ parallelStart()
 parallelMap(identity, 1:2)
 parallelStop()
 }
-

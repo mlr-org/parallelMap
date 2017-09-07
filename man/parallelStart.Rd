@@ -2,12 +2,12 @@
 % Please edit documentation in R/parallelStart.R
 \name{parallelStart}
 \alias{parallelStart}
-\alias{parallelStartBatchJobs}
-\alias{parallelStartBatchtools}
 \alias{parallelStartLocal}
-\alias{parallelStartMPI}
 \alias{parallelStartMulticore}
 \alias{parallelStartSocket}
+\alias{parallelStartMPI}
+\alias{parallelStartBatchJobs}
+\alias{parallelStartBatchtools}
 \title{Parallelization setup for parallelMap.}
 \usage{
 parallelStart(mode, cpus, socket.hosts, bj.resources = list(),
@@ -133,4 +133,3 @@ to functions from different parallelization packages:
 For BatchJobs mode you need to define a storage directory through the argument \code{storagedir} or
 the option \code{parallelMap.default.storagedir}.
 }
-

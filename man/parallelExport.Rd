@@ -40,4 +40,3 @@ Nothing.
 Makes sure that the objects are exported to slave process so that they can be used in a job
 function which is later run with \code{\link{parallelMap}}.
 }
-

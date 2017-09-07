@@ -44,4 +44,3 @@ For \code{parallelLapply} an unamed list,
 \code{parallelSapply}: A parallel \code{\link{sapply}} version.\cr
 All functions are simple wrappers for \code{\link{parallelMap}}.
 }
-

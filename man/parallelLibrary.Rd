@@ -40,4 +40,3 @@ function which is later run with \code{\link{parallelMap}}.
 
 For all modes, the packages are also (potentially) loaded on the master.
 }
-

@@ -22,4 +22,3 @@ After a subsequent call of \code{\link{parallelStart}}, no exported objects
 are present on the slaves and no libraries are loaded,
 i.e., you have clean R sessions on the slaves.
 }
-

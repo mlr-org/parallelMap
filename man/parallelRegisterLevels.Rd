@@ -33,4 +33,3 @@ will register the level \dQuote{foo.dummy} and users can start parallelization f
 If you do not provide \code{package}, the level names will be associated with category
 \dQuote{custom} and can there be later referred to with \dQuote{custom.dummy}.
 }
-

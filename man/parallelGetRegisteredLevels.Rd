@@ -23,4 +23,3 @@ vectors of the form \dQuote{package.level}.
 With \code{flatten = TRUE}, a simple character vector is returned that contains all
 concatenated entries of \code{levels} from above.
 }
-

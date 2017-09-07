@@ -19,4 +19,3 @@ A printer exists to display this object.
 For details on the configuration procedure please read
 \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
 }
-
