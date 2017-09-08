@@ -176,13 +176,12 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       ids = batchtools::batchMap(fun = slaveWrapper, ..., more.args = more.args, reg = reg)
       batchtools::submitJobs(ids = ids, resources = getPMOptBatchtoolsResources(), reg = reg)
       ok = batchtools::waitForJobs(ids = ids, stop.on.error = is.null(impute.error), reg = reg)
-      stats = batchtools::getStatus(ids, reg = reg)
 
       # copy log files of terminated jobs to designated directory
       if (!is.na(logdir)) {
         x = batchtools::findStarted(reg = reg)
         x$log.file = file.path(reg$file.dir, "logs", sprintf("%s.log", x$job.hash))
-        .mapply(function(job.id, log.file) writeLines(batchtools::getLog(id, reg = reg), con = fn), x, NULL)
+        .mapply(function(id, fn) writeLines(batchtools::getLog(id, reg = reg), con = fn), x, NULL)
       }
 
       if (ok) {
