@@ -35,7 +35,7 @@ See \code{\link{sapply}}.
 Default is \code{TRUE}.}
 }
 \value{
-For \code{parallelLapply} an unamed list,
+For \code{parallelLapply} a named list,
   for \code{parallelSapply} it depends on the return value of
   \code{fun} and the settings of \code{simplify} and \code{use.names}.
 }

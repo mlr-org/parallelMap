@@ -25,8 +25,8 @@ See \code{\link{sapply}}.
 Default is \code{FALSE}.}
 
 \item{use.names}{[\code{logical(1)}]\cr
-Should result be named by first vector if that is
-of class character?
+Should result be named?
+Use names if the first \code{...} argument has names, or if it is a character vector, use that character vector as the names.
 Default is \code{FALSE}.}
 
 \item{impute.error}{[\code{NULL} | \code{function(x)}]\cr

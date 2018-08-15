@@ -24,8 +24,8 @@
 #'   See \code{\link{sapply}}.
 #'   Default is \code{FALSE}.
 #' @param use.names [\code{logical(1)}]\cr
-#'   Should result be named by first vector if that is
-#'   of class character?
+#'   Should result be named?
+#'   Use names if the first \code{...} argument has names, or if it is a character vector, use that character vector as the names.
 #'   Default is \code{FALSE}.
 #' @param impute.error [\code{NULL} | \code{function(x)}]\cr
 #'   This argument can be used for improved error handling.
@@ -220,10 +220,11 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     })
   }
 
-  if (use.names && is.character(..1)) {
+  if (use.names && !is.null(names(..1))) {
+    names(res) = names(..1)
+  } else if (use.names && is.character(..1)) {
     names(res) = ..1
-  }
-  if (!use.names) {
+  } else if (!use.names) {
     names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0L)

@@ -20,12 +20,12 @@
 #'   See \code{\link{parallelMap}}.
 #' @param level [\code{character(1)}]\cr
 #'   See \code{\link{parallelMap}}.
-#' @return For \code{parallelLapply} an unamed list,
+#' @return For \code{parallelLapply} a named list,
 #'   for \code{parallelSapply} it depends on the return value of
 #'   \code{fun} and the settings of \code{simplify} and \code{use.names}.
 #' @export
 parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_character_) {
-  parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = FALSE,
+  parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = TRUE,
     impute.error = impute.error, level = level)
 }
 
