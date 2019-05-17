@@ -201,8 +201,8 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
           res$result = list()
           ids.complete = batchtools::findDone(reg = reg)
           ids.incomplete = batchtools::findNotDone(reg = reg)
-          res[ids.complete, "result" := batchtools::reduceResultsList(ids.complete, reg = reg), with = FALSE]
-          ids[ids.complete, "result" := lapply(batchtools::getErrorMessages(ids.incomplete, reg = reg)$message, simpleError), with = FALSE]
+          res[ids.complete, data.table::`:=`("result", batchtools::reduceResultsList(ids.complete, reg = reg)), with = FALSE]
+          ids[ids.complete, data.table::`:=`("result", lapply(batchtools::getErrorMessages(ids.incomplete, reg = reg)$message, simpleError)), with = FALSE]
         }
       }
     }

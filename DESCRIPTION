@@ -25,7 +25,8 @@ Suggests:
     testthat,
     Rmpi,
     BatchJobs (>= 1.5),
-    batchtools (>= 0.9.6)
+    batchtools (>= 0.9.6),
+    data.table
 LazyData: yes
 ByteCompile: yes
 Version: 1.4
