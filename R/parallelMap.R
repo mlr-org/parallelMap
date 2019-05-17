@@ -122,7 +122,8 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       more.args = c(list(.fun = fun, .logdir = NA_character_), more.args)
       suppressMessages({
         reg = getBatchJobsReg()
-        BatchJobs:::dbRemoveJobs(reg, BatchJobs::getJobIds(reg))
+        # FIXME: this should be exported by BatchJobs ...
+        asNamespace("BatchJobs")$dbRemoveJobs(reg, BatchJobs::getJobIds(reg))
         BatchJobs::batchMap(reg, slaveWrapper, ..., more.args = more.args)
         # increase max.retries a bit, we dont want to abort here prematurely
         # if no resources set we submit with the default ones from the bj conf
