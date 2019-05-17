@@ -5,7 +5,8 @@
 \alias{parallelSapply}
 \title{Parallel versions of apply-family functions.}
 \usage{
-parallelLapply(xs, fun, ..., impute.error = NULL, level = NA_character_)
+parallelLapply(xs, fun, ..., impute.error = NULL,
+  level = NA_character_)
 
 parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
   impute.error = NULL, level = NA_character_)

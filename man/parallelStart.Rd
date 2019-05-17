@@ -11,8 +11,9 @@
 \title{Parallelization setup for parallelMap.}
 \usage{
 parallelStart(mode, cpus, socket.hosts, bj.resources = list(),
-  bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
-  show.info, suppress.local.errors = FALSE, ...)
+  bt.resources = list(), logging, storagedir, level,
+  load.balancing = FALSE, show.info, suppress.local.errors = FALSE,
+  ...)
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE, ...)
 
@@ -22,14 +23,14 @@ parallelStartMulticore(cpus, logging, storagedir, level,
 parallelStartSocket(cpus, socket.hosts, logging, storagedir, level,
   load.balancing = FALSE, show.info, ...)
 
-parallelStartMPI(cpus, logging, storagedir, level, load.balancing = FALSE,
-  show.info, ...)
+parallelStartMPI(cpus, logging, storagedir, level,
+  load.balancing = FALSE, show.info, ...)
 
 parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
   show.info, ...)
 
-parallelStartBatchtools(bt.resources = list(), logging, storagedir, level,
-  show.info, ...)
+parallelStartBatchtools(bt.resources = list(), logging, storagedir,
+  level, show.info, ...)
 }
 \arguments{
 \item{mode}{[\code{character(1)}]\cr
