@@ -9,4 +9,4 @@ r:
 addons:
   apt:
     packages:
-      - mpi-default-dev
+      - rmpi
