@@ -1,5 +1,4 @@
 sudo: required
-dist: trusty
 language: r
 
 r:
@@ -12,10 +11,3 @@ addons:
     packages:
       - r-cran-rmpi
       - libssh2-1-dev
-
-r_binary_packages:
-  - covr
-  - batchjobs
-
-after_success:
-  - Rscript -e 'library(covr);coveralls()'
