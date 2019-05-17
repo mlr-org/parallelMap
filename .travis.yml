@@ -6,4 +6,4 @@ r:
   - devel
 
 r_binary_packages:
-  - rmpi
+  - Rmpi
