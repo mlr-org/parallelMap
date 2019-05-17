@@ -9,5 +9,4 @@ r:
 addons:
   apt:
     packages:
-      - r-cran-rmpi
-      - libssh2-1-dev
+      - mpi-default-dev
