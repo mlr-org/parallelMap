@@ -84,7 +84,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
           reg = getBatchJobsReg()
           BatchJobs::addRegistryPackages(reg, packages)
         })
-      } else if (mod %in% c(MODE_BATCHTOOLS)) {
+      } else if (mode %in% c(MODE_BATCHTOOLS)) {
         showInfoMessage("Storing package info for batchtools slave jobs: %s",
                         collapse(packages), show.info = show.info)
         # collect in R option, add new packages to old ones
