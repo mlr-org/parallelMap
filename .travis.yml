@@ -36,3 +36,4 @@ addons:
   apt:
     packages:
     - openmpi-bin
+    - libopenmpi-dev
