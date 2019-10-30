@@ -118,7 +118,7 @@ Only calls to \code{\link{parallelMap}} with a matching level are parallelized.
 The defaults of all settings are taken from your options, which you can
 also define in your R profile.
 For an introductory tutorial and information on the options configuration, please
-go to the project's github page at \url{https://github.com/berndbischl/parallelMap}.
+go to the project's github page at \url{https://github.com/mlr-org/parallelMap}.
 }
 \details{
 Currently the following modes are supported, which internally dispatch the mapping operation

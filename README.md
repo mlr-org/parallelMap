@@ -16,7 +16,7 @@ R package to interface some popular parallelization back-ends with a unified int
 
 * Run this in R to install the current GitHub version:
   ```r
-  remotes::install_github("berndbischl/parallelMap")
+  remotes::install_github("mlr-org/parallelMap")
   ```
 
 * [Further installation instructions](https://github.com/tudo-r/PackagesInfo/wiki/Installation-Information)
