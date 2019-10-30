@@ -1,0 +1,18 @@
+url: https://parallelmap.mlr-org.com
+
+template:
+  package: mlr3pkgdowntemplate
+  params:
+    bootswatch: journal
+  default_assets: false
+
+development:
+  destination: dev
+  version_label: default
+  version_tooltip: "Development version"
+
+home:
+  strip_header: true
+
+toc:
+  depth: 3

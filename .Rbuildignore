@@ -18,3 +18,4 @@ todo.txt
 ^.editorconfig$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^tic\.R$

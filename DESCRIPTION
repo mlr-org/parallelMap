@@ -19,7 +19,8 @@ Description: Unified parallelization framework for multiple
     parallel operation with a level name that can be later selected by the
     user to switch on parallel execution for exactly this operation.
 License: BSD_2_clause + file LICENSE
-URL: https://github.com/berndbischl/parallelMap
+URL: https://parallelmap.mlr-org.com,
+    https://github.com/berndbischl/parallelMap
 BugReports: https://github.com/berndbischl/parallelMap/issues
 Depends:
     R (>= 3.0.0)
