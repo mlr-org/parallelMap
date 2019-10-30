@@ -55,10 +55,11 @@ parallelRegisterLevels = function(package = "custom", levels) {
 parallelGetRegisteredLevels = function(flatten = FALSE) {
   assertFlag(flatten)
   lvls = getPMOption("registered.levels", list())
-  if (flatten)
+  if (flatten) {
     return(as.character(unlist(lvls)))
-  else
+  } else {
     return(makeS3Obj("RegisteredLevels", levels = lvls))
+  }
 }
 
 #' @export
@@ -70,4 +71,3 @@ print.RegisteredLevels = function(x, ...) {
   }
   invisible(NULL)
 }
-

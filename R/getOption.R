@@ -63,52 +63,60 @@ getPMOptOnSlave = function() {
 ##### PM default options #####
 
 getPMDefOptMode = function(mode) {
-  if (missing(mode))
+  if (missing(mode)) {
     mode = getPMDefOption("mode", MODE_LOCAL)
+  }
   assertChoice(mode, MODES)
   return(mode)
 }
 
 getPMDefOptCpus = function(cpus) {
   # NA means "do autodetect"
-  if (missing(cpus))
+  if (missing(cpus)) {
     cpus = getPMDefOption("cpus", NA_integer_)
-  cpus = asInt(cpus, na.ok=TRUE, lower=1L)
+  }
+  cpus = asInt(cpus, na.ok = TRUE, lower = 1L)
   return(cpus)
 }
 
 getPMDefOptSocketHosts = function(socket.hosts) {
-  if (missing(socket.hosts))
+  if (missing(socket.hosts)) {
     socket.hosts = getPMDefOption("socket.hosts", NULL)
-  if (!is.null(socket.hosts))
-    assertCharacter(socket.hosts, min.len=1L, any.missing = FALSE)
+  }
+  if (!is.null(socket.hosts)) {
+    assertCharacter(socket.hosts, min.len = 1L, any.missing = FALSE)
+  }
   return(socket.hosts)
 }
 
 getPMDefOptLogging = function(logging) {
-  if (missing(logging))
+  if (missing(logging)) {
     logging = getPMDefOption("logging", FALSE)
+  }
   assertFlag(logging)
   return(logging)
 }
 
 getPMDefOptLevel = function(level) {
-  if (missing(level))
+  if (missing(level)) {
     level = getPMDefOption("level", NA_character_)
+  }
   assertString(level, na.ok = TRUE)
   return(level)
 }
 
 getPMDefOptShowInfo = function(show.info) {
-  if (missing(show.info))
+  if (missing(show.info)) {
     show.info = getPMDefOption("show.info", TRUE)
+  }
   assertFlag(show.info)
   return(show.info)
 }
 
 getPMDefOptStorageDir = function(storagedir) {
-  if (missing(storagedir))
+  if (missing(storagedir)) {
     storagedir = getPMDefOption("storagedir", getwd())
+  }
   assertString(storagedir)
   return(storagedir)
 }

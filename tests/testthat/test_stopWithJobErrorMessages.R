@@ -7,5 +7,3 @@ test_that("stopWithJobErrorMessages", {
   expect_error(stopWithJobErrorMessages(inds, msgs),
     sprintf("Errors occurred in %i slave jobs", length(letters)))
 })
-
-

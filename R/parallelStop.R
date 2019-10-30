@@ -16,6 +16,7 @@
 #' @return Nothing.
 #' @export
 parallelStop = function() {
+
   # only do something if we are in "started" state
   if (isStatusStarted()) {
     if (isModeSocket() || isModeMPI()) {

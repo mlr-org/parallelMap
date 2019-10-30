@@ -27,6 +27,7 @@
 #' @return Nothing.
 #' @export
 parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, show.info = NA) {
+
   args = list(...)
   assertList(args, types = "character")
   if (!missing(packages)) {
@@ -58,7 +59,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
         } else {
           showInfoMessage("Loading packages on master (to be available on slaves for mode %s): %s",
             mode, collapse(packages), show.info = show.info)
-        requirePackages(packages, why = "parallelLibrary")
+          requirePackages(packages, why = "parallelLibrary")
         }
       } else if (mode %in% c(MODE_SOCKET, MODE_MPI)) {
         showInfoMessage("Loading packages on slaves for mode %s: %s",
@@ -74,8 +75,9 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
           names(v)[!v]
         })
         not.loaded = unique(unlist(not.loaded))
-        if (length(not.loaded) > 0L)
+        if (length(not.loaded) > 0L) {
           stopf("Packages could not be loaded on all slaves: %s.", collapse(not.loaded))
+        }
       } else if (mode %in% c(MODE_BATCHJOBS)) {
         showInfoMessage("Storing package info for BatchJobs slave jobs: %s",
           collapse(packages), show.info = show.info)
