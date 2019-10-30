@@ -35,4 +35,4 @@ env:
 addons:
   apt:
     packages:
-    - mpich
+    - openmpi-bin
