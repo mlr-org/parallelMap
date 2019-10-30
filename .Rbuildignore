@@ -19,3 +19,4 @@ todo.txt
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^tic\.R$
+^pkgdown$
