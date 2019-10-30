@@ -33,7 +33,6 @@ parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_characte
 #' @export
 parallelSapply = function(xs, fun, ..., simplify = TRUE, use.names = TRUE, impute.error = NULL,
   level = NA_character_) {
-
   parallelMap(fun, xs, more.args = list(...), simplify = simplify, use.names = use.names,
     impute.error = impute.error, level = level)
 }

@@ -12,4 +12,3 @@ getBatchtoolsRegFileDir = function() {
 getBatchtoolsReg = function() {
   batchtools::loadRegistry(file.dir = getBatchtoolsRegFileDir(), writeable = TRUE)
 }
-

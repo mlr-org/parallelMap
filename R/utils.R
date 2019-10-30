@@ -1,8 +1,9 @@
 # show message if OPTION show.info is TRUE
 #  show.info ARGUMENT provides an immediate OVERRIDE to that option
-showInfoMessage = function(msg, ..., show.info=NA) {
-  if (ifelse(is.na(show.info), getPMOptShowInfo(), show.info))
+showInfoMessage = function(msg, ..., show.info = NA) {
+  if (ifelse(is.na(show.info), getPMOptShowInfo(), show.info)) {
     messagef(msg, ...)
+  }
 }
 
 showStartupMsg = function(mode, cpus, socket.hosts) {
@@ -32,5 +33,5 @@ exportToSlavePkgParallel = function(objname, objval) {
   # stuff defined in the scope of an R function
   # cl = NULL is default cluster, pos=1 is always globalenv
   # I really hope the nextline does what I think in all cases...
-  clusterCall(cl=NULL, assign, x=objname, value=objval, pos=1)
+  clusterCall(cl = NULL, assign, x = objname, value = objval, pos = 1)
 }

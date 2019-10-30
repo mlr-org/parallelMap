@@ -89,13 +89,14 @@
 #' @export
 parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
   show.info, suppress.local.errors = FALSE, ...) {
+
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
   }
 
-  #FIXME: what should we do onexit if an error happens in this function?
+  # FIXME: what should we do onexit if an error happens in this function?
 
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
@@ -117,8 +118,9 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   show.info = getPMDefOptShowInfo(show.info)
 
   # multicore not supported on windows
-  if (mode == MODE_MULTICORE && .Platform$OS.type == "windows")
+  if (mode == MODE_MULTICORE && .Platform$OS.type == "windows") {
     stop("Multicore mode not supported on windows!")
+  }
   assertDirectoryExists(storagedir, access = "w")
 
   # store options for session, we already need them for helper funs below
@@ -135,17 +137,21 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   options(parallelMap.suppress.local.errors = suppress.local.errors)
 
   # try to autodetect cpus if not set
-  if (is.na(cpus) && mode %in% c(MODE_MULTICORE, MODE_MPI))
+  if (is.na(cpus) && mode %in% c(MODE_MULTICORE, MODE_MPI)) {
     cpus = autodetectCpus(mode)
+  }
   if (isModeSocket()) {
-    if(!is.na(cpus) && !is.null(socket.hosts))
+    if (!is.na(cpus) && !is.null(socket.hosts)) {
       stopf("You cannot set both cpus and socket.hosts in socket mode!")
-    if(is.na(cpus) && is.null(socket.hosts))
+    }
+    if (is.na(cpus) && is.null(socket.hosts)) {
       cpus = 1L
+    }
   }
   if (isModeLocal()) {
-    if (!is.na(cpus))
+    if (!is.na(cpus)) {
       stopf("Setting %i cpus makes no sense for local mode!", cpus)
+    }
   }
 
   options(parallelMap.cpus = cpus)
@@ -157,8 +163,9 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
 
   # delete log dirs from previous runs
   if (logging) {
-    if (isModeLocal())
+    if (isModeLocal()) {
       stop("Logging not supported for local mode!")
+    }
     deleteAllLogDirs()
   }
 

@@ -27,6 +27,7 @@
 #' @return Nothing.
 #' @export
 parallelSource = function(..., files, master = TRUE, level = NA_character_, show.info = NA) {
+
   args = list(...)
   assertList(args, types = "character")
   if (!missing(files)) {
@@ -68,19 +69,21 @@ parallelSource = function(..., files, master = TRUE, level = NA_character_, show
         errs = clusterEvalQ(cl = NULL, {
           sapply(.parallelMap.srcs, function(f) {
             r = try(source(f))
-            if (inherits(r, "try-error"))
+            if (inherits(r, "try-error")) {
               as.character(r)
-            else
+            } else {
               NA_character_
+            }
           }, USE.NAMES = TRUE)
         })
         # to vector, remove NA = ok, we also dont wnat to read error multiple times for multiple slaves
         errs = unlist(errs)
         errs = errs[!is.na(errs), drop = FALSE]
         errs = errs[!duplicated(names(errs))]
-        if (length(errs) > 0L)
+        if (length(errs) > 0L) {
           stopf("Files could not be sourced on all slaves: %s\n%s",
             collapse(names(errs)), collapse(paste(names(errs), errs, sep = "\n"), sep = "\n"))
+        }
       } else if (isModeBatchJobs()) {
         showInfoMessage("Storing source file info for BatchJobs slave jobs: %s",
           collapse(files), show.info = show.info)

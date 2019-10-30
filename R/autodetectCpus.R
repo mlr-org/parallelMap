@@ -6,8 +6,9 @@ autodetectCpus = function(mode) {
   } else {
     cpus = NA_integer_
   }
-  if (!testCount(cpus, positive = TRUE))
+  if (!testCount(cpus, positive = TRUE)) {
     stopf("The was some problem in autodetecting the number of cpus. Autodetection returned:\n%s", printStrToChar(cpus))
+  }
   showInfoMessage("Autodetecting cpus: %i", cpus)
   return(cpus)
 }

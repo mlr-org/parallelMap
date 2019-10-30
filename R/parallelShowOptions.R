@@ -21,21 +21,25 @@ parallelGetOptions = function() {
 
 #' @export
 print.ParallelMapOptions = function(x, ...) {
+
   mycat = function(opt) {
     opt1val = opts$settings[[opt]]
     opt2val = opts$defaults[[opt]]
     if (opt == "bj.resources") {
       opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)",
         convertToShortString(opt1val))
-      if (!is.null(opt2val))
+      if (!is.null(opt2val)) {
         opt2val = convertToShortString(opt2val)
+      }
     }
-    if (is.null(opt2val))
+    if (is.null(opt2val)) {
       opt2val = "not set"
-    if (opt %nin% c("bj.resources", "storagedir"))
+    }
+    if (opt %nin% c("bj.resources", "storagedir")) {
       catf("%-20s: %-10s (%s)", opt, opt1val, opt2val)
-    else
+    } else {
       catf("%-20s: %-10s\n                      (%s)", opt, opt1val, opt2val)
+    }
   }
   opts = parallelGetOptions()
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
@@ -46,7 +50,7 @@ print.ParallelMapOptions = function(x, ...) {
   mycat("logging")
   mycat("show.info")
   mycat("storagedir")
-  if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS))
+  if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS)) {
     mycat("bj.resources")
+  }
 }
-

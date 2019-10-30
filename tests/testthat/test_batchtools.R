@@ -4,8 +4,9 @@ test_that("batchtools mode", {
   requireNamespace("batchtools")
   reg = batchtools::makeRegistry(NA)
   storagedir = reg$temp.dir
-  if (is.null(storagedir) || is.na(storagedir))
+  if (is.null(storagedir) || is.na(storagedir)) {
     storagedir = tempfile()
+  }
 
   parallelStartBatchtools(storagedir = storagedir)
   partest1()
