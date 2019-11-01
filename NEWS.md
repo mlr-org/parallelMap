@@ -1,3 +1,8 @@
+# parallelMap 1.4.0.9000
+
+- Internal changes only.
+
+
 # parallelMap 1.4
 
 - Load balancing for multicore, socket and mpi can now be controlled via the flag
