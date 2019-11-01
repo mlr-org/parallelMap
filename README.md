@@ -11,31 +11,26 @@ R package to interface some popular parallelization back-ends with a unified int
 * Offical CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
-* R Documentation in HTML:
-  http://www.rdocumentation.org/packages/parallelMap/
-
-* Run this in R to install the current GitHub version:
+* Development version:
   ```r
   remotes::install_github("mlr-org/parallelMap")
   ```
 
-* [Further installation instructions](https://github.com/tudo-r/PackagesInfo/wiki/Installation-Information)
-
 # Overview
 
-parallelMap was written with users (like me) in mind who want a unified parallelization procedure in R that
+_parallelMap_ was written with users in mind who want a unified parallelization procedure in R that
 
-* Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package.
-* Allows the client user of your developed package to completely configure the parallelization from the outside.
-* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easily configurable via options.
-* Supports the most important parallelization modes. For me, these currently are: usage of multiple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package).
+* Works equally well in interactive operations as in developing packages where some operations should offer the possibility to be run in parallel by the client user of your package
+* Allows the client user of your developed package to completely configure the parallelization from the outside
+* Allows you to be lazy and forgetful. This entails: The same interface for every back-end and everything is easily configurable via options
+* Supports the most important parallelization modes. For me, these currently are: usage of multiple cores on a single machine, socket mode (because it also works on Windows), MPI and HPC clusters (the latter interfaced by our BatchJobs package)
 * Does not make debugging annoying and tedious.
 
 # Mini Tutorial
 
 Here is a short tutorial that already contains the most important concepts and operations:
 
-```splus
+```r
 ##### Example 1) #####
 
 library(parallelMap)
@@ -45,19 +40,20 @@ y = parallelMap(f, 1:2)   # like R's Map but in parallel
 parallelStop()            # turn parallelization off again
 ```
 
-If you want to use other modes of parallelization, simply call the appropriate initialization procedure, all of them are documented in [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html). [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) exists with a smaller, appropriate interface.
+If you want to use other modes of parallelization, call the appropriate initialization procedure, all of them are documented in [parallelStart](https://parallelmap.mlr-org.com/reference/parallelStart.html). `parallelStart()` is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of `parallelStart()` exists with a smaller, appropriate interface.
 
 # Exporting to Slaves: Libraries, Sources and Objects
 
-In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves.
+In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. 
+This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves.
 
-parallelMap supports these operations with the following three functions
+_parallelMap_ supports these operations with the following three functions
 
- * [parallelLibrary](http://www.rdocumentation.org/packages/parallelMap/functions/parallelLibrary.html)
- * [parallelSource](http://www.rdocumentation.org/packages/parallelMap/functions/parallelSource.html)
- * [parallelExport](http://www.rdocumentation.org/packages/parallelMap/functions/parallelExport.html)
+ * [parallelLibrary](https://parallelmap.mlr-org.com/reference/parallelLibrary.html)
+ * [parallelSource](https://parallelmap.mlr-org.com/reference/parallelSource.html)
+ * [parallelExport](https://parallelmap.mlr-org.com/reference/parallelExport.html)
 
-Let's start with loading a package on the slaves. Of course you could put a require("mypackage") into the body of f, but you can also use a [parallelLibrary](http://www.rdocumentation.org/packages/parallelMap/functions/parallelLibrary.html) before calling [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html).
+Let's start with loading a package on the slaves. Of course you could put a `require("mypackage")` into the body of `f`, but you can also use a `parallelLibrary()` before calling `parallelMap()`.
 
 ```r
 ##### Example 2) #####
@@ -79,8 +75,7 @@ parallelStop()
 ```
 
 And here is a further example where we export a big matrix to the slaves, then
-apply a preprocessing function to it, which is defined in source file. Yeah, it is kinda
-a nonsensical example but I suppose you will get the point:
+apply a preprocessing function to it, which is defined in source file. 
 
 ```r
 ##### Example 3) #####
@@ -100,10 +95,11 @@ parallelStop()
 
 # Being Lazy: Configuration
 
-On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html) allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
+On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, `parallelMap()` allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
 
-Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don't need [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html)'s "chatting" on the console anymore. Simply define these lines in your R profile:
-
+Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. 
+You are also an experienced user and don't need `parallelMap()`'s "chatting" on the console anymore. 
+Define these lines in your R profile:
 
 ```r
 options(
@@ -113,7 +109,7 @@ options(
 )
 ```
 
-This allows you to save some typing as running [parallelStart()](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html) will now be equivalent to parallelStart(mode = "multicore", cpus=4, show.info=FALSE) so "Example 1" would become:
+This allows you to save some typing as running `parallelStart()` will now be equivalent to `parallelStart(mode = "multicore", cpus = 4, show.info = FALSE)` so "Example 1" would become:
 
 ```r
 parallelStart()
@@ -122,8 +118,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-You can later always overwrite settings be explicitly passing them to [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html), so
-
+You can later always overwrite settings be explicitly passing them to `parallelStart()`, so
 
 ```r
 parallelStart(cpus=2)
@@ -132,7 +127,7 @@ y = parallelMap(f, 1:2)
 parallelStop()
 ```
 
-would use your default "multicore" mode and still disable [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap.html)'s info messages on the console, but decrease cpu usage to 2.
+would use your default "multicore" mode and still disable `parallelMap()`'s info messages on the console, but decrease cpu usage to 2.
 
 The following options are currently available:
 
@@ -146,18 +141,18 @@ The following options are currently available:
   parallelMap.default.storagedir      = <path>, must be on a shared file system for master / slaves
 ```
 
-For their precise meaning please read the documentation of [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart.html).
+For their precise meaning please read the documentation of `parallelStart()`.
 
 # Package development: Tagging mapping operations with a level name
 
-Sometimes it is useful to have more control over which `parallelMap` operation is actually parallelized.
+Sometimes it is useful to have more control over which `parallelMap()` operation is actually parallelized.
 You can tag parallelMap operations with a so-called "level", basically a name
 or category associated with the operation. Usually you would do this in a client package, but you can also do it in custom code.
 For packages, register the level(s) that you define in `zzz.R` to tell parallelMap
 about them.
 Here is an example from mlr's
 [zzz.R](https://github.com/berndbischl/mlr/blob/master/R/zzz.R)
-where we call this in .onAttach
+where we call this in `.onAttach()`
 
 ```r
 .onAttach = function(libname, pkgname) {
@@ -184,8 +179,8 @@ the `level` argument:
 parallelMap(myfun, 1:n, level = "package.levelname")
 ```
 
-In mlr, we tag parallel operations with such a level, e.g.,
-[here](https://github.com/berndbischl/mlr/blob/master/R/resample.R).
+In _mlr_, we tag parallel operations with such a level, e.g.,
+[here](https://github.com/mlr-org/mlr/blob/master/R/resample.R).
 
 The user of the package can now set the level when starting the parallel backend, again through the `level` argument:
 
@@ -195,15 +190,15 @@ parallelStartSocket(ncpus = 2L, level = "package.levelname")
 
 Parallelization is now performed as follows:
 
-* If no level is set in `parallelStart`, the first encountered `parallelMap` call on the master is parallelized, whether it has a tag or not.
-* If a level is set in the call to `parallelStart`, only the `parallelMap` calls which have exactly this level set and run on the master are parallelised.
+* If no level is set in `parallelStart()`, the first encountered `parallelMap()` call on the master is parallelized, whether it has a tag or not.
+* If a level is set in the call to `parallelStart()`, only the `parallelMap()` calls which have exactly this level set and run on the master are parallelised.
 * No further parallelization is done if we are already on a slave, i.e. if the
-  parent call has already been parallelised through `parallelMap`.
+  parent call has already been parallelised through `parallelMap()`.
 
 Please read the documentation of
 
- * [parallelRegisterLevels](http://www.rdocumentation.org/packages/parallelMap/functions/parallelRegisterLevels)
- * [parallelStart](http://www.rdocumentation.org/packages/parallelMap/functions/parallelStart)
- * [parallelMap](http://www.rdocumentation.org/packages/parallelMap/functions/parallelMap)
+ * [parallelRegisterLevels](https://parallelmap.mlr-org.com/reference/parallelRegisterLevels.html)
+ * [parallelStart](https://parallelmap.mlr-org.com/reference/parallelStart.html)
+ * [parallelMap](https://parallelmap.mlr-org.com/reference/parallelMap.html)
 
 for more detailed information regarding this topic.
