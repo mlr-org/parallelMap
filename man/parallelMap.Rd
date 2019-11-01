@@ -9,52 +9,49 @@ parallelMap(fun, ..., more.args = list(), simplify = FALSE,
   show.info = NA)
 }
 \arguments{
-\item{fun}{[\code{function}]\cr
+\item{fun}{\link{function}\cr
 Function to map over \code{...}.}
 
-\item{...}{[any]\cr
+\item{...}{(any)\cr
 Arguments to vectorize over (list or vector).}
 
-\item{more.args}{[\code{list}]\cr
+\item{more.args}{\link{list}\cr
 A list of other arguments passed to \code{fun}.
 Default is empty list.}
 
-\item{simplify}{[\code{logical(1)}]\cr
+\item{simplify}{(\code{logical(1)})\cr
 Should the result be simplified?
-See \code{\link{sapply}}.
+See \code{\link[=sapply]{sapply()}}.
 Default is \code{FALSE}.}
 
-\item{use.names}{[\code{logical(1)}]\cr
+\item{use.names}{(\code{logical(1)})\cr
 Should result be named by first vector if that is
 of class character?
 Default is \code{FALSE}.}
 
-\item{impute.error}{[\code{NULL} | \code{function(x)}]\cr
-This argument can be used for improved error handling.
-\code{NULL} means that, if an exception is generated on one of the slaves, it is also
-thrown on the master. Usually all slave jobs will have to terminate until this exception on
-the master can be thrown.
-If you pass a constant value or a function, all jobs are guaranteed to return a result object,
-without generating an exception on the master for slave errors.
-In case of an error,
-this is a \code{\link{simpleError}} object containing the error message.
-If you passed a constant object, the error-objects will be substituted with this object.
-If you passed a function, it will be used to operate
-on these error-objects (it will ONLY be applied to the error results).
-For example, using \code{identity} would  keep and return the \code{simpleError}-object,
-or \code{function(x) 99} would impute a constant value
-(which could be achieved more easily by simply passing \code{99}).
-Default is \code{NULL}.}
+\item{impute.error}{(\code{NULL} | \code{function(x)})\cr
+This argument can be used for improved error handling. \code{NULL} means that,
+if an exception is generated on one of the slaves, it is also thrown on the
+master. Usually all slave jobs will have to terminate until this exception
+on the master can be thrown. If you pass a constant value or a function,
+all jobs are guaranteed to return a result object, without generating an
+exception on the master for slave errors. In case of an error, this is a
+\code{\link[=simpleError]{simpleError()}} object containing the error message. If you passed a
+constant object, the error-objects will be substituted with this object. If
+you passed a function, it will be used to operate on these error-objects
+(it will ONLY be applied to the error results). For example, using
+\code{identity} would  keep and return the \code{simpleError}-object, or \code{function(x) 99} would impute a constant value (which could be achieved more easily by
+simply passing \code{99}). Default is \code{NULL}.}
 
-\item{level}{[\code{character(1)}]\cr
-If a (non-missing) level is specified in \code{\link{parallelStart}},
+\item{level}{(\code{character(1)})\cr
+If a (non-missing) level is specified in \code{\link[=parallelStart]{parallelStart()}},
 this call is only parallelized if the level specified here matches.
 Useful if this function is used in a package.
 Default is \code{NA}.}
 
-\item{show.info}{[\code{logical(1)}]\cr
+\item{show.info}{(\code{logical(1)})\cr
 Verbose output on console?
-Can be used to override setting from options / \code{\link{parallelStart}}.
+Can be used to override setting from options / \code{\link[=parallelStart]{parallelStart()}}.
 Default is NA which means no overriding.}
 }
 \value{
@@ -62,12 +59,12 @@ Result.
 }
 \description{
 Uses the parallelization mode and the other options specified in
-\code{\link{parallelStart}}.
+\code{\link[=parallelStart]{parallelStart()}}.
 
 Libraries and source file can be initialized on slaves with
-\code{\link{parallelLibrary}} and \code{\link{parallelSource}}.
+\code{\link[=parallelLibrary]{parallelLibrary()}} and \code{\link[=parallelSource]{parallelSource()}}.
 
-Large objects can be separately exported via \code{\link{parallelExport}},
+Large objects can be separately exported via \code{\link[=parallelExport]{parallelExport()}},
 they can be simply used under their exported name in slave body code.
 
 Regarding error handling, see the argument \code{impute.error}.

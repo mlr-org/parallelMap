@@ -8,35 +8,35 @@ parallelLibrary(..., packages, master = TRUE, level = NA_character_,
   show.info = NA)
 }
 \arguments{
-\item{...}{[\code{character}]\cr
+\item{...}{\link{character}\cr
 Names of packages to load.}
 
-\item{packages}{[\code{character(1)}]\cr
+\item{packages}{(\code{character(1)})\cr
 Names of packages to load.
 Alternative way to pass arguments.}
 
-\item{master}{[\code{logical(1)}]\cr
+\item{master}{(\code{logical(1)})\cr
 Load packages also on master for any mode?
 Default is \code{TRUE}.}
 
-\item{level}{[\code{character(1)}]\cr
-If a (non-missing) level is specified in \code{\link{parallelStart}},
+\item{level}{(\code{character(1)})\cr
+If a (non-missing) level is specified in \code{\link[=parallelStart]{parallelStart()}},
 the function only loads the packages if the level specified here matches.
-See \code{\link{parallelMap}}.
+See \code{\link[=parallelMap]{parallelMap()}}.
 Useful if this function is used in a package.
 Default is \code{NA}.}
 
-\item{show.info}{[\code{logical(1)}]\cr
+\item{show.info}{(\code{logical(1)})\cr
 Verbose output on console?
-Can be used to override setting from options / \code{\link{parallelStart}}.
+Can be used to override setting from options / \code{\link[=parallelStart]{parallelStart()}}.
 Default is NA which means no overriding.}
 }
 \value{
 Nothing.
 }
 \description{
-Makes sure that the packages are loaded in slave process so that they can be used in a job
-function which is later run with \code{\link{parallelMap}}.
+Makes sure that the packages are loaded in slave process so that
+they can be used in a job function which is later run with \code{\link[=parallelMap]{parallelMap()}}.
 
 For all modes, the packages are also (potentially) loaded on the master.
 }

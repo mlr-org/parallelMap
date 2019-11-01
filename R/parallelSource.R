@@ -1,28 +1,27 @@
 #' @title Source R files for parallelization.
 #'
-#' @description
-#' Makes sure that the files are sourced in slave process so that they can be used in a job
-#' function which is later run with \code{\link{parallelMap}}.
+#' @description Makes sure that the files are sourced in slave process so that
+#' they can be used in a job function which is later run with [parallelMap()].
 #'
 #' For all modes, the files are also (potentially) loaded on the master.
 #'
-#' @param ... [\code{character}]\cr
+#' @param ... [character]\cr
 #'   File paths to sources.
-#' @param files [\code{character}]\cr
+#' @param files [character]\cr
 #'   File paths to sources.
 #'   Alternative way to pass arguments.
-#' @param master [\code{logical(1)}]\cr
+#' @param master (`logical(1)`)\cr
 #'   Source files also on master for any mode?
-#'   Default is \code{TRUE}.
-#' @param level [\code{character(1)}]\cr
-#'   If a (non-missing) level is specified in \code{\link{parallelStart}},
+#'   Default is `TRUE`.
+#' @param level (`character(1)`)\cr
+#'   If a (non-missing) level is specified in [parallelStart()],
 #'   the function only sources the files if the level specified here matches.
-#'   See \code{\link{parallelMap}}.
+#'   See [parallelMap()].
 #'   Useful if this function is used in a package.
-#'   Default is \code{NA}.
-#' @param show.info [\code{logical(1)}]\cr
+#'   Default is `NA`.
+#' @param show.info (`logical(1)`)\cr
 #'   Verbose output on console?
-#'   Can be used to override setting from options / \code{\link{parallelStart}}.
+#'   Can be used to override setting from options / [parallelStart()].
 #'   Default is NA which means no overriding.
 #' @return Nothing.
 #' @export

@@ -2,15 +2,15 @@
 #'
 #' @description
 #' Returned are current and default settings, both as lists.
-#' The return value has slots elements \code{settings} and \code{defaults},
+#' The return value has slots elements `settings` and `defaults`,
 #' which are both lists of the same structure, named by option names.
 #'
 #' A printer exists to display this object.
 #'
 #' For details on the configuration procedure please read
-#' \code{\link{parallelStart}} and \url{https://github.com/mlr-org/parallelMap}.
+#' [parallelStart()] and <https://github.com/mlr-org/parallelMap>.
 #'
-#' @return [\code{ParallelMapOptions}]. See above.
+#' @return `ParallelMapOptions`. See above.
 #' @export
 parallelGetOptions = function() {
   opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir", "bj.resources")
