@@ -7,18 +7,18 @@
 parallelGetRegisteredLevels(flatten = FALSE)
 }
 \arguments{
-\item{flatten}{[\code{logical(1)}]\cr
+\item{flatten}{\code{\link{logical(1)}}\cr
 Flatten to character vector or not? See description.
 Default is \code{FALSE}.}
 }
 \value{
-[code{RegisteredLevels} | \code{character}]. See above.
+\link[=code{RegisteredLevels} | `character`]{code{RegisteredLevels} | character}. See above.
 }
 \description{
 With \code{flatten = FALSE}, a structured S3 object is returned.
 The S3 object only has one slot, which is called \code{levels}.
 This contains a named list. Each name refers to \code{package} from the call to
-\code{\link{parallelRegisterLevels}}, while the entries are character
+\code{\link[=parallelRegisterLevels]{parallelRegisterLevels()}}, while the entries are character
 vectors of the form \dQuote{package.level}.
 With \code{flatten = TRUE}, a simple character vector is returned that contains all
 concatenated entries of \code{levels} from above.

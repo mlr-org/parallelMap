@@ -7,7 +7,7 @@
 parallelGetOptions()
 }
 \value{
-[\code{ParallelMapOptions}]. See above.
+\code{\link{ParallelMapOptions}}. See above.
 }
 \description{
 Returned are current and default settings, both as lists.
@@ -17,5 +17,5 @@ which are both lists of the same structure, named by option names.
 A printer exists to display this object.
 
 For details on the configuration procedure please read
-\code{\link{parallelStart}} and \url{https://github.com/mlr-org/parallelMap}.
+\code{\link[=parallelStart]{parallelStart()}} and \url{https://github.com/mlr-org/parallelMap}.
 }

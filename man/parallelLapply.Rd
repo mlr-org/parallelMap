@@ -12,36 +12,36 @@ parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
   impute.error = NULL, level = NA_character_)
 }
 \arguments{
-\item{xs}{[\code{vector} | \code{list}]\cr
+\item{xs}{\link[=`vector` | `list`]{vector | list}\cr
 \code{fun} is applied to the elements of this argument.}
 
-\item{fun}{[\code{function}]\cr
+\item{fun}{\code{\link{function}}\cr
 Function to map over \code{xs}.}
 
-\item{...}{[any]\cr
+\item{...}{\link{any}\cr
 Further arguments passed to \code{fun}.}
 
-\item{impute.error}{[\code{NULL} | \code{function(x)}]\cr
-See \code{\link{parallelMap}}.}
+\item{impute.error}{\link[=`NULL` | `function(x)`]{NULL | function(x)}\cr
+See \code{\link[=parallelMap]{parallelMap()}}.}
 
-\item{level}{[\code{character(1)}]\cr
-See \code{\link{parallelMap}}.}
+\item{level}{\code{\link{character(1)}}\cr
+See \code{\link[=parallelMap]{parallelMap()}}.}
 
-\item{simplify}{[\code{logical(1)}]\cr
-See \code{\link{sapply}}.
+\item{simplify}{\code{\link{logical(1)}}\cr
+See \code{\link[=sapply]{sapply()}}.
 Default is \code{TRUE}.}
 
-\item{use.names}{[\code{logical(1)}]\cr
-See \code{\link{sapply}}.
+\item{use.names}{\code{\link{logical(1)}}\cr
+See \code{\link[=sapply]{sapply()}}.
 Default is \code{TRUE}.}
 }
 \value{
 For \code{parallelLapply} an unamed list,
-  for \code{parallelSapply} it depends on the return value of
-  \code{fun} and the settings of \code{simplify} and \code{use.names}.
+for \code{parallelSapply} it depends on the return value of
+\code{fun} and the settings of \code{simplify} and \code{use.names}.
 }
 \description{
-\code{parallelLapply}: A parallel \code{\link{lapply}} version.\cr
-\code{parallelSapply}: A parallel \code{\link{sapply}} version.\cr
-All functions are simple wrappers for \code{\link{parallelMap}}.
+\code{parallelLapply}: A parallel \code{\link[=lapply]{lapply()}} version.\cr
+\code{parallelSapply}: A parallel \code{\link[=sapply]{sapply()}} version.\cr
+All functions are simple wrappers for \code{\link[=parallelMap]{parallelMap()}}.
 }
