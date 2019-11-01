@@ -7,7 +7,7 @@
 parallelGetOptions()
 }
 \value{
-\code{\link{ParallelMapOptions}}. See above.
+\code{ParallelMapOptions}. See above.
 }
 \description{
 Returned are current and default settings, both as lists.

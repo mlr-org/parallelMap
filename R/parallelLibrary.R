@@ -1,26 +1,25 @@
 #' @title Load packages for parallelization.
 #'
-#' @description
-#' Makes sure that the packages are loaded in slave process so that they can be used in a job
-#' function which is later run with [parallelMap()].
+#' @description Makes sure that the packages are loaded in slave process so that
+#' they can be used in a job function which is later run with [parallelMap()].
 #'
 #' For all modes, the packages are also (potentially) loaded on the master.
 #'
-#' @param ... [`character`]\cr
+#' @param ... [character]\cr
 #'   Names of packages to load.
-#' @param packages [`character(1)`]\cr
+#' @param packages (`character(1)`)\cr
 #'   Names of packages to load.
 #'   Alternative way to pass arguments.
-#' @param master [`logical(1)`]\cr
+#' @param master (`logical(1)`)\cr
 #'   Load packages also on master for any mode?
 #'   Default is `TRUE`.
-#' @param level [`character(1)`]\cr
+#' @param level (`character(1)`)\cr
 #'   If a (non-missing) level is specified in [parallelStart()],
 #'   the function only loads the packages if the level specified here matches.
 #'   See [parallelMap()].
 #'   Useful if this function is used in a package.
 #'   Default is `NA`.
-#' @param show.info [`logical(1)`]\cr
+#' @param show.info (`logical(1)`)\cr
 #'   Verbose output on console?
 #'   Can be used to override setting from options / [parallelStart()].
 #'   Default is NA which means no overriding.

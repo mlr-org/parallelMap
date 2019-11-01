@@ -12,43 +12,41 @@
 #'
 #' Regarding error handling, see the argument `impute.error`.
 #'
-#' @param fun [`function`]\cr
+#' @param fun [function]\cr
 #'   Function to map over `...`.
-#' @param ... [any]\cr
+#' @param ... (any)\cr
 #'   Arguments to vectorize over (list or vector).
-#' @param more.args [`list`]\cr
+#' @param more.args [list]\cr
 #'   A list of other arguments passed to `fun`.
 #'   Default is empty list.
-#' @param simplify [`logical(1)`]\cr
+#' @param simplify (`logical(1)`)\cr
 #'   Should the result be simplified?
 #'   See [sapply()].
 #'   Default is `FALSE`.
-#' @param use.names [`logical(1)`]\cr
+#' @param use.names (`logical(1)`)\cr
 #'   Should result be named by first vector if that is
 #'   of class character?
 #'   Default is `FALSE`.
-#' @param impute.error [`NULL` | `function(x)`]\cr
-#'   This argument can be used for improved error handling.
-#'   `NULL` means that, if an exception is generated on one of the slaves, it is also
-#'   thrown on the master. Usually all slave jobs will have to terminate until this exception on
-#'   the master can be thrown.
-#'   If you pass a constant value or a function, all jobs are guaranteed to return a result object,
-#'   without generating an exception on the master for slave errors.
-#'   In case of an error,
-#'   this is a [simpleError()] object containing the error message.
-#'   If you passed a constant object, the error-objects will be substituted with this object.
-#'   If you passed a function, it will be used to operate
-#'   on these error-objects (it will ONLY be applied to the error results).
-#'   For example, using `identity` would  keep and return the `simpleError`-object,
-#'   or `function(x) 99` would impute a constant value
-#'   (which could be achieved more easily by simply passing `99`).
-#'   Default is `NULL`.
-#' @param level [`character(1)`]\cr
+#' @param impute.error (`NULL` | `function(x)`)\cr
+#'   This argument can be used for improved error handling. `NULL` means that,
+#'   if an exception is generated on one of the slaves, it is also thrown on the
+#'   master. Usually all slave jobs will have to terminate until this exception
+#'   on the master can be thrown. If you pass a constant value or a function,
+#'   all jobs are guaranteed to return a result object, without generating an
+#'   exception on the master for slave errors. In case of an error, this is a
+#'   [simpleError()] object containing the error message. If you passed a
+#'   constant object, the error-objects will be substituted with this object. If
+#'   you passed a function, it will be used to operate on these error-objects
+#'   (it will ONLY be applied to the error results). For example, using
+#'   `identity` would  keep and return the `simpleError`-object, or `function(x)
+#'   99` would impute a constant value (which could be achieved more easily by
+#'   simply passing `99`). Default is `NULL`.
+#' @param level (`character(1)`)\cr
 #'   If a (non-missing) level is specified in [parallelStart()],
 #'   this call is only parallelized if the level specified here matches.
 #'   Useful if this function is used in a package.
 #'   Default is `NA`.
-#' @param show.info [`logical(1)`]\cr
+#' @param show.info (`logical(1)`)\cr
 #'   Verbose output on console?
 #'   Can be used to override setting from options / [parallelStart()].
 #'   Default is NA which means no overriding.

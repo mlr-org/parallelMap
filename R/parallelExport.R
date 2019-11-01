@@ -1,26 +1,26 @@
 #' @title Export R objects for parallelization.
 #'
-#' @description
-#' Makes sure that the objects are exported to slave process so that they can be used in a job
-#' function which is later run with [parallelMap()].
+#' @description Makes sure that the objects are exported to slave process so
+#' that they can be used in a job function which is later run with
+#' [parallelMap()].
 #'
 #' @param ... [`character`]\cr
 #'   Names of objects to export.
-#' @param objnames [`character(1)`]\cr
+#' @param objnames (`character(1)`)\cr
 #'   Names of objects to export.
 #'   Alternative way to pass arguments.
-#' @param level [`character(1)`]\cr
+#' @param level (`character(1)`)\cr
 #'   If a (non-missing) level is specified in [parallelStart()],
 #'   the function only exports if the level specified here matches.
 #'   See [parallelMap()].
 #'   Useful if this function is used in a package.
 #'   Default is `NA`.
-#' @param master [`logical(1)`]\cr
-#'   Really export to package environment on master for local and multicore mode?
-#'   If you do not do this your objects might not get exported for the mapping function call.
-#'   Only disable when you are really sure.
-#'   Default is `TRUE`.
-#' @param show.info [`logical(1)`]\cr
+#' @param master (`logical(1)`)\cr
+#'   Really export to package environment on master for local and multicore
+#'   mode? If you do not do this your objects might not get exported for the
+#'   mapping function call. Only disable when you are really sure. Default is
+#'   `TRUE`.
+#' @param show.info (`logical(1)`)\cr
 #'   Verbose output on console?
 #'   Can be used to override setting from options / [parallelStart()].
 #'   Default is NA which means no overriding.

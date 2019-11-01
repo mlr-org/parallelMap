@@ -1,15 +1,14 @@
 #' Parallelization setup for parallelMap.
 #'
-#' Defines the underlying parallelization mode for [parallelMap()].
-#' Also allows to set a \dQuote{level} of parallelization.
-#' Only calls to [parallelMap()] with a matching level are parallelized.
-#' The defaults of all settings are taken from your options, which you can
-#' also define in your R profile.
-#' For an introductory tutorial and information on the options configuration, please
-#' go to the project's github page at <https://github.com/mlr-org/parallelMap>.
+#' Defines the underlying parallelization mode for [parallelMap()]. Also allows
+#' to set a \dQuote{level} of parallelization. Only calls to [parallelMap()]
+#' with a matching level are parallelized. The defaults of all settings are
+#' taken from your options, which you can also define in your R profile. For an
+#' introductory tutorial and information on the options configuration, please go
+#' to the project's github page at https://github.com/mlr-org/parallelMap.
 #'
-#' Currently the following modes are supported, which internally dispatch the mapping operation
-#' to functions from different parallelization packages:
+#' Currently the following modes are supported, which internally dispatch the
+#' mapping operation to functions from different parallelization packages:
 #'
 #' \describe{
 #' \item{local}{No parallelization with [mapply()].}
@@ -19,72 +18,66 @@
 #' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with [BatchJobs::batchMap()].}
 #' }
 #'
-#' For BatchJobs mode you need to define a storage directory through the argument `storagedir` or
-#' the option `parallelMap.default.storagedir`.
+#' For BatchJobs mode you need to define a storage directory through the
+#' argument `storagedir` or the option `parallelMap.default.storagedir`.
 #'
-#' @param mode [`character(1)`]\cr
-#'   Which parallel mode should be used:
-#'   \dQuote{local}, \dQuote{multicore}, \dQuote{socket}, \dQuote{mpi}, \dQuote{BatchJobs}.
-#'   Default is the option `parallelMap.default.mode` or, if not set,
-#'   \dQuote{local} without parallel execution.
-#' @param cpus [`integer(1)`]\cr
-#'   Number of used cpus.
-#'   For local and BatchJobs mode this argument is ignored.
+#' @param mode (`character(1)`)\cr
+#'   Which parallel mode should be used: \dQuote{local}, \dQuote{multicore},
+#'   \dQuote{socket}, \dQuote{mpi}, \dQuote{BatchJobs}. Default is the option
+#'   `parallelMap.default.mode` or, if not set, \dQuote{local} without parallel
+#'   execution.
+#' @param cpus (`integer(1)`)\cr
+#'   Number of used cpus. For local and BatchJobs mode this argument is ignored.
 #'   For socket mode, this is the number of processes spawned on localhost, if
-#'   you want processes on multiple machines use `socket.hosts`.
-#'   Default is the option `parallelMap.default.cpus` or, if not set,
-#'   [parallel::detectCores()] for multicore mode,
-#'   `max(1, [mpi.universe.size][Rmpi::mpi.universe.size] - 1)` for mpi mode
-#'   and 1 for socket mode.
-#' @param socket.hosts [`character`]\cr
-#'   Only used in socket mode, otherwise ignored.
-#'   Names of hosts where parallel processes are spawned.
-#'   Default is the option `parallelMap.default.socket.hosts`, if this option exists.
-#' @param bj.resources [`list`]\cr
+#'   you want processes on multiple machines use `socket.hosts`. Default is the
+#'   option `parallelMap.default.cpus` or, if not set, [parallel::detectCores()]
+#'   for multicore mode, `max(1, [mpi.universe.size][Rmpi::mpi.universe.size] -
+#'   1)` for mpi mode and 1 for socket mode.
+#' @param socket.hosts [character]\cr
+#'   Only used in socket mode, otherwise ignored. Names of hosts where parallel
+#'   processes are spawned. Default is the option
+#'   `parallelMap.default.socket.hosts`, if this option exists.
+#' @param bj.resources [list]\cr
 #'   Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
-#'   See [BatchJobs::submitJobs()].
-#'   Defaults are taken from your BatchJobs config file.
-#' @param bt.resources [`list`]\cr
+#'   See [BatchJobs::submitJobs()]. Defaults are taken from your BatchJobs
+#'   config file.
+#' @param bt.resources [list]\cr
 #'   Analog to `bj.resources`.
 #'   See [batchtools::submitJobs()].
-#' @param logging [`logical(1)`]\cr
+#' @param logging (`logical(1)`)\cr
 #'   Should slave output be logged to files via [sink()] under the `storagedir`?
-#'   Files are named "<iteration_number>.log" and put into unique
-#'   subdirectories named \dQuote{parallelMap_log_<nr>} for each subsequent
-#'   [parallelMap()] operation.
-#'   Previous logging directories are removed on `parallelStart`
-#'   if `logging` is enabled.
-#'   Logging is not supported for local mode, because you will see all
-#'   output on the master and can also run stuff like
-#'   [traceback()] in case of errors.
-#'   Default is the option `parallelMap.default.logging` or, if not set,
-#'   `FALSE`.
-#' @param storagedir [`character(1)`]\cr
+#'   Files are named "<iteration_number>.log" and put into unique subdirectories
+#'   named \dQuote{parallelMap_log_<nr>} for each subsequent [parallelMap()]
+#'   operation. Previous logging directories are removed on `parallelStart` if
+#'   `logging` is enabled. Logging is not supported for local mode, because you
+#'   will see all output on the master and can also run stuff like [traceback()]
+#'   in case of errors. Default is the option `parallelMap.default.logging` or,
+#'   if not set, `FALSE`.
+#' @param storagedir (`character(1)`)\cr
 #'   Existing directory where log files and intermediate objects for BatchJobs
-#'   mode are stored.
-#'   Note that all nodes must have write access to exactly this path.
-#'   Default is the current working directory.
-#' @param level [`character(1)`]\cr
-#'   You can set this so only calls to [parallelMap()] that have exactly the same level are parallelized.
-#'   Default is the option `parallelMap.default.level` or, if not set,
-#'   `NA` which means all calls to [parallelMap()] are are potentially parallelized.
-#' @param load.balancing [`logical(1)`]\cr
+#'   mode are stored. Note that all nodes must have write access to exactly this
+#'   path. Default is the current working directory.
+#' @param level (`character(1)`)\cr
+#'   You can set this so only calls to [parallelMap()] that have exactly the
+#'   same level are parallelized. Default is the option
+#'   `parallelMap.default.level` or, if not set, `NA` which means all calls to
+#'   [parallelMap()] are are potentially parallelized.
+#' @param load.balancing (`logical(1)`)\cr
 #'   Enables load balancing for multicore, socket and mpi.
 #'   Set this to `TRUE` if you have heterogeneous runtimes.
 #'   Default is `FALSE`
-#' @param show.info [`logical(1)`]\cr
-#'   Verbose output on console for all further package calls?
-#'   Default is the option `parallelMap.default.show.info` or, if not set,
-#'   `TRUE`.
-#' @param suppress.local.errors [`logical(1)`]\cr
-#'   Should reporting of error messages during function evaluations in local mode be suppressed?
-#'   Default ist FALSE, i.e. every error message is shown.
-#' @param ... [any]\cr
-#'   Optional parameters, for socket mode passed to [parallel::makePSOCKcluster()],
-#'   for mpi mode passed to [parallel::makeCluster()] and for multicore
-#'   passed to [parallel::mcmapply()] (`mc.preschedule` (overwriting `load.balancing`),
-#'   `mc.set.seed`,
-#'   `mc.silent` and `mc.cleanup` are supported for multicore).
+#' @param show.info (`logical(1)`)\cr
+#'   Verbose output on console for all further package calls? Default is the
+#'   option `parallelMap.default.show.info` or, if not set, `TRUE`.
+#' @param suppress.local.errors (`logical(1)`)\cr
+#'   Should reporting of error messages during function evaluations in local
+#'   mode be suppressed? Default ist FALSE, i.e. every error message is shown.
+#' @param ... (any)\cr
+#'   Optional parameters, for socket mode passed to
+#'   [parallel::makePSOCKcluster()], for mpi mode passed to
+#'   [parallel::makeCluster()] and for multicore passed to
+#'   [parallel::mcmapply()] (`mc.preschedule` (overwriting `load.balancing`),
+#'   `mc.set.seed`, `mc.silent` and `mc.cleanup` are supported for multicore).
 #' @return Nothing.
 #' @export
 parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,

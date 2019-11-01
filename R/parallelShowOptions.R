@@ -10,7 +10,7 @@
 #' For details on the configuration procedure please read
 #' [parallelStart()] and <https://github.com/mlr-org/parallelMap>.
 #'
-#' @return [`ParallelMapOptions`]. See above.
+#' @return `ParallelMapOptions`. See above.
 #' @export
 parallelGetOptions = function() {
   opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir", "bj.resources")
