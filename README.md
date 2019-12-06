@@ -8,7 +8,7 @@ R package to interface some popular parallelization back-ends with a unified int
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
 
-* Offical CRAN release site:
+* Official CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
 * Development version:
