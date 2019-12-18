@@ -7,6 +7,7 @@ R package to interface some popular parallelization back-ends with a unified int
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
+[![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://www.tidyverse.org/lifecycle/#retired)
 
 * Offical CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
@@ -15,6 +16,13 @@ R package to interface some popular parallelization back-ends with a unified int
   ```r
   remotes::install_github("mlr-org/parallelMap")
   ```
+  
+# Deprecated
+
+_parallelMap_ is considered retired from the mlr-org team.
+We won't add new features anymore and will only fix _severe_ bugs.
+We suggest to use other parallelization frameworks such as the [future](https://github.com/HenrikBengtsson/future) package.
+The new _mlr3_ framework also relies on the [future](https://github.com/HenrikBengtsson/future) package for parallelization and not on _parallelMap_ anymore as _mlr_ did.
 
 # Overview
 
