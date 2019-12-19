@@ -1,28 +1,28 @@
 #' Parallel versions of apply-family functions.
 #'
-#' \code{parallelLapply}: A parallel \code{\link{lapply}} version.\cr
-#' \code{parallelSapply}: A parallel \code{\link{sapply}} version.\cr
-#' All functions are simple wrappers for \code{\link{parallelMap}}.
+#' `parallelLapply`: A parallel [lapply()] version.\cr
+#' `parallelSapply`: A parallel [sapply()] version.\cr
+#' All functions are simple wrappers for [parallelMap()].
 #'
-#' @param xs [\code{vector} | \code{list}]\cr
-#'   \code{fun} is applied to the elements of this argument.
-#' @param fun [\code{function}]\cr
-#'   Function to map over \code{xs}.
-#' @param ... [any]\cr
-#'   Further arguments passed to \code{fun}.
-#' @param simplify [\code{logical(1)}]\cr
-#'   See \code{\link{sapply}}.
-#'   Default is \code{TRUE}.
-#' @param use.names [\code{logical(1)}]\cr
-#'   See \code{\link{sapply}}.
-#'   Default is \code{TRUE}.
-#' @param impute.error [\code{NULL} | \code{function(x)}]\cr
-#'   See \code{\link{parallelMap}}.
-#' @param level [\code{character(1)}]\cr
-#'   See \code{\link{parallelMap}}.
-#' @return For \code{parallelLapply} a named list,
-#'   for \code{parallelSapply} it depends on the return value of
-#'   \code{fun} and the settings of \code{simplify} and \code{use.names}.
+#' @param xs (`vector` | `list`)\cr
+#'   `fun` is applied to the elements of this argument.
+#' @param fun [`function`]\cr
+#'   Function to map over `xs`.
+#' @param ... (any)\cr
+#'   Further arguments passed to `fun`.
+#' @param simplify (`logical(1)`)\cr
+#'   See [sapply()].
+#'   Default is `TRUE`.
+#' @param use.names (`logical(1)`)\cr
+#'   See [sapply()].
+#'   Default is `TRUE`.
+#' @param impute.error (`NULL` | `function(x)`)\cr
+#'   See [parallelMap()].
+#' @param level (`character(1)`)\cr
+#'   See [parallelMap()].
+#' @return For `parallelLapply` a named list, for `parallelSapply` it depends
+#'   on the return value of `fun` and the settings of `simplify` and
+#'   `use.names`.
 #' @export
 parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_character_) {
   parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = TRUE,
@@ -33,7 +33,6 @@ parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_characte
 #' @export
 parallelSapply = function(xs, fun, ..., simplify = TRUE, use.names = TRUE, impute.error = NULL,
   level = NA_character_) {
-
   parallelMap(fun, xs, more.args = list(...), simplify = simplify, use.names = use.names,
     impute.error = impute.error, level = level)
 }

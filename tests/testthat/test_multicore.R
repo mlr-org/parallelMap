@@ -1,7 +1,7 @@
 context("multicore mode")
 
 # cran allows no multicore mode testing
-#FIXME: I also get strange messages in "make test" and interactive test, but
+# FIXME: I also get strange messages in "make test" and interactive test, but
 # apparently not when I really use the pkg...?
 # .Warning in selectChildren(ac, 1) :
 #  error 'Interrupted system call' in select
@@ -37,6 +37,5 @@ if (isExpensiveExampleOk()) {
     parallelStartMulticore(2, load.balancing = TRUE)
     partest7()
     parallelStop()
-
   })
 }

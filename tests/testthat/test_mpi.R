@@ -12,7 +12,7 @@ if (interactive()) {
     partest1()
     parallelStop()
 
-    parallelStartMPI(2, logging=TRUE, storage=tempdir())
+    parallelStartMPI(2, logging = TRUE, storage = tempdir())
     partest2(tempdir())
     parallelStop()
 
@@ -21,7 +21,7 @@ if (interactive()) {
     parallelStop()
 
     parallelStartMPI(2)
-    partest4(slave.error.test=TRUE)
+    partest4(slave.error.test = TRUE)
     parallelStop()
 
     parallelStartMPI(2)
@@ -29,7 +29,7 @@ if (interactive()) {
     parallelStop()
 
     parallelStartMPI(2)
-    partest6(slave.error.test=TRUE)
+    partest6(slave.error.test = TRUE)
     parallelStop()
 
     parallelStartMPI(2, load.balancing = TRUE)
