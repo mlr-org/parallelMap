@@ -24,9 +24,9 @@
 #'   See [sapply()].
 #'   Default is `FALSE`.
 #' @param use.names (`logical(1)`)\cr
-#'   Should result be named by first vector if that is
-#'   of class character?
-#'   Default is `FALSE`.
+#'   Should result be named?
+#'   Use names if the first `...` argument has names, or if it is a
+#'   character vector, use that character vector as the names.
 #' @param impute.error (`NULL` | `function(x)`)\cr
 #'   This argument can be used for improved error handling. `NULL` means that,
 #'   if an exception is generated on one of the slaves, it is also thrown on the
@@ -225,10 +225,11 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     })
   }
 
-  if (use.names && is.character(..1)) {
+  if (use.names && !is.null(names(..1))) {
+    names(res) = names(..1)
+  } else if (use.names && is.character(..1)) {
     names(res) = ..1
-  }
-  if (!use.names) {
+  } else if (!use.names) {
     names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0L) {
