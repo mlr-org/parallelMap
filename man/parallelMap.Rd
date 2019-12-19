@@ -27,7 +27,7 @@ A list of other arguments passed to \code{fun}.
 Default is empty list.}
 
 \item{simplify}{(\code{logical(1)})\cr
-Should the result be simplified? See \link{?simplify2array}. If \code{TRUE},
+Should the result be simplified? See \link{simplify2array}. If \code{TRUE},
 \code{simplify2array(higher = TRUE)} will be called on the result object.
 Default is \code{FALSE}.}
 

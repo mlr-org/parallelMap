@@ -20,7 +20,7 @@
 #'   A list of other arguments passed to `fun`.
 #'   Default is empty list.
 #' @param simplify (`logical(1)`)\cr
-#'   Should the result be simplified? See [?simplify2array]. If `TRUE`,
+#'   Should the result be simplified? See [simplify2array]. If `TRUE`,
 #'   `simplify2array(higher = TRUE)` will be called on the result object.
 #'   Default is `FALSE`.
 #' @param use.names (`logical(1)`)\cr
