@@ -197,8 +197,10 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(),
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
     cl = makeCluster(spec = cpus, type = "MPI", ...)
+    if (reproducible) {
+      clusterSetRNGStream(cl, iseed = sample(1:100000, 1))
+    }
     setDefaultCluster(cl)
-    clusterSetRNGStream(cl = NULL)
   } else if (isModeBatchJobs()) {
     # create registry in selected directory with random, unique name
     fd = getBatchJobsNewRegFileDir()
@@ -244,9 +246,11 @@ parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level,
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level,
+  load.balancing = FALSE, show.info, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing,
+    show.info = show.info, reproducible = reproducible, ...)
 }
 
 #' @export

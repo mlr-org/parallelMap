@@ -146,8 +146,8 @@ Should parallel jobs produce reproducible results when setting a seed?
 With this option, \code{parallelMap()} calls will be reproducible when using
 \code{set.seed()} with the default RNG kind. This is not the case by default
 when parallelizing in R, since the default RNG kind "Mersenne-Twister" is
-not honored by parallel processes and \code{"L'Ecuyer-CMRG"} needs to be used
-to ensure paralllel reproducibility.
+not honored by parallel processes. Instead RNG kind \code{"L'Ecuyer-CMRG"} needs
+to be used to ensure paralllel reproducibility.
 Default is the option \code{parallelMap.default.reproducible} or, if not set,
 \code{TRUE}.}
 
