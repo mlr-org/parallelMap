@@ -1,6 +1,9 @@
 # parallelMap 1.4.0.9000
 
 - `parallelLapply()` does not drop list element names anymore (#58)
+- `parallelStart()` gains argument `reproducible`. 
+  This argument ensures reproducibility across parallel workers and is set to `TRUE` by default.
+  Internally, we take care to use the `"L'Ecuyer-CMRG"` RNG kind or `clusterSetRNGStream()` (depending on the parallel mode) to ensure this.
 
 # parallelMap 1.4
 

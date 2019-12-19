@@ -56,8 +56,9 @@
 #' parallelStart()
 #' parallelMap(identity, 1:2)
 #' parallelStop()
-parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names = FALSE,
-  impute.error = NULL, level = NA_character_, show.info = NA) {
+parallelMap = function(fun, ..., more.args = list(), simplify = FALSE,
+  use.names = FALSE, impute.error = NULL, level = NA_character_,
+  show.info = NA) {
 
   assertFunction(fun)
   assertList(more.args)
@@ -81,6 +82,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
   cpus = getPMOptCpus()
   load.balancing = getPMOptLoadBalancing()
   logging = getPMOptLogging()
+  reproducible = getPMOptReproducible()
   # use NA to encode "no logging" in logdir
   logdir = ifelse(logging, getNextLogDir(), NA_character_)
 
@@ -108,14 +110,29 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
 
     if (isModeMulticore()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
-      res = MulticoreClusterMap(slaveWrapper, ..., .i = iters, MoreArgs = more.args, mc.cores = cpus,
+      if (reproducible) {
+        old.seed = .Random.seed
+        seed = sample(1:100000, 1)
+        # we need to reset the seed first in case the user supplied a seed,
+        # otherwise "L'Ecuyer-CMRG" won't be used
+        rm(.Random.seed, envir = globalenv())
+        set.seed(seed, "L'Ecuyer-CMRG")
+      }
+      res = MulticoreClusterMap(slaveWrapper, ..., .i = iters,
+        MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
+      if (reproducible) {
+        .Random.seed = old.seed
+        RNGkind("Mersenne-Twister")
+      }
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       if (load.balancing) {
-        res = clusterMapLB(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args)
+        res = clusterMapLB(cl = NULL, slaveWrapper, ..., .i = iters,
+          MoreArgs = more.args)
       } else {
-        res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters, MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+        res = clusterMap(cl = NULL, slaveWrapper, ..., .i = iters,
+          MoreArgs = more.args, SIMPLIFY = FALSE, USE.NAMES = FALSE)
       }
     } else if (isModeBatchJobs()) {
       # dont log extra in BatchJobs

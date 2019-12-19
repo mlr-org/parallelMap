@@ -1,5 +1,6 @@
 # fake cluster constructor mimicking makeCluster to store some settings.
-makeMulticoreCluster = function(mc.preschedule = FALSE, mc.set.seed = TRUE, mc.silent = FALSE, mc.cleanup = TRUE) {
+makeMulticoreCluster = function(mc.preschedule = FALSE, mc.set.seed = TRUE,
+  mc.silent = FALSE, mc.cleanup = TRUE) {
 
   assertFlag(mc.preschedule)
   assertFlag(mc.set.seed)
