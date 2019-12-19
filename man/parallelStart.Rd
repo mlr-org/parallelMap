@@ -10,27 +10,71 @@
 \alias{parallelStartBatchtools}
 \title{Parallelization setup for parallelMap.}
 \usage{
-parallelStart(mode, cpus, socket.hosts, bj.resources = list(),
-  bt.resources = list(), logging, storagedir, level,
-  load.balancing = FALSE, show.info, suppress.local.errors = FALSE,
-  ...)
+parallelStart(
+  mode,
+  cpus,
+  socket.hosts,
+  bj.resources = list(),
+  bt.resources = list(),
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  suppress.local.errors = FALSE,
+  ...
+)
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE, ...)
 
-parallelStartMulticore(cpus, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...)
+parallelStartMulticore(
+  cpus,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartSocket(cpus, socket.hosts, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...)
+parallelStartSocket(
+  cpus,
+  socket.hosts,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartMPI(cpus, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...)
+parallelStartMPI(
+  cpus,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
-  show.info, ...)
+parallelStartBatchJobs(
+  bj.resources = list(),
+  logging,
+  storagedir,
+  level,
+  show.info,
+  ...
+)
 
-parallelStartBatchtools(bt.resources = list(), logging, storagedir,
-  level, show.info, ...)
+parallelStartBatchtools(
+  bt.resources = list(),
+  logging,
+  storagedir,
+  level,
+  show.info,
+  ...
+)
 }
 \arguments{
 \item{mode}{(\code{character(1)})\cr
@@ -44,7 +88,7 @@ Number of used cpus. For local and BatchJobs mode this argument is ignored.
 For socket mode, this is the number of processes spawned on localhost, if
 you want processes on multiple machines use \code{socket.hosts}. Default is the
 option \code{parallelMap.default.cpus} or, if not set, \code{\link[parallel:detectCores]{parallel::detectCores()}}
-for multicore mode, \code{max(1, [mpi.universe.size][Rmpi::mpi.universe.size] - 1)} for mpi mode and 1 for socket mode.}
+for multicore mode, \verb{max(1, [mpi.universe.size][Rmpi::mpi.universe.size] - 1)} for mpi mode and 1 for socket mode.}
 
 \item{socket.hosts}{\link{character}\cr
 Only used in socket mode, otherwise ignored. Names of hosts where parallel

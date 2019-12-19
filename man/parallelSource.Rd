@@ -4,8 +4,13 @@
 \alias{parallelSource}
 \title{Source R files for parallelization.}
 \usage{
-parallelSource(..., files, master = TRUE, level = NA_character_,
-  show.info = NA)
+parallelSource(
+  ...,
+  files,
+  master = TRUE,
+  level = NA_character_,
+  show.info = NA
+)
 }
 \arguments{
 \item{...}{\link{character}\cr

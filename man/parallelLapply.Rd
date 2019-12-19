@@ -5,11 +5,17 @@
 \alias{parallelSapply}
 \title{Parallel versions of apply-family functions.}
 \usage{
-parallelLapply(xs, fun, ..., impute.error = NULL,
-  level = NA_character_)
+parallelLapply(xs, fun, ..., impute.error = NULL, level = NA_character_)
 
-parallelSapply(xs, fun, ..., simplify = TRUE, use.names = TRUE,
-  impute.error = NULL, level = NA_character_)
+parallelSapply(
+  xs,
+  fun,
+  ...,
+  simplify = TRUE,
+  use.names = TRUE,
+  impute.error = NULL,
+  level = NA_character_
+)
 }
 \arguments{
 \item{xs}{(\code{vector} | \code{list})\cr
@@ -21,7 +27,7 @@ Function to map over \code{xs}.}
 \item{...}{(any)\cr
 Further arguments passed to \code{fun}.}
 
-\item{impute.error}{(\code{NULL} | \code{function(x)})\cr
+\item{impute.error}{(\code{NULL} | \verb{function(x)})\cr
 See \code{\link[=parallelMap]{parallelMap()}}.}
 
 \item{level}{(\code{character(1)})\cr

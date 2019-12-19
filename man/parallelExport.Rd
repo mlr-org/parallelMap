@@ -4,8 +4,13 @@
 \alias{parallelExport}
 \title{Export R objects for parallelization.}
 \usage{
-parallelExport(..., objnames, master = TRUE, level = NA_character_,
-  show.info = NA)
+parallelExport(
+  ...,
+  objnames,
+  master = TRUE,
+  level = NA_character_,
+  show.info = NA
+)
 }
 \arguments{
 \item{...}{\code{\link{character}}\cr
