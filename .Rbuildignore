@@ -20,3 +20,4 @@ todo.txt
 ^\.Rproj\.user$
 ^tic\.R$
 ^pkgdown$
+^parallelMap\.Rproj$
