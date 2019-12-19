@@ -6,11 +6,16 @@ test_that("parallelLapply", {
   ys = parallelLapply(1:2, identity)
   expect_equal(ys, as.list(1:2))
 
+  xs = list(a = 1, b = 2)
+  ys = parallelLapply(xs, identity)
+  expect_equal(ys, xs)
+
   parallelStop()
 })
 
 
 test_that("parallelSapply", {
+
   parallelStart(mode = "local")
 
   xs = c("a", "b")

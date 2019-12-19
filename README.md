@@ -9,7 +9,7 @@ R package to interface some popular parallelization back-ends with a unified int
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://www.tidyverse.org/lifecycle/#retired)
 
-* Offical CRAN release site:
+* Official CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
 * Development version:

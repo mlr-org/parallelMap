@@ -20,12 +20,12 @@
 #'   See [parallelMap()].
 #' @param level (`character(1)`)\cr
 #'   See [parallelMap()].
-#' @return For `parallelLapply` an unamed list, for `parallelSapply` it depends
+#' @return For `parallelLapply` a named list, for `parallelSapply` it depends
 #'   on the return value of `fun` and the settings of `simplify` and
 #'   `use.names`.
 #' @export
 parallelLapply = function(xs, fun, ..., impute.error = NULL, level = NA_character_) {
-  parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = FALSE,
+  parallelMap(fun, xs, more.args = list(...), simplify = FALSE, use.names = TRUE,
     impute.error = impute.error, level = level)
 }
 
