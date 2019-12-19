@@ -20,8 +20,8 @@
 #'   A list of other arguments passed to `fun`.
 #'   Default is empty list.
 #' @param simplify (`logical(1)`)\cr
-#'   Should the result be simplified?
-#'   See [sapply()].
+#'   Should the result be simplified? See [?simplify2array]. If `TRUE`,
+#'   `simplify2array(higher = TRUE)` will be called on the result object.
 #'   Default is `FALSE`.
 #' @param use.names (`logical(1)`)\cr
 #'   Should result be named?
@@ -233,7 +233,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
     names(res) = NULL
   }
   if (isTRUE(simplify) && length(res) > 0L) {
-    res = simplify2array(res, higher = (simplify == "array"))
+    res = simplify2array(res, higher = simplify)
   }
 
   # count number of mapping operations for log dir

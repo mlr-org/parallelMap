@@ -4,9 +4,16 @@
 \alias{parallelMap}
 \title{Maps a function over lists or vectors in parallel.}
 \usage{
-parallelMap(fun, ..., more.args = list(), simplify = FALSE,
-  use.names = FALSE, impute.error = NULL, level = NA_character_,
-  show.info = NA)
+parallelMap(
+  fun,
+  ...,
+  more.args = list(),
+  simplify = FALSE,
+  use.names = FALSE,
+  impute.error = NULL,
+  level = NA_character_,
+  show.info = NA
+)
 }
 \arguments{
 \item{fun}{\link{function}\cr
@@ -20,8 +27,8 @@ A list of other arguments passed to \code{fun}.
 Default is empty list.}
 
 \item{simplify}{(\code{logical(1)})\cr
-Should the result be simplified?
-See \code{\link[=sapply]{sapply()}}.
+Should the result be simplified? See \link{?simplify2array}. If \code{TRUE},
+\code{simplify2array(higher = TRUE)} will be called on the result object.
 Default is \code{FALSE}.}
 
 \item{use.names}{(\code{logical(1)})\cr
@@ -29,7 +36,7 @@ Should result be named?
 Use names if the first \code{...} argument has names, or if it is a
 character vector, use that character vector as the names.}
 
-\item{impute.error}{(\code{NULL} | \code{function(x)})\cr
+\item{impute.error}{(\code{NULL} | \verb{function(x)})\cr
 This argument can be used for improved error handling. \code{NULL} means that,
 if an exception is generated on one of the slaves, it is also thrown on the
 master. Usually all slave jobs will have to terminate until this exception

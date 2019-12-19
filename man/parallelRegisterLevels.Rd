@@ -29,7 +29,7 @@ instead of the outer one.
 To avoid name clashes, we encourage developers to always specify the argument
 \code{package}. This will prefix the specified levels with the string containing
 the package name, e.g. \code{parallelRegisterLevels(package="foo", levels="dummy")} will register the level \dQuote{foo.dummy} and users can
-start parallelization for this level with \code{parallelStart(<backend>, level = "parallelMap.dummy")}. If you do not provide \code{package}, the level names will
+start parallelization for this level with \verb{parallelStart(<backend>, level = "parallelMap.dummy")}. If you do not provide \code{package}, the level names will
 be associated with category \dQuote{custom} and can there be later referred
 to with \dQuote{custom.dummy}.
 }
