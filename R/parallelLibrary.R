@@ -40,6 +40,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
   assertFlag(show.info, na.ok = TRUE)
 
   mode = getPMOptMode()
+  level = getPMOptLevel()
 
   # remove duplicates
   packages = unique(packages)

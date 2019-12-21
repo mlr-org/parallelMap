@@ -2,6 +2,8 @@
 
 - `parallelLapply()` does not drop list element names anymore (#58)
 
+- `parallelLibrary()`: Respect custom levels when exporting packages (#67) 
+
 # parallelMap 1.4
 
 - Load balancing for multicore, socket and mpi can now be controlled via the flag
