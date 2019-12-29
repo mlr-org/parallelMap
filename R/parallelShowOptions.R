@@ -2,15 +2,15 @@
 #'
 #' @description
 #' Returned are current and default settings, both as lists.
-#' The return value has slots elements \code{settings} and \code{defaults},
+#' The return value has slots elements `settings` and `defaults`,
 #' which are both lists of the same structure, named by option names.
 #'
 #' A printer exists to display this object.
 #'
 #' For details on the configuration procedure please read
-#' \code{\link{parallelStart}} and \url{https://github.com/berndbischl/parallelMap}.
+#' [parallelStart()] and <https://github.com/mlr-org/parallelMap>.
 #'
-#' @return [\code{ParallelMapOptions}]. See above.
+#' @return `ParallelMapOptions`. See above.
 #' @export
 parallelGetOptions = function() {
   opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir", "bj.resources")
@@ -21,23 +21,26 @@ parallelGetOptions = function() {
 
 #' @export
 print.ParallelMapOptions = function(x, ...) {
+
   mycat = function(opt) {
-    opt1val = opts$settings[[opt]]
-    opt2val = opts$defaults[[opt]]
+    opt1val = x$settings[[opt]]
+    opt2val = x$defaults[[opt]]
     if (opt == "bj.resources") {
       opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)",
         convertToShortString(opt1val))
-      if (!is.null(opt2val))
+      if (!is.null(opt2val)) {
         opt2val = convertToShortString(opt2val)
+      }
     }
-    if (is.null(opt2val))
+    if (is.null(opt2val)) {
       opt2val = "not set"
-    if (opt %nin% c("bj.resources", "storagedir"))
+    }
+    if (opt %nin% c("bj.resources", "storagedir")) {
       catf("%-20s: %-10s (%s)", opt, opt1val, opt2val)
-    else
+    } else {
       catf("%-20s: %-10s\n                      (%s)", opt, opt1val, opt2val)
+    }
   }
-  opts = parallelGetOptions()
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
   catf("")
   mycat("mode")
@@ -46,7 +49,7 @@ print.ParallelMapOptions = function(x, ...) {
   mycat("logging")
   mycat("show.info")
   mycat("storagedir")
-  if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS))
+  if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS)) {
     mycat("bj.resources")
+  }
 }
-

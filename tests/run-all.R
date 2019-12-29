@@ -10,9 +10,9 @@ test_check("parallelMap")
 # # but we really want to test at least one real parallel mode on cran
 
 # if (!interactive()) {
-  library(BBmisc)
-  library(parallelMap)
-  source("testthat/helpers.R")
-  source("testthat/helper_sockettest.R")
-  sockettest()
+library(BBmisc)
+library(parallelMap)
+source("testthat/helpers.R")
+source("testthat/helper_sockettest.R")
+sockettest()
 # }

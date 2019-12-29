@@ -10,3 +10,15 @@ test_that("get / print options", {
     print(parallelGetOptions())
   )
 })
+
+# issue https://github.com/mlr-org/parallelMap/issues/41
+test_that("parallelGetOptions() prints the state of the object", {
+  parallelStartSocket(2)
+  y = parallelGetOptions()
+  parallelStop()
+
+  expect_match(
+    capture.output(print(y))[3],
+    "mode                : socket     \\(not set\\)"
+  )
+})

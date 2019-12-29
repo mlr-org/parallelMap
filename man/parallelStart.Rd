@@ -10,126 +10,163 @@
 \alias{parallelStartBatchtools}
 \title{Parallelization setup for parallelMap.}
 \usage{
-parallelStart(mode, cpus, socket.hosts, bj.resources = list(),
-  bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
-  show.info, suppress.local.errors = FALSE, ...)
+parallelStart(
+  mode,
+  cpus,
+  socket.hosts,
+  bj.resources = list(),
+  bt.resources = list(),
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  suppress.local.errors = FALSE,
+  ...
+)
 
 parallelStartLocal(show.info, suppress.local.errors = FALSE, ...)
 
-parallelStartMulticore(cpus, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...)
+parallelStartMulticore(
+  cpus,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartSocket(cpus, socket.hosts, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...)
+parallelStartSocket(
+  cpus,
+  socket.hosts,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartMPI(cpus, logging, storagedir, level, load.balancing = FALSE,
-  show.info, ...)
+parallelStartMPI(
+  cpus,
+  logging,
+  storagedir,
+  level,
+  load.balancing = FALSE,
+  show.info,
+  ...
+)
 
-parallelStartBatchJobs(bj.resources = list(), logging, storagedir, level,
-  show.info, ...)
+parallelStartBatchJobs(
+  bj.resources = list(),
+  logging,
+  storagedir,
+  level,
+  show.info,
+  ...
+)
 
-parallelStartBatchtools(bt.resources = list(), logging, storagedir, level,
-  show.info, ...)
+parallelStartBatchtools(
+  bt.resources = list(),
+  logging,
+  storagedir,
+  level,
+  show.info,
+  ...
+)
 }
 \arguments{
-\item{mode}{[\code{character(1)}]\cr
-Which parallel mode should be used:
-\dQuote{local}, \dQuote{multicore}, \dQuote{socket}, \dQuote{mpi}, \dQuote{BatchJobs}.
-Default is the option \code{parallelMap.default.mode} or, if not set,
-\dQuote{local} without parallel execution.}
+\item{mode}{(\code{character(1)})\cr
+Which parallel mode should be used: \dQuote{local}, \dQuote{multicore},
+\dQuote{socket}, \dQuote{mpi}, \dQuote{BatchJobs}. Default is the option
+\code{parallelMap.default.mode} or, if not set, \dQuote{local} without parallel
+execution.}
 
-\item{cpus}{[\code{integer(1)}]\cr
-Number of used cpus.
-For local and BatchJobs mode this argument is ignored.
+\item{cpus}{(\code{integer(1)})\cr
+Number of used cpus. For local and BatchJobs mode this argument is ignored.
 For socket mode, this is the number of processes spawned on localhost, if
-you want processes on multiple machines use \code{socket.hosts}.
-Default is the option \code{parallelMap.default.cpus} or, if not set,
-\code{\link[parallel]{detectCores}} for multicore mode,
-\code{max(1, \link[Rmpi]{mpi.universe.size} - 1)} for mpi mode
-and 1 for socket mode.}
+you want processes on multiple machines use \code{socket.hosts}. Default is the
+option \code{parallelMap.default.cpus} or, if not set, \code{\link[parallel:detectCores]{parallel::detectCores()}}
+for multicore mode, \verb{max(1, [mpi.universe.size][Rmpi::mpi.universe.size] - 1)} for mpi mode and 1 for socket mode.}
 
-\item{socket.hosts}{[\code{character}]\cr
-Only used in socket mode, otherwise ignored.
-Names of hosts where parallel processes are spawned.
-Default is the option \code{parallelMap.default.socket.hosts}, if this option exists.}
+\item{socket.hosts}{\link{character}\cr
+Only used in socket mode, otherwise ignored. Names of hosts where parallel
+processes are spawned. Default is the option
+\code{parallelMap.default.socket.hosts}, if this option exists.}
 
-\item{bj.resources}{[\code{list}]\cr
+\item{bj.resources}{\link{list}\cr
 Resources like walltime for submitting jobs on HPC clusters via BatchJobs.
-See \code{\link[BatchJobs]{submitJobs}}.
-Defaults are taken from your BatchJobs config file.}
+See \code{\link[BatchJobs:submitJobs]{BatchJobs::submitJobs()}}. Defaults are taken from your BatchJobs
+config file.}
 
-\item{bt.resources}{[\code{list}]\cr
+\item{bt.resources}{\link{list}\cr
 Analog to \code{bj.resources}.
-See \code{\link[batchtools]{submitJobs}}.}
+See \code{\link[batchtools:submitJobs]{batchtools::submitJobs()}}.}
 
-\item{logging}{[\code{logical(1)}]\cr
-Should slave output be logged to files via \code{\link{sink}} under the \code{storagedir}?
-Files are named "<iteration_number>.log" and put into unique
-subdirectories named \dQuote{parallelMap_log_<nr>} for each subsequent
-\code{\link{parallelMap}} operation.
-Previous logging directories are removed on \code{parallelStart}
-if \code{logging} is enabled.
-Logging is not supported for local mode, because you will see all
-output on the master and can also run stuff like
-\code{\link{traceback}} in case of errors.
-Default is the option \code{parallelMap.default.logging} or, if not set,
-\code{FALSE}.}
+\item{logging}{(\code{logical(1)})\cr
+Should slave output be logged to files via \code{\link[=sink]{sink()}} under the \code{storagedir}?
+Files are named "<iteration_number>.log" and put into unique subdirectories
+named \dQuote{parallelMap_log_<nr>} for each subsequent \code{\link[=parallelMap]{parallelMap()}}
+operation. Previous logging directories are removed on \code{parallelStart} if
+\code{logging} is enabled. Logging is not supported for local mode, because you
+will see all output on the master and can also run stuff like \code{\link[=traceback]{traceback()}}
+in case of errors. Default is the option \code{parallelMap.default.logging} or,
+if not set, \code{FALSE}.}
 
-\item{storagedir}{[\code{character(1)}]\cr
+\item{storagedir}{(\code{character(1)})\cr
 Existing directory where log files and intermediate objects for BatchJobs
-mode are stored.
-Note that all nodes must have write access to exactly this path.
-Default is the current working directory.}
+mode are stored. Note that all nodes must have write access to exactly this
+path. Default is the current working directory.}
 
-\item{level}{[\code{character(1)}]\cr
-You can set this so only calls to \code{\link{parallelMap}} that have exactly the same level are parallelized.
-Default is the option \code{parallelMap.default.level} or, if not set,
-\code{NA} which means all calls to \code{\link{parallelMap}} are are potentially parallelized.}
+\item{level}{(\code{character(1)})\cr
+You can set this so only calls to \code{\link[=parallelMap]{parallelMap()}} that have exactly the
+same level are parallelized. Default is the option
+\code{parallelMap.default.level} or, if not set, \code{NA} which means all calls to
+\code{\link[=parallelMap]{parallelMap()}} are are potentially parallelized.}
 
-\item{load.balancing}{[\code{logical(1)}]\cr
+\item{load.balancing}{(\code{logical(1)})\cr
 Enables load balancing for multicore, socket and mpi.
 Set this to \code{TRUE} if you have heterogeneous runtimes.
 Default is \code{FALSE}}
 
-\item{show.info}{[\code{logical(1)}]\cr
-Verbose output on console for all further package calls?
-Default is the option \code{parallelMap.default.show.info} or, if not set,
-\code{TRUE}.}
+\item{show.info}{(\code{logical(1)})\cr
+Verbose output on console for all further package calls? Default is the
+option \code{parallelMap.default.show.info} or, if not set, \code{TRUE}.}
 
-\item{suppress.local.errors}{[\code{logical(1)}]\cr
-Should reporting of error messages during function evaluations in local mode be suppressed?
-Default ist FALSE, i.e. every error message is shown.}
+\item{suppress.local.errors}{(\code{logical(1)})\cr
+Should reporting of error messages during function evaluations in local
+mode be suppressed? Default ist FALSE, i.e. every error message is shown.}
 
-\item{...}{[any]\cr
-Optional parameters, for socket mode passed to \code{\link[parallel]{makePSOCKcluster}},
-for mpi mode passed to \code{\link[parallel]{makeCluster}} and for multicore
-passed to \code{\link[parallel]{mcmapply}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
-\code{mc.set.seed},
-\code{mc.silent} and \code{mc.cleanup} are supported for multicore).}
+\item{...}{(any)\cr
+Optional parameters, for socket mode passed to
+\code{\link[parallel:makePSOCKcluster]{parallel::makePSOCKcluster()}}, for mpi mode passed to
+\code{\link[parallel:makeCluster]{parallel::makeCluster()}} and for multicore passed to
+\code{\link[parallel:mcmapply]{parallel::mcmapply()}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
+\code{mc.set.seed}, \code{mc.silent} and \code{mc.cleanup} are supported for multicore).}
 }
 \value{
 Nothing.
 }
 \description{
-Defines the underlying parallelization mode for \code{\link{parallelMap}}.
-Also allows to set a \dQuote{level} of parallelization.
-Only calls to \code{\link{parallelMap}} with a matching level are parallelized.
-The defaults of all settings are taken from your options, which you can
-also define in your R profile.
-For an introductory tutorial and information on the options configuration, please
-go to the project's github page at \url{https://github.com/berndbischl/parallelMap}.
+Defines the underlying parallelization mode for \code{\link[=parallelMap]{parallelMap()}}. Also allows
+to set a \dQuote{level} of parallelization. Only calls to \code{\link[=parallelMap]{parallelMap()}}
+with a matching level are parallelized. The defaults of all settings are
+taken from your options, which you can also define in your R profile. For an
+introductory tutorial and information on the options configuration, please go
+to the project's github page at https://github.com/mlr-org/parallelMap.
 }
 \details{
-Currently the following modes are supported, which internally dispatch the mapping operation
-to functions from different parallelization packages:
+Currently the following modes are supported, which internally dispatch the
+mapping operation to functions from different parallelization packages:
 
 \describe{
-\item{local}{No parallelization with \code{\link{mapply}}.}
-\item{multicore}{Multicore execution on a single machine with \code{\link[parallel]{mclapply}}.}
-\item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel]{makeCluster}} and \code{\link[parallel]{clusterMap}}.}
-\item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs]{batchMap}}.}
+\item{local}{No parallelization with \code{\link[=mapply]{mapply()}}.}
+\item{multicore}{Multicore execution on a single machine with \code{\link[parallel:mclapply]{parallel::mclapply()}}.}
+\item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel:makeCluster]{parallel::makeCluster()}} and \code{\link[parallel:clusterMap]{parallel::clusterMap()}}.}
+\item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs:batchMap]{BatchJobs::batchMap()}}.}
 }
 
-For BatchJobs mode you need to define a storage directory through the argument \code{storagedir} or
-the option \code{parallelMap.default.storagedir}.
+For BatchJobs mode you need to define a storage directory through the
+argument \code{storagedir} or the option \code{parallelMap.default.storagedir}.
 }

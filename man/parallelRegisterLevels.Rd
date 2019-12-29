@@ -7,29 +7,29 @@
 parallelRegisterLevels(package = "custom", levels)
 }
 \arguments{
-\item{package}{[\code{character(1)}]\cr
+\item{package}{(\code{character(1)})\cr
 Name of your package.
 Default is \dQuote{custom} (we are not in a package).}
 
-\item{levels}{[\code{character(1)}]\cr
-Available levels that are used in the \code{\link{parallelMap}} operations of your package
-or code.
-If \code{package} is not missing, all levels will be prefixed with \dQuote{[package].}.}
+\item{levels}{(\code{character(1)})\cr
+Available levels that are used in the \code{\link[=parallelMap]{parallelMap()}} operations of your
+package or code. If \code{package} is not missing, all levels will be prefixed
+with \dQuote{package.}.}
 }
 \value{
 Nothing.
 }
 \description{
-Package developers should call this function in their packages' \code{\link[base]{.onLoad}}.
-This enables the user to query available levels and bind parallelization to specific levels.
-This is especially helpful for nested calls to \code{\link{parallelMap}}, e.g. where
-the inner call should be parallelized instead of the outer one.
+Package developers should call this function in their packages'
+\code{\link[base:.onLoad]{base::.onLoad()}}. This enables the user to query available levels and bind
+parallelization to specific levels. This is especially helpful for nested
+calls to \code{\link[=parallelMap]{parallelMap()}}, e.g. where the inner call should be parallelized
+instead of the outer one.
 
-To avoid name clashes, we encourage developers to always specify the argument \code{package}.
-This will prefix the specified levels with the string containing the package name, e.g.
-\code{parallelRegisterLevels(package="foo", levels="dummy")}
-will register the level \dQuote{foo.dummy} and users can start parallelization for this level with
-\code{parallelStart(<backend>, level = "parallelMap.dummy")}.
-If you do not provide \code{package}, the level names will be associated with category
-\dQuote{custom} and can there be later referred to with \dQuote{custom.dummy}.
+To avoid name clashes, we encourage developers to always specify the argument
+\code{package}. This will prefix the specified levels with the string containing
+the package name, e.g. \code{parallelRegisterLevels(package="foo", levels="dummy")} will register the level \dQuote{foo.dummy} and users can
+start parallelization for this level with \verb{parallelStart(<backend>, level = "parallelMap.dummy")}. If you do not provide \code{package}, the level names will
+be associated with category \dQuote{custom} and can there be later referred
+to with \dQuote{custom.dummy}.
 }
