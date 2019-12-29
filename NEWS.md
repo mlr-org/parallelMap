@@ -4,6 +4,8 @@
 
 - `parallelLibrary()`: Respect custom levels when exporting packages (#67) 
 
+- `parallelLibrary()`: Allow to add packages to a batchtools library
+
 - Bugfix: Printing the state of an object holding the current parallelMap options (queried via `parallelGetOptions()`) did not return the object state but instead the global state of the options (#41, @mb706).
 
 # parallelMap 1.4
