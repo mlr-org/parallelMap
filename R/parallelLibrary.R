@@ -88,7 +88,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
         })
       } else if (mode %in% c(MODE_BATCHTOOLS)) {
         showInfoMessage("Storing package info for batchtools slave jobs: %s",
-                        collapse(packages), show.info = show.info)
+          collapse(packages), show.info = show.info)
         # collect in R option, add new packages to old ones
         suppressMessages({
           reg = getBatchtoolsReg()
