@@ -112,6 +112,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE,
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
       if (reproducible) {
         old.seed = .Random.seed
+        old.rng.kind = RNGkind()
         seed = sample(1:100000, 1)
         # we need to reset the seed first in case the user supplied a seed,
         # otherwise "L'Ecuyer-CMRG" won't be used
@@ -122,8 +123,9 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE,
         MoreArgs = more.args, mc.cores = cpus,
         SIMPLIFY = FALSE, USE.NAMES = FALSE)
       if (reproducible) {
+        # restore initial RNGkind
         .Random.seed = old.seed
-        RNGkind("Mersenne-Twister")
+        RNGkind(old.rng.kind[1], old.rng.kind[2], old.rng.kind[3])
       }
     } else if (isModeSocket() || isModeMPI()) {
       more.args = c(list(.fun = fun, .logdir = logdir), more.args)
