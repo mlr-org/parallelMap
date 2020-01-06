@@ -40,6 +40,7 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
   assertFlag(show.info, na.ok = TRUE)
 
   mode = getPMOptMode()
+  level = getPMOptLevel()
 
   # remove duplicates
   packages = unique(packages)
@@ -84,6 +85,15 @@ parallelLibrary = function(..., packages, master = TRUE, level = NA_character_, 
         suppressMessages({
           reg = getBatchJobsReg()
           BatchJobs::addRegistryPackages(reg, packages)
+        })
+      } else if (mode %in% c(MODE_BATCHTOOLS)) {
+        showInfoMessage("Storing package info for batchtools slave jobs: %s",
+          collapse(packages), show.info = show.info)
+        # collect in R option, add new packages to old ones
+        suppressMessages({
+          reg = getBatchtoolsReg()
+          reg$packages <- c(reg$packages, packages)
+          batchtools::saveRegistry(reg = reg)
         })
       }
     }

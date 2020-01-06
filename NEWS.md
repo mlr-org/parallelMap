@@ -5,6 +5,12 @@
   This argument ensures reproducibility across parallel workers and is set to `TRUE` by default.
   Internally, we take care to use the `"L'Ecuyer-CMRG"` RNG kind or `clusterSetRNGStream()` (depending on the parallel mode) to ensure this.
 
+- `parallelLibrary()`: Respect custom levels when exporting packages (#67) 
+
+- `parallelLibrary()`: Allow to add packages to a batchtools library (@dagola, #70)
+
+- Bugfix: Printing the state of an object holding the current parallelMap options (queried via `parallelGetOptions()`) did not return the object state but instead the global state of the options (#41, @mb706).
+
 # parallelMap 1.4
 
 - Load balancing for multicore, socket and mpi can now be controlled via the flag

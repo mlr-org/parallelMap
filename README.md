@@ -2,12 +2,14 @@
 
 R package to interface some popular parallelization back-ends with a unified interface.
 
+<!-- badges: start -->
 [![Travis build status](https://img.shields.io/travis/mlr-org/parallelMap/master?logo=travis&style=flat-square&label=Linux)](https://travis-ci.org/mlr-org/parallelMap)
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/mlr-org/parallelMap?label=Windows&logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/mlr-org/parallelMap)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
 [![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://www.tidyverse.org/lifecycle/#retired)
+<!-- badges: end -->
 
 * Official CRAN release site:
   http://cran.r-project.org/web/packages/parallelMap/index.html

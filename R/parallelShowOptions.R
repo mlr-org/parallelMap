@@ -24,8 +24,8 @@ parallelGetOptions = function() {
 print.ParallelMapOptions = function(x, ...) {
 
   mycat = function(opt) {
-    opt1val = opts$settings[[opt]]
-    opt2val = opts$defaults[[opt]]
+    opt1val = x$settings[[opt]]
+    opt2val = x$defaults[[opt]]
     if (opt == "bj.resources") {
       opt1val = ifelse(length(opt1val) == 0L, "(defaults from BatchJobs config)",
         convertToShortString(opt1val))
@@ -42,7 +42,6 @@ print.ParallelMapOptions = function(x, ...) {
       catf("%-20s: %-10s\n                      (%s)", opt, opt1val, opt2val)
     }
   }
-  opts = parallelGetOptions()
   catf("%-20s: %-10s (%s)", "parallelMap options", "value", "default")
   catf("")
   mycat("mode")

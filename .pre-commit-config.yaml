@@ -7,12 +7,10 @@ repos:
     # any R project
     -   id: style-files
         args: [--style_pkg=styler, --style_fun=mlr_style]
-    #-   id: lintr
     -   id: parsable-R
     -   id: no-browser-statement
     -   id: readme-rmd-rendered
-    #  R package development
-    -   id: roxygenize
+    # -   id: roxygenize
     -   id: use-tidy-description
     -   id: deps-in-desc
     # -   id: codemeta-description-updated
