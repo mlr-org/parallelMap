@@ -21,3 +21,4 @@ todo.txt
 ^tic\.R$
 ^pkgdown$
 ^parallelMap\.Rproj$
+^\.pre-commit-config\.yaml$
