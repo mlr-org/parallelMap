@@ -22,3 +22,6 @@ todo.txt
 ^pkgdown$
 ^parallelMap\.Rproj$
 ^\.pre-commit-config\.yaml$
+^\.ccache$
+^\.github$
+^clang-.*

@@ -4,6 +4,7 @@ R package to interface some popular parallelization back-ends with a unified int
 
 <!-- badges: start -->
 [![Travis build status](https://img.shields.io/travis/mlr-org/parallelMap/master?logo=travis&style=flat-square&label=Linux)](https://travis-ci.org/mlr-org/parallelMap)
+[![R CMD Check via {tic}](https://img.shields.io/github/workflow/status/mlr-org/parallelMap/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&label=R%20CMD%20Check%20via%20{tic}&style=flat-square)](https://github.com/mlr-org/parallelMap/actions)
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/mlr-org/parallelMap?label=Windows&logo=appveyor&style=flat-square)](https://ci.appveyor.com/project/mlr-org/parallelMap)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
