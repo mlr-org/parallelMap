@@ -4,6 +4,7 @@
 - `parallelStart()` gains argument `reproducible`. 
   This argument ensures reproducibility across parallel workers and is set to `TRUE` by default.
   Internally, we take care to use the `"L'Ecuyer-CMRG"` RNG kind or `clusterSetRNGStream()` (depending on the parallel mode) to ensure this.
+  This argument works similar to the `future.seed` argument for future-based parallelization which also ensures reproducibility across parallel processes with the standard RNG kind.
 
 - `parallelLibrary()`: Respect custom levels when exporting packages (#67) 
 
