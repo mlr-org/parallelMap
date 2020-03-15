@@ -89,7 +89,7 @@ parallelMap = function(fun, ..., more.args = list(), simplify = FALSE, use.names
       # so we behave in local mode as in parallelSlaveWrapper
       fun2 = function(...) {
         res = try(fun(...), silent = getOption("parallelMap.suppress.local.errors"))
-        if (is.error(res)) {
+        if (BBmisc::is.error(res)) {
           res = list(try.object = res)
           class(res) = "parallelMapErrorWrapper"
         }
@@ -263,7 +263,7 @@ slaveWrapper = function(..., .i, .fun, .logdir = NA_character_) {
   # wrap in try block so we can handle error on master
   res = try(.fun(...))
   # now we cant simply return the error object, because clusterMap would act on it. great...
-  if (is.error(res)) {
+  if (BBmisc::is.error(res)) {
     res = list(try.object = res)
     class(res) = "parallelMapErrorWrapper"
   }
