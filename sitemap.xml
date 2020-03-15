@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://parallelmap.mlr-org.com/index.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelExport.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelGetOptions.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelGetRegisteredLevels.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelLapply.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelLibrary.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelMap.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelRegisterLevels.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelSource.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelStart.html</loc>
+  </url>
+  <url>
+    <loc>https://parallelmap.mlr-org.com/reference/parallelStop.html</loc>
+  </url>
+</urlset>
