@@ -106,8 +106,8 @@ See \code{\link[batchtools:submitJobs]{batchtools::submitJobs()}}.}
 
 \item{logging}{(\code{logical(1)})\cr
 Should slave output be logged to files via \code{\link[=sink]{sink()}} under the \code{storagedir}?
-Files are named "<iteration_number>.log" and put into unique subdirectories
-named \dQuote{parallelMap_log_<nr>} for each subsequent \code{\link[=parallelMap]{parallelMap()}}
+Files are named \verb{<iteration_number>.log} and put into unique subdirectories
+named \verb{parallelMap_log_<nr>} for each subsequent \code{\link[=parallelMap]{parallelMap()}}
 operation. Previous logging directories are removed on \code{parallelStart} if
 \code{logging} is enabled. Logging is not supported for local mode, because you
 will see all output on the master and can also run stuff like \code{\link[=traceback]{traceback()}}
