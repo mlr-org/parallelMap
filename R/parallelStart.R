@@ -72,6 +72,15 @@
 #' @param suppress.local.errors (`logical(1)`)\cr
 #'   Should reporting of error messages during function evaluations in local
 #'   mode be suppressed? Default ist FALSE, i.e. every error message is shown.
+#' @param reproducible (`logical(1)`)\cr
+#'   Should parallel jobs produce reproducible results when setting a seed?
+#'   With this option, `parallelMap()` calls will be reproducible when using
+#'   `set.seed()` with the default RNG kind. This is not the case by default
+#'   when parallelizing in R, since the default RNG kind "Mersenne-Twister" is
+#'   not honored by parallel processes. Instead RNG kind `"L'Ecuyer-CMRG"` needs
+#'   to be used to ensure paralllel reproducibility.
+#'   Default is the option `parallelMap.default.reproducible` or, if not set,
+#'   `TRUE`.
 #' @param ... (any)\cr
 #'   Optional parameters, for socket mode passed to
 #'   [parallel::makePSOCKcluster()], for mpi mode passed to
@@ -80,8 +89,9 @@
 #'   `mc.set.seed`, `mc.silent` and `mc.cleanup` are supported for multicore).
 #' @return Nothing.
 #' @export
-parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
-  show.info, suppress.local.errors = FALSE, ...) {
+parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(),
+  bt.resources = list(), logging, storagedir, level, load.balancing = FALSE,
+  show.info, suppress.local.errors = FALSE, reproducible, ...) {
 
   # if stop was not called, warn and do it now
   if (isStatusStarted() && !isModeLocal()) {
@@ -94,6 +104,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   mode = getPMDefOptMode(mode)
   cpus = getPMDefOptCpus(cpus)
   socket.hosts = getPMDefOptSocketHosts(socket.hosts)
+  reproducible = getPMDefOptReproducible(reproducible)
 
   level = getPMDefOptLevel(level)
   rlevls = parallelGetRegisteredLevels(flatten = TRUE)
@@ -128,6 +139,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   options(parallelMap.status = STATUS_STARTED)
   options(parallelMap.nextmap = 1L)
   options(parallelMap.suppress.local.errors = suppress.local.errors)
+  options(parallelMap.reproducible = reproducible)
 
   # try to autodetect cpus if not set
   if (is.na(cpus) && mode %in% c(MODE_MULTICORE, MODE_MPI)) {
@@ -166,7 +178,11 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
   if (isModeMulticore()) {
     args = list(...)
     args$mc.preschedule = args$mc.preschedule %??% !load.balancing
+
+
+
     cl = do.call(makeMulticoreCluster, args)
+
   } else if (isModeSocket()) {
     # set names from cpus or socket.hosts, only 1 can be defined here
     if (is.na(cpus)) {
@@ -175,11 +191,16 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
       names = cpus
     }
     cl = makePSOCKcluster(names = names, ...)
+    if (reproducible) {
+      clusterSetRNGStream(cl, iseed = sample(1:100000, 1))
+    }
     setDefaultCluster(cl)
   } else if (isModeMPI()) {
     cl = makeCluster(spec = cpus, type = "MPI", ...)
+    if (reproducible) {
+      clusterSetRNGStream(cl, iseed = sample(1:100000, 1))
+    }
     setDefaultCluster(cl)
-    clusterSetRNGStream(cl = NULL)
   } else if (isModeBatchJobs()) {
     # create registry in selected directory with random, unique name
     fd = getBatchJobsNewRegFileDir()
@@ -200,28 +221,36 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(), bt.res
 #' @rdname parallelStart
 parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
   parallelStart(mode = MODE_LOCAL, cpus = NA_integer_, level = NA_character_,
-    logging = FALSE, show.info = show.info, suppress.local.errors = suppress.local.errors, ...)
+    logging = FALSE, show.info = show.info,
+    suppress.local.errors = suppress.local.errors, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMulticore = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
-  parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
+parallelStartMulticore = function(cpus, logging, storagedir, level,
+  load.balancing = FALSE, show.info, reproducible, ...) {
+  parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level,
+    logging = logging, storagedir = storagedir, load.balancing = load.balancing,
+    show.info = show.info, reproducible = reproducible, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
-  parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
+parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level,
+  load.balancing = FALSE, show.info, reproducible, ...) {
+  parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts,
+    level = level, logging = logging, storagedir = storagedir,
+    load.balancing = load.balancing, show.info = show.info,
+    reproducible = reproducible, ...)
 }
 
 #' @export
 #' @rdname parallelStart
-parallelStartMPI = function(cpus, logging, storagedir, level, load.balancing = FALSE, show.info, ...) {
+parallelStartMPI = function(cpus, logging, storagedir, level,
+  load.balancing = FALSE, show.info, reproducible, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
-    storagedir = storagedir, load.balancing = load.balancing, show.info = show.info, ...)
+    storagedir = storagedir, load.balancing = load.balancing,
+    show.info = show.info, reproducible = reproducible, ...)
 }
 
 #' @export

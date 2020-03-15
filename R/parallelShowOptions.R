@@ -13,7 +13,8 @@
 #' @return `ParallelMapOptions`. See above.
 #' @export
 parallelGetOptions = function() {
-  opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir", "bj.resources")
+  opts = c("mode", "cpus", "level", "logging", "show.info", "storagedir",
+    "bj.resources", "reproducible")
   settings = setNames(lapply(opts, getPMOption), opts)
   defaults = setNames(lapply(opts, getPMDefOption), opts)
   makeS3Obj("ParallelMapOptions", settings = settings, defaults = defaults)
@@ -49,6 +50,7 @@ print.ParallelMapOptions = function(x, ...) {
   mycat("logging")
   mycat("show.info")
   mycat("storagedir")
+  mycat("reproducible")
   if (isModeBatchJobs() || identical(getPMDefOptMode(), MODE_BATCHJOBS)) {
     mycat("bj.resources")
   }

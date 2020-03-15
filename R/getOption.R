@@ -60,6 +60,10 @@ getPMOptOnSlave = function() {
   getPMOption("on.slave")
 }
 
+getPMOptReproducible = function() {
+  getPMOption("reproducible")
+}
+
 ##### PM default options #####
 
 getPMDefOptMode = function(mode) {
@@ -119,6 +123,14 @@ getPMDefOptStorageDir = function(storagedir) {
   }
   assertString(storagedir)
   return(storagedir)
+}
+
+getPMDefOptReproducible = function(reproducible) {
+  if (missing(reproducible)) {
+    reproducible = getPMDefOption("reproducible", TRUE)
+  }
+  assertFlag(reproducible)
+  return(reproducible)
 }
 
 ##### modes #####

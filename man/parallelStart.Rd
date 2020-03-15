@@ -22,6 +22,7 @@ parallelStart(
   load.balancing = FALSE,
   show.info,
   suppress.local.errors = FALSE,
+  reproducible,
   ...
 )
 
@@ -34,6 +35,7 @@ parallelStartMulticore(
   level,
   load.balancing = FALSE,
   show.info,
+  reproducible,
   ...
 )
 
@@ -45,6 +47,7 @@ parallelStartSocket(
   level,
   load.balancing = FALSE,
   show.info,
+  reproducible,
   ...
 )
 
@@ -55,6 +58,7 @@ parallelStartMPI(
   level,
   load.balancing = FALSE,
   show.info,
+  reproducible,
   ...
 )
 
@@ -137,6 +141,16 @@ option \code{parallelMap.default.show.info} or, if not set, \code{TRUE}.}
 \item{suppress.local.errors}{(\code{logical(1)})\cr
 Should reporting of error messages during function evaluations in local
 mode be suppressed? Default ist FALSE, i.e. every error message is shown.}
+
+\item{reproducible}{(\code{logical(1)})\cr
+Should parallel jobs produce reproducible results when setting a seed?
+With this option, \code{parallelMap()} calls will be reproducible when using
+\code{set.seed()} with the default RNG kind. This is not the case by default
+when parallelizing in R, since the default RNG kind "Mersenne-Twister" is
+not honored by parallel processes. Instead RNG kind \code{"L'Ecuyer-CMRG"} needs
+to be used to ensure paralllel reproducibility.
+Default is the option \code{parallelMap.default.reproducible} or, if not set,
+\code{TRUE}.}
 
 \item{...}{(any)\cr
 Optional parameters, for socket mode passed to

@@ -34,7 +34,8 @@ PKG_LOCAL_ENV = new.env()
     parallelMap.status = STATUS_STOPPED,
     parallelMap.on.slave = FALSE,
     parallelMap.registered.levels = list(),
-    parallelMap.suppress.local.errors = FALSE
+    parallelMap.suppress.local.errors = FALSE,
+    parallelMap.reproducible = TRUE
   )
   # set defaults
   makeMulticoreCluster()
