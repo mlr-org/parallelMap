@@ -247,7 +247,7 @@ parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level,
 #' @export
 #' @rdname parallelStart
 parallelStartMPI = function(cpus, logging, storagedir, level,
-  load.balancing = FALSE, show.info, ...) {
+  load.balancing = FALSE, show.info, reproducible, ...) {
   parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
     storagedir = storagedir, load.balancing = load.balancing,
     show.info = show.info, reproducible = reproducible, ...)

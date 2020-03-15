@@ -58,6 +58,7 @@ parallelStartMPI(
   level,
   load.balancing = FALSE,
   show.info,
+  reproducible,
   ...
 )
 

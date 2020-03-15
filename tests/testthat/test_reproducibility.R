@@ -30,6 +30,7 @@ test_that("socket: reproducibility can be turned off", {
 })
 
 test_that("reproducibility with standard RNG kind works for 'multicore' mode", {
+  skip_on_os("windows")
 
   set.seed(42)
   parallelStartMulticore(2)
@@ -47,6 +48,7 @@ test_that("reproducibility with standard RNG kind works for 'multicore' mode", {
 # This is how it was before v1.5 -> set.seed() with standard RNG kind had no
 # effect
 test_that("multicore: reproducibility with standard RNG kind can be turned off", {
+  skip_on_os("windows")
 
   set.seed(42)
   parallelStartMulticore(2, reproducible = FALSE)
@@ -63,6 +65,7 @@ test_that("multicore: reproducibility with standard RNG kind can be turned off",
 })
 
 test_that("reproducibility with L'Ecuyer-CMRG RNG kind works for 'multicore' mode", {
+  skip_on_os("windows")
 
   # NB: this RNG kind should always work, even without reproducible = TRUE
   set.seed(42, "L'Ecuyer-CMRG")
@@ -82,6 +85,7 @@ test_that("reproducibility with L'Ecuyer-CMRG RNG kind works for 'multicore' mod
 # 1. This RNG kind always forces reproducibility in parallel processes,
 # even when mc.set.seed = FALSE is FALSE
 test_that("reproducibility with L'Ecuyer-CMRG RNG kind works even when 'reproducible = FALSE'", {
+  skip_on_os("windows")
 
   # NB: this RNG kind should always work, even without reproducible = TRUE
   set.seed(42, "L'Ecuyer-CMRG")
