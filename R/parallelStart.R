@@ -46,8 +46,8 @@
 #'   See [batchtools::submitJobs()].
 #' @param logging (`logical(1)`)\cr
 #'   Should slave output be logged to files via [sink()] under the `storagedir`?
-#'   Files are named "<iteration_number>.log" and put into unique subdirectories
-#'   named \dQuote{parallelMap_log_<nr>} for each subsequent [parallelMap()]
+#'   Files are named `<iteration_number>.log` and put into unique subdirectories
+#'   named `parallelMap_log_<nr>` for each subsequent [parallelMap()]
 #'   operation. Previous logging directories are removed on `parallelStart` if
 #'   `logging` is enabled. Logging is not supported for local mode, because you
 #'   will see all output on the master and can also run stuff like [traceback()]
