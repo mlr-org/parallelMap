@@ -1,12 +1,27 @@
-# parallelMap 1.4.0.9000
+# parallelMap 1.5.0
 
 - `parallelLapply()` does not drop list element names anymore (#58)
-- `parallelStart()` gains argument `reproducible`. 
+- `parallelStart()` gains argument `reproducible`.
   This argument ensures reproducibility across parallel workers and is set to `TRUE` by default.
   Internally, we take care to use the `"L'Ecuyer-CMRG"` RNG kind or `clusterSetRNGStream()` (depending on the parallel mode) to ensure this.
   This argument works similar to the `future.seed` argument for future-based parallelization which also ensures reproducibility across parallel processes with the standard RNG kind.
 
-- `parallelLibrary()`: Respect custom levels when exporting packages (#67) 
+- `parallelLibrary()`: Respect custom levels when exporting packages (#67)
+
+- `parallelLibrary()`: Allow to add packages to a batchtools library (@dagola, #70)
+
+- Bugfix: Printing the state of an object holding the current parallelMap options (queried via `parallelGetOptions()`) did not return the object state but instead the global state of the options (#41, @mb706).
+
+
+# parallelMap 1.4.0.9000
+
+- `parallelLapply()` does not drop list element names anymore (#58)
+- `parallelStart()` gains argument `reproducible`.
+  This argument ensures reproducibility across parallel workers and is set to `TRUE` by default.
+  Internally, we take care to use the `"L'Ecuyer-CMRG"` RNG kind or `clusterSetRNGStream()` (depending on the parallel mode) to ensure this.
+  This argument works similar to the `future.seed` argument for future-based parallelization which also ensures reproducibility across parallel processes with the standard RNG kind.
+
+- `parallelLibrary()`: Respect custom levels when exporting packages (#67)
 
 - `parallelLibrary()`: Allow to add packages to a batchtools library (@dagola, #70)
 
