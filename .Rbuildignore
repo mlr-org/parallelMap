@@ -25,3 +25,4 @@ todo.txt
 ^\.ccache$
 ^\.github$
 ^clang-.*
+^\.vscode$
