@@ -2,8 +2,10 @@ context("mpi mode")
 
 # cran allows no mpi mode testing
 # FIXME: same problem as for socket mode test, but we cannot test on cran anyway
+# FIXME: Spurious errors on CI as well -> Rmpi bad :/
 test_that("mpi mode", {
   skip_on_cran()
+  skip_on_ci()
 
   parallelStartMPI(2)
   partest1()
