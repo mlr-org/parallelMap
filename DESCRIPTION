@@ -10,11 +10,16 @@ Authors@R:
              family = "Lang",
              role = "aut",
              email = "michellang@gmail.com",
-             comment = c(ORCID = "0000-0001-9754-0393")))
+             comment = c(ORCID = "0000-0001-9754-0393")),
+      person(given = "Patrick",
+             family = "Schratz",
+             role = "aut",
+             email = "patrick.schratz@gmail.com",
+             comment = c(ORCID = "0000-0003-0748-6624")))
 Maintainer: Bernd Bischl <bernd_bischl@gmx.net>
-Description: Unified parallelization framework for multiple
-    back-end, designed for internal package and interactive usage.  The
-    main operation is parallel mapping over lists.  Supports 'local',
+Description: Unified parallelization framework for multiple back-end,
+    designed for internal package and interactive usage.  The main
+    operation is parallel mapping over lists.  Supports 'local',
     'multicore', 'mpi' and 'BatchJobs' mode.  Allows tagging of the
     parallel operation with a level name that can be later selected by the
     user to switch on parallel execution for exactly this operation.
