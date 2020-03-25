@@ -3,7 +3,7 @@
 R package to interface some popular parallelization back-ends with a unified interface.
 
 <!-- badges: start -->
-[![R CMD Check via {tic}](https://img.shields.io/github/workflow/status/mlr-org/parallelMap/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&label=R%20CMD%20Check%20via%20{tic}&style=flat-square)](https://github.com/mlr-org/parallelMap/actions)
+[![R CMD Check via {tic}](https://github.com/mlr-org/parallelMap/workflows/R%20CMD%20Check%20via%20{tic}/badge.svg?branch=master)](https://github.com/mlr-org/parallelMap/actions)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
@@ -17,7 +17,7 @@ R package to interface some popular parallelization back-ends with a unified int
   ```r
   remotes::install_github("mlr-org/parallelMap")
   ```
-  
+
 # Deprecated
 
 _parallelMap_ is considered retired from the mlr-org team.
@@ -53,7 +53,7 @@ If you want to use other modes of parallelization, call the appropriate initiali
 
 # Exporting to Slaves: Libraries, Sources and Objects
 
-In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started. 
+In many (more complex) applications you somehow need to initialize the slave processes, especially for MPI, socket and BatchJobs mode, where fresh R processes are started.
 This means: loading of packages, sourcing files with function and object definitions and exporting R objects to the global environment of the slaves.
 
 _parallelMap_ supports these operations with the following three functions
@@ -84,7 +84,7 @@ parallelStop()
 ```
 
 And here is a further example where we export a big matrix to the slaves, then
-apply a preprocessing function to it, which is defined in source file. 
+apply a preprocessing function to it, which is defined in source file.
 
 ```r
 ##### Example 3) #####
@@ -106,8 +106,8 @@ parallelStop()
 
 On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, `parallelMap()` allows you to define defaults for all relevant settings through R's option mechanism in , e.g., your R profile.
 
-Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. 
-You are also an experienced user and don't need `parallelMap()`'s "chatting" on the console anymore. 
+Let's assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal.
+You are also an experienced user and don't need `parallelMap()`'s "chatting" on the console anymore.
 Define these lines in your R profile:
 
 ```r
