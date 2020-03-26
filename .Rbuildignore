@@ -26,3 +26,5 @@ todo.txt
 ^\.github$
 ^clang-.*
 ^\.vscode$
+^CRAN-RELEASE$
+^cran-comments\.md$
