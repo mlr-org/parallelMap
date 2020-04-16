@@ -17,12 +17,13 @@ toc:
 navbar:
   structure:
     left:  [reference, news]
-    right: [github, slack, mattermost, rss]
+    right: [github, mattermost, rss]
   components:
     home: ~
-    slack:
-      icon: fab fa-slack
-      href: https://mlr-org.slack.com
+    reference:
+      icon: fa fa-file-alt
+      text: Reference
+      href: reference/index.html
     mattermost:
       icon: fa fa-comments
       href: https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/
