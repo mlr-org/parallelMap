@@ -1,3 +1,6 @@
+# parallelMap 1.5.0.9000
+
+
 # parallelMap 1.5.0
 
 - `parallelLapply()` does not drop list element names anymore (#58)
