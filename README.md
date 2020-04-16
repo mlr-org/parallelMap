@@ -1,5 +1,7 @@
 # parallelMap
 
+Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https:/parallelmap.mlr-org.com/dev)
+
 R package to interface some popular parallelization back-ends with a unified interface.
 
 <!-- badges: start -->
@@ -14,6 +16,7 @@ R package to interface some popular parallelization back-ends with a unified int
   http://cran.r-project.org/web/packages/parallelMap/index.html
 
 * Development version:
+
   ```r
   remotes::install_github("mlr-org/parallelMap")
   ```
