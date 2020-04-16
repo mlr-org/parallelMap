@@ -1,6 +1,6 @@
 # parallelMap
 
-Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https:/parallelmap.mlr-org.com/dev)
+Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https://parallelmap.mlr-org.com/dev)
 
 R package to interface some popular parallelization back-ends with a unified interface.
 
