@@ -19,6 +19,10 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
+
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/journal/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
@@ -68,7 +72,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +87,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.4.0.9000</small></a>
+        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.5.0</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -95,7 +99,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/berndbischl/parallelMap">
+  <a href="https://github.com/berndbischl/parallelMap/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -157,6 +161,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap.</p>
   <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>show.info</span>,
   <span class='kw'>suppress.local.errors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>reproducible</span>,
   <span class='no'>...</span>
 )
 
@@ -169,6 +174,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap.</p>
   <span class='no'>level</span>,
   <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>show.info</span>,
+  <span class='no'>reproducible</span>,
   <span class='no'>...</span>
 )
 
@@ -180,6 +186,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap.</p>
   <span class='no'>level</span>,
   <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>show.info</span>,
+  <span class='no'>reproducible</span>,
   <span class='no'>...</span>
 )
 
@@ -190,6 +197,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap.</p>
   <span class='no'>level</span>,
   <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='no'>show.info</span>,
+  <span class='no'>reproducible</span>,
   <span class='no'>...</span>
 )
 
@@ -298,6 +306,18 @@ Should reporting of error messages during function evaluations in local
 mode be suppressed? Default ist FALSE, i.e. every error message is shown.</p></td>
     </tr>
     <tr>
+      <th>reproducible</th>
+      <td><p>(<code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>)<br />
+Should parallel jobs produce reproducible results when setting a seed?
+With this option, <code><a href='parallelMap.html'>parallelMap()</a></code> calls will be reproducible when using
+<code><a href='https://rdrr.io/r/base/Random.html'>set.seed()</a></code> with the default RNG kind. This is not the case by default
+when parallelizing in R, since the default RNG kind "Mersenne-Twister" is
+not honored by parallel processes. Instead RNG kind <code>"L'Ecuyer-CMRG"</code> needs
+to be used to ensure paralllel reproducibility.
+Default is the option <code>parallelMap.default.reproducible</code> or, if not set,
+<code>TRUE</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>(any)<br />
 Optional parameters, for socket mode passed to
@@ -315,7 +335,7 @@ Optional parameters, for socket mode passed to
 
     <p>Currently the following modes are supported, which internally dispatch the
 mapping operation to functions from different parallelization packages:</p>
-<dl class='dl-horizontal'>
+<dl'>
 <dt>local</dt><dd><p>No parallelization with <code><a href='https://rdrr.io/r/base/mapply.html'>mapply()</a></code>.</p></dd>
 <dt>multicore</dt><dd><p>Multicore execution on a single machine with <code><a href='https://rdrr.io/r/parallel/mclapply.html'>parallel::mclapply()</a></code>.</p></dd>
 <dt>mpi</dt><dd><p>Snow MPI cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></dd>
@@ -327,25 +347,21 @@ mapping operation to functions from different parallelization packages:</p>
 argument <code>storagedir</code> or the option <code>parallelMap.default.storagedir</code>.</p>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
 
       <footer>
       <div class="copyright">
-  <p>Developed by Bernd Bischl, Michel Lang.</p>
+  <p>Developed by Bernd Bischl, Michel Lang, Patrick Schratz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
