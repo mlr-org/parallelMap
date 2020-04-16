@@ -13,7 +13,7 @@ R package to interface some popular parallelization back-ends with a unified int
 <!-- badges: end -->
 
 * Official CRAN release site:
-  http://cran.r-project.org/web/packages/parallelMap/index.html
+  https://cran.r-project.org/web/packages/parallelMap/index.html
 
 * Development version:
 
