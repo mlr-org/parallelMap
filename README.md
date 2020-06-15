@@ -5,7 +5,7 @@ Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https://par
 R package to interface some popular parallelization back-ends with a unified interface.
 
 <!-- badges: start -->
-[![R CMD Check via {tic}](https://github.com/mlr-org/parallelMap/workflows/R%20CMD%20Check%20via%20{tic}/badge.svg?branch=master)](https://github.com/mlr-org/parallelMap/actions)
+[![tic](https://github.com/mlr-org/parallelMap/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/parallelMap/actions)
 [![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
 [![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
