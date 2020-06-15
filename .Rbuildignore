@@ -30,3 +30,4 @@ todo.txt
 ^cran-comments\.md$
 ^\.travis\.yml$
 ^\.lintr$
+^docs$
