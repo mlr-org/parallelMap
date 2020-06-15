@@ -332,14 +332,13 @@ Optional parameters, for socket mode passed to
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Currently the following modes are supported, which internally dispatch the
-mapping operation to functions from different parallelization packages:</p>
-<dl'>
-<dt>local</dt><dd><p>No parallelization with <code><a href='https://rdrr.io/r/base/mapply.html'>mapply()</a></code>.</p></dd>
-<dt>multicore</dt><dd><p>Multicore execution on a single machine with <code><a href='https://rdrr.io/r/parallel/mclapply.html'>parallel::mclapply()</a></code>.</p></dd>
-<dt>mpi</dt><dd><p>Snow MPI cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></dd>
-<dt>BatchJobs</dt><dd><p>Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with <code><a href='https://rdrr.io/pkg/BatchJobs/man/batchMap.html'>BatchJobs::batchMap()</a></code>.</p></dd>
-
-</dl>
+mapping operation to functions from different parallelization packages:</p><ul>
+<li><p><strong>local</strong>: No parallelization with <code><a href='https://rdrr.io/r/base/mapply.html'>mapply()</a></code></p></li>
+<li><p><strong>multicore</strong>: Multicore execution on a single machine with <code><a href='https://rdrr.io/r/parallel/mclapply.html'>parallel::mclapply()</a></code>.</p></li>
+<li><p><strong>socket</strong>: Socket cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makePSOCKcluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></li>
+<li><p><strong>mpi</strong>: Snow MPI cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></li>
+<li><p><strong>BatchJobs</strong>: Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with <code><a href='https://rdrr.io/pkg/BatchJobs/man/batchMap.html'>BatchJobs::batchMap()</a></code>.</p></li>
+</ul>
 
 <p>For BatchJobs mode you need to define a storage directory through the
 argument <code>storagedir</code> or the option <code>parallelMap.default.storagedir</code>.</p>
