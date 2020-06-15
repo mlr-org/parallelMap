@@ -21,7 +21,7 @@ Nothing.
 }
 \description{
 Package developers should call this function in their packages'
-\code{\link[base:.onLoad]{base::.onLoad()}}. This enables the user to query available levels and bind
+\code{base::.onLoad()}. This enables the user to query available levels and bind
 parallelization to specific levels. This is especially helpful for nested
 calls to \code{\link[=parallelMap]{parallelMap()}}, e.g. where the inner call should be parallelized
 instead of the outer one.

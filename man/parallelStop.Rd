@@ -13,7 +13,7 @@ Nothing.
 Sets mode to \dQuote{local}, i.e., parallelization is turned
 off and all necessary stuff is cleaned up.
 
-For socket and mpi mode \code{\link[parallel:stopCluster]{parallel::stopCluster()}} is called.
+For socket and mpi mode \code{parallel::stopCluster()} is called.
 
 For BatchJobs mode the subdirectory of the \code{storagedir}
 containing the exported objects is removed.

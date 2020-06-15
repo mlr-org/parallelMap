@@ -154,9 +154,9 @@ Default is the option \code{parallelMap.default.reproducible} or, if not set,
 
 \item{...}{(any)\cr
 Optional parameters, for socket mode passed to
-\code{\link[parallel:makePSOCKcluster]{parallel::makePSOCKcluster()}}, for mpi mode passed to
+\code{parallel::makePSOCKcluster()}, for mpi mode passed to
 \code{\link[parallel:makeCluster]{parallel::makeCluster()}} and for multicore passed to
-\code{\link[parallel:mcmapply]{parallel::mcmapply()}} (\code{mc.preschedule} (overwriting \code{load.balancing}),
+\code{parallel::mcmapply()} (\code{mc.preschedule} (overwriting \code{load.balancing}),
 \code{mc.set.seed}, \code{mc.silent} and \code{mc.cleanup} are supported for multicore).}
 }
 \value{
@@ -173,12 +173,12 @@ to the project's github page at https://github.com/mlr-org/parallelMap.
 \details{
 Currently the following modes are supported, which internally dispatch the
 mapping operation to functions from different parallelization packages:
-
-\describe{
-\item{local}{No parallelization with \code{\link[=mapply]{mapply()}}.}
-\item{multicore}{Multicore execution on a single machine with \code{\link[parallel:mclapply]{parallel::mclapply()}}.}
-\item{mpi}{Snow MPI cluster on one or multiple machines with \code{\link[parallel:makeCluster]{parallel::makeCluster()}} and \code{\link[parallel:clusterMap]{parallel::clusterMap()}}.}
-\item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs:batchMap]{BatchJobs::batchMap()}}.}
+\itemize{
+\item \strong{local}: No parallelization with \code{\link[=mapply]{mapply()}}
+\item \strong{multicore}: Multicore execution on a single machine with \code{parallel::mclapply()}.
+\item \strong{socket}: Socket cluster on one or multiple machines with \code{parallel::makePSOCKcluster()} and \code{parallel::clusterMap()}.
+\item \strong{mpi}: Snow MPI cluster on one or multiple machines with \code{\link[parallel:makeCluster]{parallel::makeCluster()}} and \code{parallel::clusterMap()}.
+\item \strong{BatchJobs}: Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with \code{\link[BatchJobs:batchMap]{BatchJobs::batchMap()}}.
 }
 
 For BatchJobs mode you need to define a storage directory through the

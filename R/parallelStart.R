@@ -10,13 +10,11 @@
 #' Currently the following modes are supported, which internally dispatch the
 #' mapping operation to functions from different parallelization packages:
 #'
-#' \describe{
-#' \item{local}{No parallelization with [mapply()].}
-#' \item{multicore}{Multicore execution on a single machine with [parallel::mclapply()].}
-# \item{socket}{Socket cluster on one or multiple machines with \code{\link[parallel]{makePSOCKcluster}} and \code{\link[parallel]{clusterMap}}.}
-#' \item{mpi}{Snow MPI cluster on one or multiple machines with [parallel::makeCluster()] and [parallel::clusterMap()].}
-#' \item{BatchJobs}{Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with [BatchJobs::batchMap()].}
-#' }
+#' - **local**: No parallelization with [mapply()]
+#' - **multicore**: Multicore execution on a single machine with `parallel::mclapply()`.
+#' - **socket**: Socket cluster on one or multiple machines with `parallel::makePSOCKcluster()` and `parallel::clusterMap()`.
+#' - **mpi**: Snow MPI cluster on one or multiple machines with [parallel::makeCluster()] and `parallel::clusterMap()`.
+#' - **BatchJobs**: Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with [BatchJobs::batchMap()].
 #'
 #' For BatchJobs mode you need to define a storage directory through the
 #' argument `storagedir` or the option `parallelMap.default.storagedir`.
@@ -83,9 +81,9 @@
 #'   `TRUE`.
 #' @param ... (any)\cr
 #'   Optional parameters, for socket mode passed to
-#'   [parallel::makePSOCKcluster()], for mpi mode passed to
+#'   `parallel::makePSOCKcluster()`, for mpi mode passed to
 #'   [parallel::makeCluster()] and for multicore passed to
-#'   [parallel::mcmapply()] (`mc.preschedule` (overwriting `load.balancing`),
+#'   `parallel::mcmapply()` (`mc.preschedule` (overwriting `load.balancing`),
 #'   `mc.set.seed`, `mc.silent` and `mc.cleanup` are supported for multicore).
 #' @return Nothing.
 #' @export
@@ -94,6 +92,7 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(),
   show.info, suppress.local.errors = FALSE, reproducible, ...) {
 
   # if stop was not called, warn and do it now
+
   if (isStatusStarted() && !isModeLocal()) {
     warningf("Parallelization was not stopped, doing it now.")
     parallelStop()
@@ -109,7 +108,8 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(),
   level = getPMDefOptLevel(level)
   rlevls = parallelGetRegisteredLevels(flatten = TRUE)
   if (!is.na(level) && level %nin% rlevls) {
-    warningf("Selected level='%s' not registered! This is likely an error! Note that you can also
+    warningf(
+      "Selected level='%s' not registered! This is likely an error! Note that you can also
       register custom levels yourself to get rid of this warning, see ?parallelRegisterLevels.R",
       level)
   }
@@ -220,7 +220,8 @@ parallelStart = function(mode, cpus, socket.hosts, bj.resources = list(),
 #' @export
 #' @rdname parallelStart
 parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
-  parallelStart(mode = MODE_LOCAL, cpus = NA_integer_, level = NA_character_,
+  parallelStart(
+    mode = MODE_LOCAL, cpus = NA_integer_, level = NA_character_,
     logging = FALSE, show.info = show.info,
     suppress.local.errors = suppress.local.errors, ...)
 }
@@ -229,7 +230,8 @@ parallelStartLocal = function(show.info, suppress.local.errors = FALSE, ...) {
 #' @rdname parallelStart
 parallelStartMulticore = function(cpus, logging, storagedir, level,
   load.balancing = FALSE, show.info, reproducible, ...) {
-  parallelStart(mode = MODE_MULTICORE, cpus = cpus, level = level,
+  parallelStart(
+    mode = MODE_MULTICORE, cpus = cpus, level = level,
     logging = logging, storagedir = storagedir, load.balancing = load.balancing,
     show.info = show.info, reproducible = reproducible, ...)
 }
@@ -238,7 +240,8 @@ parallelStartMulticore = function(cpus, logging, storagedir, level,
 #' @rdname parallelStart
 parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level,
   load.balancing = FALSE, show.info, reproducible, ...) {
-  parallelStart(mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts,
+  parallelStart(
+    mode = MODE_SOCKET, cpus = cpus, socket.hosts = socket.hosts,
     level = level, logging = logging, storagedir = storagedir,
     load.balancing = load.balancing, show.info = show.info,
     reproducible = reproducible, ...)
@@ -248,7 +251,8 @@ parallelStartSocket = function(cpus, socket.hosts, logging, storagedir, level,
 #' @rdname parallelStart
 parallelStartMPI = function(cpus, logging, storagedir, level,
   load.balancing = FALSE, show.info, reproducible, ...) {
-  parallelStart(mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
+  parallelStart(
+    mode = MODE_MPI, cpus = cpus, level = level, logging = logging,
     storagedir = storagedir, load.balancing = load.balancing,
     show.info = show.info, reproducible = reproducible, ...)
 }
@@ -256,13 +260,15 @@ parallelStartMPI = function(cpus, logging, storagedir, level,
 #' @export
 #' @rdname parallelStart
 parallelStartBatchJobs = function(bj.resources = list(), logging, storagedir, level, show.info, ...) {
-  parallelStart(mode = MODE_BATCHJOBS, level = level, logging = logging,
+  parallelStart(
+    mode = MODE_BATCHJOBS, level = level, logging = logging,
     storagedir = storagedir, bj.resources = bj.resources, show.info = show.info, ...)
 }
 
 #' @export
 #' @rdname parallelStart
 parallelStartBatchtools = function(bt.resources = list(), logging, storagedir, level, show.info, ...) {
-  parallelStart(mode = MODE_BATCHTOOLS, level = level, logging = logging,
+  parallelStart(
+    mode = MODE_BATCHTOOLS, level = level, logging = logging,
     storagedir = storagedir, bt.resources = bt.resources, show.info = show.info, ...)
 }

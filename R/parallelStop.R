@@ -4,7 +4,7 @@
 #' Sets mode to \dQuote{local}, i.e., parallelization is turned
 #' off and all necessary stuff is cleaned up.
 #'
-#' For socket and mpi mode [parallel::stopCluster()] is called.
+#' For socket and mpi mode `parallel::stopCluster()` is called.
 #'
 #' For BatchJobs mode the subdirectory of the `storagedir`
 #' containing the exported objects is removed.
@@ -18,6 +18,7 @@
 parallelStop = function() {
 
   # only do something if we are in "started" state
+
   if (isStatusStarted()) {
     if (isModeSocket() || isModeMPI()) {
       # only stop if we registred one (exception in parallelStart can happen)
