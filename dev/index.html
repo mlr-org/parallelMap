@@ -103,7 +103,9 @@
 <li><p>Official CRAN release site: <a href="https://cran.r-project.org/web/packages/parallelMap/index.html" class="uri">https://cran.r-project.org/web/packages/parallelMap/index.html</a></p></li>
 <li>
 <p>Development version:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mlr-org/parallelMap"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mlr-org/parallelMap"</span>)
+</pre></div>
 </li>
 </ul>
 </div>
@@ -128,13 +130,15 @@
 <h1 class="hasAnchor">
 <a href="#mini-tutorial" class="anchor"></a>Mini Tutorial</h1>
 <p>Here is a short tutorial that already contains the most important concepts and operations:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co">##### Example 1) #####</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co">##### Example 1) #####</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">parallelMap</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://parallelmap.mlr-org.com">parallelMap</a></span>)
 <span class="fu"><a href="reference/parallelStart.html">parallelStartSocket</a></span>(<span class="fl">2</span>)    <span class="co"># start in socket mode and create 2 processes on localhost</span>
-<span class="no">f</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">i</span>) <span class="no">i</span> + <span class="fl">5</span>     <span class="co"># define our job</span>
-<span class="no">y</span> <span class="kw">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">f</span>, <span class="fl">1</span>:<span class="fl">2</span>)   <span class="co"># like R's Map but in parallel</span>
-<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()            <span class="co"># turn parallelization off again</span></pre></div>
+<span class="kw">f</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">i</span>) <span class="kw">i</span> <span class="op">+</span> <span class="fl">5</span>     <span class="co"># define our job</span>
+<span class="kw">y</span> <span class="op">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">f</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)   <span class="co"># like R's Map but in parallel</span>
+<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()            <span class="co"># turn parallelization off again</span>
+</pre></div>
 <p>If you want to use other modes of parallelization, call the appropriate initialization procedure, all of them are documented in <a href="https://parallelmap.mlr-org.com/reference/parallelStart.html">parallelStart</a>. <code><a href="reference/parallelStart.html">parallelStart()</a></code> is a catch-all procedure, that allows to set all possible options of the package, but for every mode a variant of <code><a href="reference/parallelStart.html">parallelStart()</a></code> exists with a smaller, appropriate interface.</p>
 </div>
 <div id="exporting-to-slaves-libraries-sources-and-objects" class="section level1">
@@ -147,87 +151,103 @@
 <li><a href="https://parallelmap.mlr-org.com/reference/parallelSource.html">parallelSource</a></li>
 <li><a href="https://parallelmap.mlr-org.com/reference/parallelExport.html">parallelExport</a></li>
 </ul>
-<p>Let’s start with loading a package on the slaves. Of course you could put a <code><a href="https://rdrr.io/pkg/mypackage/man">require("mypackage")</a></code> into the body of <code>f</code>, but you can also use a <code><a href="reference/parallelLibrary.html">parallelLibrary()</a></code> before calling <code><a href="reference/parallelMap.html">parallelMap()</a></code>.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co">##### Example 2) #####</span>
+<p>Let’s start with loading a package on the slaves. Of course you could put a <code>require("mypackage")</code> into the body of <code>f</code>, but you can also use a <code><a href="reference/parallelLibrary.html">parallelLibrary()</a></code> before calling <code><a href="reference/parallelMap.html">parallelMap()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co">##### Example 2) #####</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">parallelMap</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://parallelmap.mlr-org.com">parallelMap</a></span>)
 <span class="fu"><a href="reference/parallelStart.html">parallelStartSocket</a></span>(<span class="fl">2</span>)
 <span class="fu"><a href="reference/parallelLibrary.html">parallelLibrary</a></span>(<span class="st">"MASS"</span>)
 <span class="co"># subsample iris, fit an LDA model and return prediction error</span>
-<span class="no">f</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">i</span>) {
-  <span class="no">n</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">iris</span>)
-  <span class="no">train</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="no">n</span>, <span class="no">n</span>/<span class="fl">2</span>)
-  <span class="no">test</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="fl">1</span>:<span class="no">n</span>, <span class="no">train</span>)
-  <span class="no">model</span> <span class="kw">=</span> <span class="fu">lda</span>(<span class="no">Species</span>~<span class="no">.</span>, <span class="kw">data</span><span class="kw">=</span><span class="no">iris</span>[<span class="no">train</span>,])
-  <span class="no">pred</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="no">model</span>, <span class="kw">newdata</span><span class="kw">=</span><span class="no">iris</span>[<span class="no">test</span>,])
-  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">pred</span>$<span class="no">class</span> <span class="kw">!=</span> <span class="no">iris</span>[<span class="no">test</span>,]$<span class="no">Species</span>)
+<span class="kw">f</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">i</span>) {
+  <span class="kw">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="kw">iris</span>)
+  <span class="kw">train</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="kw">n</span>, <span class="kw">n</span><span class="op">/</span><span class="fl">2</span>)
+  <span class="kw">test</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>(<span class="fl">1</span><span class="op">:</span><span class="kw">n</span>, <span class="kw">train</span>)
+  <span class="kw">model</span> <span class="op">=</span> <span class="fu">lda</span>(<span class="kw">Species</span><span class="op">~</span><span class="kw">.</span>, data=<span class="kw">iris</span>[<span class="kw">train</span>,])
+  <span class="kw">pred</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="kw">model</span>, newdata=<span class="kw">iris</span>[<span class="kw">test</span>,])
+  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">pred</span><span class="op">$</span><span class="kw">class</span> != <span class="kw">iris</span>[<span class="kw">test</span>,]<span class="op">$</span><span class="kw">Species</span>)
 }
-<span class="no">y</span> <span class="kw">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">f</span>, <span class="fl">1</span>:<span class="fl">2</span>)
-<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()</pre></div>
+<span class="kw">y</span> <span class="op">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">f</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)
+<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()
+</pre></div>
 <p>And here is a further example where we export a big matrix to the slaves, then apply a preprocessing function to it, which is defined in source file.</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co">##### Example 3) #####</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co">##### Example 3) #####</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">parallelMap</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://parallelmap.mlr-org.com">parallelMap</a></span>)
 <span class="fu"><a href="reference/parallelStart.html">parallelStartSocket</a></span>(<span class="fl">2</span>)
 <span class="fu"><a href="reference/parallelSource.html">parallelSource</a></span>(<span class="st">"preproc.R"</span>) <span class="co"># contains definition of preproc()</span>
-<span class="no">bigmatrix</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>, <span class="kw">nrow</span><span class="kw">=</span><span class="fl">500</span>, <span class="kw">ncol</span><span class="kw">=</span><span class="fl">500</span>)
+<span class="kw">bigmatrix</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fl">1</span>, nrow=<span class="fl">500</span>, ncol=<span class="fl">500</span>)
 <span class="fu"><a href="reference/parallelExport.html">parallelExport</a></span>(<span class="st">"bigmatrix"</span>)
-<span class="no">f</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">i</span>) {
-  <span class="no">p</span> <span class="kw">=</span> <span class="fu">preproc</span>(<span class="no">bigmatrix</span>)
-  <span class="no">p</span> + <span class="no">i</span>
+<span class="kw">f</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">i</span>) {
+  <span class="kw">p</span> <span class="op">=</span> <span class="fu">preproc</span>(<span class="kw">bigmatrix</span>)
+  <span class="kw">p</span> <span class="op">+</span> <span class="kw">i</span>
 }
-<span class="no">y</span> <span class="kw">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">f</span>, <span class="fl">1</span>:<span class="fl">2</span>)
-<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()</pre></div>
+<span class="kw">y</span> <span class="op">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">f</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)
+<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()
+</pre></div>
 </div>
 <div id="being-lazy-configuration" class="section level1">
 <h1 class="hasAnchor">
 <a href="#being-lazy-configuration" class="anchor"></a>Being Lazy: Configuration</h1>
 <p>On a given system, you will probably always parallelize you operations in a similar fashion. For this reason, <code><a href="reference/parallelMap.html">parallelMap()</a></code> allows you to define defaults for all relevant settings through R’s option mechanism in , e.g., your R profile.</p>
 <p>Let’s assume on your office PC you run some Unix-like operating system and have 4 cores at your disposal. You are also an experienced user and don’t need <code><a href="reference/parallelMap.html">parallelMap()</a></code>’s “chatting” on the console anymore. Define these lines in your R profile:</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(
-  <span class="kw">parallelMap.default.mode</span>        <span class="kw">=</span> <span class="st">"multicore"</span>,
-  <span class="kw">parallelMap.default.cpus</span>        <span class="kw">=</span> <span class="fl">4</span>,
-  <span class="kw">parallelMap.default.show.info</span>   <span class="kw">=</span> <span class="fl">FALSE</span>
-)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(
+  parallelMap.default.mode        = <span class="st">"multicore"</span>,
+  parallelMap.default.cpus        = <span class="fl">4</span>,
+  parallelMap.default.show.info   = <span class="fl">FALSE</span>
+)
+</pre></div>
 <p>This allows you to save some typing as running <code><a href="reference/parallelStart.html">parallelStart()</a></code> will now be equivalent to <code><a href="reference/parallelStart.html">parallelStart(mode = "multicore", cpus = 4, show.info = FALSE)</a></code> so “Example 1” would become:</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="reference/parallelStart.html">parallelStart</a></span>()
-<span class="no">f</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">i</span>) <span class="no">i</span> + <span class="fl">5</span>
-<span class="no">y</span> <span class="kw">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">f</span>, <span class="fl">1</span>:<span class="fl">2</span>)
-<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="reference/parallelStart.html">parallelStart</a></span>()
+<span class="kw">f</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">i</span>) <span class="kw">i</span> <span class="op">+</span> <span class="fl">5</span>
+<span class="kw">y</span> <span class="op">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">f</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)
+<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()
+</pre></div>
 <p>You can later always overwrite settings be explicitly passing them to <code><a href="reference/parallelStart.html">parallelStart()</a></code>, so</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="reference/parallelStart.html">parallelStart</a></span>(<span class="kw">cpus</span><span class="kw">=</span><span class="fl">2</span>)
-<span class="no">f</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">i</span>) <span class="no">i</span> + <span class="fl">5</span>
-<span class="no">y</span> <span class="kw">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">f</span>, <span class="fl">1</span>:<span class="fl">2</span>)
-<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="reference/parallelStart.html">parallelStart</a></span>(cpus=<span class="fl">2</span>)
+<span class="kw">f</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">i</span>) <span class="kw">i</span> <span class="op">+</span> <span class="fl">5</span>
+<span class="kw">y</span> <span class="op">=</span> <span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">f</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>)
+<span class="fu"><a href="reference/parallelStop.html">parallelStop</a></span>()
+</pre></div>
 <p>would use your default “multicore” mode and still disable <code><a href="reference/parallelMap.html">parallelMap()</a></code>’s info messages on the console, but decrease cpu usage to 2.</p>
 <p>The following options are currently available:</p>
-<div class="sourceCode" id="cb8"><pre class="r">  parallelMap.default.mode            = "local" / "multicore" / "socket" / "mpi" / "BatchJobs"
-  parallelMap.default.cpus            = &lt;integer&gt;
-  parallelMap.default.level           = &lt;string&gt; or NA
-  parallelMap.default.socket.hosts    = character vector of host names where to spawn in socket mode
-  parallelMap.default.show.info       = TRUE / FALSE
-  parallelMap.default.logging         = TRUE / FALSE
-  parallelMap.default.storagedir      = &lt;path&gt;, must be on a shared file system for master / slaves</pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>  parallelMap.default.mode            =<span class="st"> "local"</span> <span class="op">/</span><span class="st"> "multicore"</span> <span class="op">/</span><span class="st"> "socket"</span> <span class="op">/</span><span class="st"> "mpi"</span> <span class="op">/</span><span class="st"> "BatchJobs"</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  parallelMap.default.cpus            =<span class="st"> </span><span class="er">&lt;</span>integer<span class="op">&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span>parallelMap.default.level           =<span class="st"> </span><span class="er">&lt;</span>string<span class="op">&gt;</span><span class="st"> </span>or <span class="ot">NA</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  parallelMap.default.socket.hosts    =<span class="st"> </span>character vector of host names where to spawn <span class="cf">in</span> socket mode</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  parallelMap.default.show.info       =<span class="st"> </span><span class="ot">TRUE</span> <span class="op">/</span><span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  parallelMap.default.logging         =<span class="st"> </span><span class="ot">TRUE</span> <span class="op">/</span><span class="st"> </span><span class="ot">FALSE</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  parallelMap.default.storagedir      =<span class="st"> </span><span class="er">&lt;</span>path<span class="op">&gt;</span>, must be on a shared file system <span class="cf">for</span> master <span class="op">/</span><span class="st"> </span>slaves</span></code></pre></div>
 <p>For their precise meaning please read the documentation of <code><a href="reference/parallelStart.html">parallelStart()</a></code>.</p>
 </div>
 <div id="package-development-tagging-mapping-operations-with-a-level-name" class="section level1">
 <h1 class="hasAnchor">
 <a href="#package-development-tagging-mapping-operations-with-a-level-name" class="anchor"></a>Package development: Tagging mapping operations with a level name</h1>
 <p>Sometimes it is useful to have more control over which <code><a href="reference/parallelMap.html">parallelMap()</a></code> operation is actually parallelized. You can tag parallelMap operations with a so-called “level”, basically a name or category associated with the operation. Usually you would do this in a client package, but you can also do it in custom code. For packages, register the level(s) that you define in <code>zzz.R</code> to tell parallelMap about them. Here is an example from mlr’s <a href="https://github.com/berndbischl/mlr/blob/master/R/zzz.R">zzz.R</a> where we call this in <code><a href="https://rdrr.io/r/base/ns-hooks.html">.onAttach()</a></code></p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="no">.onAttach</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">libname</span>, <span class="no">pkgname</span>) {
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">.onAttach</span> <span class="op">=</span> <span class="fu">function</span>(<span class="kw">libname</span>, <span class="kw">pkgname</span>) {
   <span class="co"># ...</span>
-  <span class="fu"><a href="reference/parallelRegisterLevels.html">parallelRegisterLevels</a></span>(<span class="kw">package</span> <span class="kw">=</span> <span class="st">"mlr"</span>, <span class="kw">levels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"benchmark"</span>, <span class="st">"resample"</span>, <span class="st">"selectFeatures"</span>, <span class="st">"tuneParams"</span>))
-}</pre></div>
+  <span class="fu"><a href="reference/parallelRegisterLevels.html">parallelRegisterLevels</a></span>(package = <span class="st">"mlr"</span>, levels = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"benchmark"</span>, <span class="st">"resample"</span>, <span class="st">"selectFeatures"</span>, <span class="st">"tuneParams"</span>))
+}
+</pre></div>
 <p>Later on the user can ask what levels are available, for example</p>
-<div class="sourceCode" id="cb10"><pre class="r">library(mlr)
-parallelGetRegisteredLevels()
-&gt; mlr: mlr.benchmark, mlr.resample, mlr.selectFeatures, mlr.tuneParams</pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">library</span>(mlr)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="kw">parallelGetRegisteredLevels</span>()</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="op">&gt;</span><span class="st"> </span>mlr<span class="op">:</span><span class="st"> </span>mlr.benchmark, mlr.resample, mlr.selectFeatures, mlr.tuneParams</span></code></pre></div>
 <p>The output shows the registered levels for each package; in this example, only one package is loaded that provides levels.</p>
 <p>In the client package, the tagging of the <code>parallelMap</code> operation is done through the <code>level</code> argument:</p>
-<div class="sourceCode" id="cb11"><pre class="r"><span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="no">myfun</span>, <span class="fl">1</span>:<span class="no">n</span>, <span class="kw">level</span> <span class="kw">=</span> <span class="st">"package.levelname"</span>)</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="reference/parallelMap.html">parallelMap</a></span>(<span class="kw">myfun</span>, <span class="fl">1</span><span class="op">:</span><span class="kw">n</span>, level = <span class="st">"package.levelname"</span>)
+</pre></div>
 <p>In <em>mlr</em>, we tag parallel operations with such a level, e.g., <a href="https://github.com/mlr-org/mlr/blob/master/R/resample.R">here</a>.</p>
 <p>The user of the package can now set the level when starting the parallel backend, again through the <code>level</code> argument:</p>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="reference/parallelStart.html">parallelStartSocket</a></span>(<span class="kw">ncpus</span> <span class="kw">=</span> <span class="fl">2L</span>, <span class="kw">level</span> <span class="kw">=</span> <span class="st">"package.levelname"</span>)</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="fu"><a href="reference/parallelStart.html">parallelStartSocket</a></span>(ncpus = <span class="fl">2L</span>, level = <span class="st">"package.levelname"</span>)
+</pre></div>
 <p>Parallelization is now performed as follows:</p>
 <ul>
 <li>If no level is set in <code><a href="reference/parallelStart.html">parallelStart()</a></code>, the first encountered <code><a href="reference/parallelMap.html">parallelMap()</a></code> call on the master is parallelized, whether it has a tag or not.</li>
@@ -283,7 +303,7 @@ parallelGetRegisteredLevels()
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
