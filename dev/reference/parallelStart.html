@@ -147,75 +147,75 @@ introductory tutorial and information on the options configuration, please go
 to the project's github page at https://github.com/mlr-org/parallelMap.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parallelStart</span>(
-  <span class='kw'>mode</span>,
-  <span class='kw'>cpus</span>,
-  <span class='kw'>socket.hosts</span>,
-  bj.resources = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  bt.resources = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  load.balancing = <span class='fl'>FALSE</span>,
-  <span class='kw'>show.info</span>,
-  suppress.local.errors = <span class='fl'>FALSE</span>,
-  <span class='kw'>reproducible</span>,
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>parallelStart</span><span class='op'>(</span>
+  <span class='va'>mode</span>,
+  <span class='va'>cpus</span>,
+  <span class='va'>socket.hosts</span>,
+  bj.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  bt.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  suppress.local.errors <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartLocal</span>(<span class='kw'>show.info</span>, suppress.local.errors = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)
+<span class='fu'>parallelStartLocal</span><span class='op'>(</span><span class='va'>show.info</span>, suppress.local.errors <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>parallelStartMulticore</span>(
-  <span class='kw'>cpus</span>,
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  load.balancing = <span class='fl'>FALSE</span>,
-  <span class='kw'>show.info</span>,
-  <span class='kw'>reproducible</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>parallelStartMulticore</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartSocket</span>(
-  <span class='kw'>cpus</span>,
-  <span class='kw'>socket.hosts</span>,
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  load.balancing = <span class='fl'>FALSE</span>,
-  <span class='kw'>show.info</span>,
-  <span class='kw'>reproducible</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>parallelStartSocket</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>socket.hosts</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartMPI</span>(
-  <span class='kw'>cpus</span>,
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  load.balancing = <span class='fl'>FALSE</span>,
-  <span class='kw'>show.info</span>,
-  <span class='kw'>reproducible</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>parallelStartMPI</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartBatchJobs</span>(
-  bj.resources = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  <span class='kw'>show.info</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>parallelStartBatchJobs</span><span class='op'>(</span>
+  bj.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartBatchtools</span>(
-  bt.resources = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>logging</span>,
-  <span class='kw'>storagedir</span>,
-  <span class='kw'>level</span>,
-  <span class='kw'>show.info</span>,
-  <span class='kw'>...</span>
-)</pre>
+<span class='fu'>parallelStartBatchtools</span><span class='op'>(</span>
+  bt.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
