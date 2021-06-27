@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch:
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron: "0 4 * * *"
@@ -15,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { os: macOS-latest, r: "release" }
+          - { os: ubuntu-latest, r: "release" }
 
     env:
       # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
@@ -33,7 +34,7 @@ jobs:
 
       - name: "[Stage] Dependencies"
         run: |
-            brew install curl libsodium
+            sudo apt install libcurl4-openssl-dev libsodium-dev libharfbuzz-dev libfribidi-dev libgit2-dev
             Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
             Rscript -e "remotes::install_github('ropensci/tic', dependencies = TRUE)"
 
@@ -42,11 +43,11 @@ jobs:
             Rscript -e "tic::update_yml()"
 
       - name: "[Stage] Create Pull Request"
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           token: ${{ secrets.TIC_UPDATE }}
           title: "Update tic templates [ci-skip]"
           commit-message: "update tic templates"
           body: "{tic} templates can be updated :rocket: :robot:"
           branch: update-tic
-          base: master
