@@ -2,10 +2,8 @@
 
 # parallelMap 1.5.1
 
-- Same as previous version.
-
-
-# parallelMap 1.5.0.9000
+- Removed "LazyDate" field from DESCRIPTION.
+- Fixed broken URLs.
 
 
 # parallelMap 1.5.0
