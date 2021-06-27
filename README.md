@@ -1,15 +1,15 @@
 # parallelMap
 
-Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https://parallelmap.mlr-org.com/dev)
+Package website: [release](https://parallelmap.mlr-org.com/) | [dev](https://parallelmap.mlr-org.com/dev/)
 
 R package to interface some popular parallelization back-ends with a unified interface.
 
 <!-- badges: start -->
 [![tic](https://github.com/mlr-org/parallelMap/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/parallelMap/actions)
-[![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap)
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/parallelMap)](http://cran.r-project.org/web/packages/parallelMap/)
 [![Codecov test coverage](https://codecov.io/gh/mlr-org/parallelMap/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/parallelMap?branch=master)
-[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](http://cran.rstudio.com/web/packages/parallelMap/index.html)
-[![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://www.tidyverse.org/lifecycle/#retired)
+[![CRAN Downloads](http://cranlogs.r-pkg.org/badges/parallelMap)](https://cran.rstudio.com/web/packages/parallelMap/index.html)
+[![lifecycle](https://img.shields.io/badge/lifecycle-retired-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 <!-- badges: end -->
 
 * Official CRAN release site:
@@ -163,7 +163,7 @@ or category associated with the operation. Usually you would do this in a client
 For packages, register the level(s) that you define in `zzz.R` to tell parallelMap
 about them.
 Here is an example from mlr's
-[zzz.R](https://github.com/berndbischl/mlr/blob/master/R/zzz.R)
+[zzz.R](https://github.com/mlr-org/mlr/blob/master/R/zzz.R)
 where we call this in `.onAttach()`
 
 ```r
