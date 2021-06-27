@@ -87,14 +87,14 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.5.0</small></a>
+        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.5.1</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../reference/index.html">
-    <span class="fa fa fa fa-file-alt"></span>
+    <span class="fa fa-file-alt"></span>
      
     Reference
   </a>
@@ -103,14 +103,14 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/berndbischl/parallelMap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/mlr-org/parallelMap/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
-    <span class="fa fa fa fa-comments"></span>
+    <span class="fa fa-comments"></span>
      
   </a>
 </li>
@@ -134,7 +134,7 @@ to the project's github page at https://github.com/mlr-org/parallelMap." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Parallelization setup for parallelMap.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/berndbischl/parallelMap/blob/master/R/parallelStart.R'><code>R/parallelStart.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/mlr-org/parallelMap/blob/master/R/parallelStart.R'><code>R/parallelStart.R</code></a></small>
     <div class="hidden name"><code>parallelStart.Rd</code></div>
     </div>
 
@@ -147,75 +147,75 @@ introductory tutorial and information on the options configuration, please go
 to the project's github page at https://github.com/mlr-org/parallelMap.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parallelStart</span>(
-  <span class='no'>mode</span>,
-  <span class='no'>cpus</span>,
-  <span class='no'>socket.hosts</span>,
-  <span class='kw'>bj.resources</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='kw'>bt.resources</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>show.info</span>,
-  <span class='kw'>suppress.local.errors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>reproducible</span>,
-  <span class='no'>...</span>
-)
+    <pre class="usage"><span class='fu'>parallelStart</span><span class='op'>(</span>
+  <span class='va'>mode</span>,
+  <span class='va'>cpus</span>,
+  <span class='va'>socket.hosts</span>,
+  bj.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  bt.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  suppress.local.errors <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartLocal</span>(<span class='no'>show.info</span>, <span class='kw'>suppress.local.errors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
+<span class='fu'>parallelStartLocal</span><span class='op'>(</span><span class='va'>show.info</span>, suppress.local.errors <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>parallelStartMulticore</span>(
-  <span class='no'>cpus</span>,
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>show.info</span>,
-  <span class='no'>reproducible</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>parallelStartMulticore</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartSocket</span>(
-  <span class='no'>cpus</span>,
-  <span class='no'>socket.hosts</span>,
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>show.info</span>,
-  <span class='no'>reproducible</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>parallelStartSocket</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>socket.hosts</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartMPI</span>(
-  <span class='no'>cpus</span>,
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='kw'>load.balancing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>show.info</span>,
-  <span class='no'>reproducible</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>parallelStartMPI</span><span class='op'>(</span>
+  <span class='va'>cpus</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  load.balancing <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>reproducible</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartBatchJobs</span>(
-  <span class='kw'>bj.resources</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='no'>show.info</span>,
-  <span class='no'>...</span>
-)
+<span class='fu'>parallelStartBatchJobs</span><span class='op'>(</span>
+  bj.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
-<span class='fu'>parallelStartBatchtools</span>(
-  <span class='kw'>bt.resources</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(),
-  <span class='no'>logging</span>,
-  <span class='no'>storagedir</span>,
-  <span class='no'>level</span>,
-  <span class='no'>show.info</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='fu'>parallelStartBatchtools</span><span class='op'>(</span>
+  bt.resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  <span class='va'>logging</span>,
+  <span class='va'>storagedir</span>,
+  <span class='va'>level</span>,
+  <span class='va'>show.info</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -332,14 +332,13 @@ Optional parameters, for socket mode passed to
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Currently the following modes are supported, which internally dispatch the
-mapping operation to functions from different parallelization packages:</p>
-<dl'>
-<dt>local</dt><dd><p>No parallelization with <code><a href='https://rdrr.io/r/base/mapply.html'>mapply()</a></code>.</p></dd>
-<dt>multicore</dt><dd><p>Multicore execution on a single machine with <code><a href='https://rdrr.io/r/parallel/mclapply.html'>parallel::mclapply()</a></code>.</p></dd>
-<dt>mpi</dt><dd><p>Snow MPI cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></dd>
-<dt>BatchJobs</dt><dd><p>Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with <code><a href='https://rdrr.io/pkg/BatchJobs/man/batchMap.html'>BatchJobs::batchMap()</a></code>.</p></dd>
-
-</dl>
+mapping operation to functions from different parallelization packages:</p><ul>
+<li><p><strong>local</strong>: No parallelization with <code><a href='https://rdrr.io/r/base/mapply.html'>mapply()</a></code></p></li>
+<li><p><strong>multicore</strong>: Multicore execution on a single machine with <code><a href='https://rdrr.io/r/parallel/mclapply.html'>parallel::mclapply()</a></code>.</p></li>
+<li><p><strong>socket</strong>: Socket cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makePSOCKcluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></li>
+<li><p><strong>mpi</strong>: Snow MPI cluster on one or multiple machines with <code><a href='https://rdrr.io/r/parallel/makeCluster.html'>parallel::makeCluster()</a></code> and <code><a href='https://rdrr.io/r/parallel/clusterApply.html'>parallel::clusterMap()</a></code>.</p></li>
+<li><p><strong>BatchJobs</strong>: Parallelization on batch queuing HPC clusters, e.g., Torque, SLURM, etc., with <code><a href='https://rdrr.io/pkg/BatchJobs/man/batchMap.html'>BatchJobs::batchMap()</a></code>.</p></li>
+</ul>
 
 <p>For BatchJobs mode you need to define a storage directory through the
 argument <code>storagedir</code> or the option <code>parallelMap.default.storagedir</code>.</p>
@@ -359,7 +358,7 @@ argument <code>storagedir</code> or the option <code>parallelMap.default.storage
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

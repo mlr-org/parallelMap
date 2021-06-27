@@ -14,18 +14,43 @@ kbd,
 pre,
 samp {
   font-family: IBM Plex Mono, monospace;
-  font-size: 0.9em;
+}
+
+pre code {
+  font-size: 0.9em; !important
+}
+
+pre {
+  font-size: 0.9em; !important
 }
 
 /* headers */
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "Roboto", sans;
+    font-weight: 500;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 27px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 21px;
 }
 
 /* navbar */
 .navbar {
-    font-weight: 400;
-    font-size: 17px;
+    font-weight: 300;
+    font-size: 15px;
+    font-family: "Roboto";
 }
 
 
@@ -39,8 +64,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 body {
   /* font-family: Crimson Text, serif; */
   font-family: "Roboto" , sans;
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
   color: black;
   padding-top: 15px; /* a bit of space to the navbar */
 }
@@ -77,6 +103,7 @@ body {
 
 .navbar .navbar-brand {
   font-size: 20px;
+  font-weight: 500;
   line-height: 26px;
   color: #03638e;
   min-height: 40px;
@@ -126,4 +153,40 @@ small, .small {
   font-size: 70%;
   font-weight: 400;
   letter-spacing: 0.03em;
+}
+
+/* reference styling ----------------------------------------------- */
+.csl-entry {
+  margin-bottom: 20px;
+}
+
+.ref-index th {
+  font-weight: 300;
+  font-size: 14px;
+}
+bootstrap.min.css:11:29763
+
+.ref-index .code{
+    margin-bottom: 10px;
+ }
+
+/* mlr3extralearners table ----------------------------------------------- */
+table.dataTable {
+  font-size: 13px;
+  line-height: 1.0;
+}
+
+table.dataTable thead {
+  font-size: 12px;
+  line-height: 1.0;
+}
+
+.form-control {
+height: 25px;
+padding: 8px 12px;
+font-size: 10px;
+}
+
+div.datatables {
+  font-size: 12px;
 }

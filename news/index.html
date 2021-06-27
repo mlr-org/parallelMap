@@ -80,14 +80,14 @@
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.5.0</small></a>
+        <a class="navbar-brand" href="../index.html">parallelMap <small>v1.5.1</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../reference/index.html">
-    <span class="fa fa fa fa-file-alt"></span>
+    <span class="fa fa-file-alt"></span>
      
     Reference
   </a>
@@ -96,14 +96,14 @@
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/berndbischl/parallelMap/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/mlr-org/parallelMap/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/">
-    <span class="fa fa fa fa-comments"></span>
+    <span class="fa fa-comments"></span>
      
   </a>
 </li>
@@ -127,9 +127,17 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/berndbischl/parallelMap/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/mlr-org/parallelMap/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="parallelmap-151" class="section level1">
+<h1 class="page-header" data-toc-text="1.5.1">
+<a href="#parallelmap-151" class="anchor"></a>parallelMap 1.5.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Same as previous version.</li>
+</ul>
+</div>
     <div id="parallelmap-1509000" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.0.9000">
 <a href="#parallelmap-1509000" class="anchor"></a>parallelMap 1.5.0.9000<small> Unreleased </small>
@@ -140,11 +148,11 @@
 <a href="#parallelmap-150" class="anchor"></a>parallelMap 1.5.0<small> 2020-03-26 </small>
 </h1>
 <ul>
-<li><p><code><a href="../reference/parallelLapply.html">parallelLapply()</a></code> does not drop list element names anymore (<a href='https://github.com/berndbischl/parallelMap/issues/58'>#58</a>)</p></li>
+<li><p><code><a href="../reference/parallelLapply.html">parallelLapply()</a></code> does not drop list element names anymore (<a href='https://github.com/mlr-org/parallelMap/issues/58'>#58</a>)</p></li>
 <li><p><code><a href="../reference/parallelStart.html">parallelStart()</a></code> gains argument <code>reproducible</code>. This argument ensures reproducibility across parallel workers and is set to <code>TRUE</code> by default. Internally, we take care to use the <code>"L'Ecuyer-CMRG"</code> RNG kind or <code>clusterSetRNGStream()</code> (depending on the parallel mode) to ensure this. This argument works similar to the <code>future.seed</code> argument for future-based parallelization which also ensures reproducibility across parallel processes with the standard RNG kind.</p></li>
-<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Respect custom levels when exporting packages (<a href='https://github.com/berndbischl/parallelMap/issues/67'>#67</a>)</p></li>
-<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Allow to add packages to a batchtools library (<a href='https://github.com/dagola'>@dagola</a>, <a href='https://github.com/berndbischl/parallelMap/issues/70'>#70</a>)</p></li>
-<li><p>Bugfix: Printing the state of an object holding the current parallelMap options (queried via <code><a href="../reference/parallelGetOptions.html">parallelGetOptions()</a></code>) did not return the object state but instead the global state of the options (<a href='https://github.com/berndbischl/parallelMap/issues/41'>#41</a>, <a href='https://github.com/mb706'>@mb706</a>).</p></li>
+<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Respect custom levels when exporting packages (<a href='https://github.com/mlr-org/parallelMap/issues/67'>#67</a>)</p></li>
+<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Allow to add packages to a batchtools library (<a href='https://github.com/dagola'>@dagola</a>, <a href='https://github.com/mlr-org/parallelMap/issues/70'>#70</a>)</p></li>
+<li><p>Bugfix: Printing the state of an object holding the current parallelMap options (queried via <code><a href="../reference/parallelGetOptions.html">parallelGetOptions()</a></code>) did not return the object state but instead the global state of the options (<a href='https://github.com/mlr-org/parallelMap/issues/41'>#41</a>, <a href='https://github.com/mb706'>@mb706</a>).</p></li>
 </ul>
 </div>
     <div id="parallelmap-1409000" class="section level1">
@@ -152,11 +160,11 @@
 <a href="#parallelmap-1409000" class="anchor"></a>parallelMap 1.4.0.9000<small> Unreleased </small>
 </h1>
 <ul>
-<li><p><code><a href="../reference/parallelLapply.html">parallelLapply()</a></code> does not drop list element names anymore (<a href='https://github.com/berndbischl/parallelMap/issues/58'>#58</a>)</p></li>
+<li><p><code><a href="../reference/parallelLapply.html">parallelLapply()</a></code> does not drop list element names anymore (<a href='https://github.com/mlr-org/parallelMap/issues/58'>#58</a>)</p></li>
 <li><p><code><a href="../reference/parallelStart.html">parallelStart()</a></code> gains argument <code>reproducible</code>. This argument ensures reproducibility across parallel workers and is set to <code>TRUE</code> by default. Internally, we take care to use the <code>"L'Ecuyer-CMRG"</code> RNG kind or <code>clusterSetRNGStream()</code> (depending on the parallel mode) to ensure this. This argument works similar to the <code>future.seed</code> argument for future-based parallelization which also ensures reproducibility across parallel processes with the standard RNG kind.</p></li>
-<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Respect custom levels when exporting packages (<a href='https://github.com/berndbischl/parallelMap/issues/67'>#67</a>)</p></li>
-<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Allow to add packages to a batchtools library (<a href='https://github.com/dagola'>@dagola</a>, <a href='https://github.com/berndbischl/parallelMap/issues/70'>#70</a>)</p></li>
-<li><p>Bugfix: Printing the state of an object holding the current parallelMap options (queried via <code><a href="../reference/parallelGetOptions.html">parallelGetOptions()</a></code>) did not return the object state but instead the global state of the options (<a href='https://github.com/berndbischl/parallelMap/issues/41'>#41</a>, <a href='https://github.com/mb706'>@mb706</a>).</p></li>
+<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Respect custom levels when exporting packages (<a href='https://github.com/mlr-org/parallelMap/issues/67'>#67</a>)</p></li>
+<li><p><code><a href="../reference/parallelLibrary.html">parallelLibrary()</a></code>: Allow to add packages to a batchtools library (<a href='https://github.com/dagola'>@dagola</a>, <a href='https://github.com/mlr-org/parallelMap/issues/70'>#70</a>)</p></li>
+<li><p>Bugfix: Printing the state of an object holding the current parallelMap options (queried via <code><a href="../reference/parallelGetOptions.html">parallelGetOptions()</a></code>) did not return the object state but instead the global state of the options (<a href='https://github.com/mlr-org/parallelMap/issues/41'>#41</a>, <a href='https://github.com/mb706'>@mb706</a>).</p></li>
 </ul>
 </div>
     <div id="parallelmap-14" class="section level1">
@@ -234,7 +242,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
