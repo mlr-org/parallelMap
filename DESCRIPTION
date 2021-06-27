@@ -1,6 +1,6 @@
 Package: parallelMap
 Title: Unified Interface to Parallelization Back-Ends
-Version: 1.5.0.9000
+Version: 1.5.1
 Authors@R:
     c(person(given = "Bernd",
              family = "Bischl",
