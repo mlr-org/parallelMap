@@ -2,7 +2,7 @@
 
 # parallelMap 1.5.1.9000
 
-- Same as previous version.
+- `batchtools` backend is now resilient to R workers dying / "expiring".
 
 
 # parallelMap 1.5.1

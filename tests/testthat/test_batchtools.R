@@ -58,3 +58,27 @@ test_that("batchtools mode", {
   setwd(oldwd)
   unlink(newwd, recursive = TRUE)
 })
+
+test_that("batchtools error imputation", {
+  skip_on_cran()
+  requireNamespace("batchtools")
+  reg = batchtools::makeRegistry(NA)
+  storagedir = reg$temp.dir
+  if (is.null(storagedir) || is.na(storagedir)) {
+    storagedir = tempfile()
+  }
+
+  oldBSP = Sys.getenv("R_BATCHTOOLS_SEARCH_PATH")
+  Sys.setenv(R_BATCHTOOLS_SEARCH_PATH = storagedir)
+
+  cat("cluster.functions = makeClusterFunctionsSSH(list(Worker$new('localhost', ncpus = 2)))",
+    file = file.path(storagedir, "batchtools.conf.R")
+  )
+
+  partestUnalive(
+    parallelStartBatchtools(storagedir = storagedir),
+    parallelStop()
+  )
+
+  if (nzchar(oldBSP)) Sys.setenv(R_BATCHTOOLS_SEARCH_PATH = oldBSP)
+})
