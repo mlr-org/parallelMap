@@ -168,3 +168,31 @@ partest7 = function() {
   expect_equal(ys, 1:10)
   expect_true(st[3L] < 10)
 }
+
+# test error handling when slave process dies
+partestUnalive = function(start, stop) {
+
+  # exception is thrown on master
+  f = function(i) {
+    if (i == 1) {
+      q(save = "no", status = 0, runLast = FALSE)
+    } else {
+      i
+    }
+  }
+  eval.parent(substitute(start))
+  y = parallelMap(f, 1:2, impute.error = identity)
+  eval.parent(substitute(stop))
+  expect_true(BBmisc::is.error(y[[1L]]))
+  expect_equal(y[[2L]], 2L)
+  eval.parent(substitute(start))
+  y = parallelMap(f, 1:2, impute.error = function(x) 123)
+  expect_equal(y[[1L]], 123L)
+  expect_equal(y[[2L]], 2L)
+  eval.parent(substitute(stop))
+  eval.parent(substitute(start))
+  y = parallelMap(f, 1:2, impute.error = 99)
+  expect_equal(y[[1L]], 99L)
+  expect_equal(y[[2L]], 2L)
+  eval.parent(substitute(stop))
+}
